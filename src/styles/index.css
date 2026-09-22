@@ -1,0 +1,199 @@
+/* Site 2 is a single, deliberately dark composition — no theme switch, no
+   utility framework. Plain CSS with custom properties keeps the cinematic
+   chapters readable as one file rather than as a cloud of class names. */
+@import './tokens.css';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/space-grotesk';
+
+:root {
+  --ink: #ffffff;
+  --ink-soft: #b8c4cc;
+  --ink-dim: #76848f;
+
+  --night: var(--brand-night, #05070a);
+  --night-2: #0a0f16;
+  --hairline: rgb(255 255 255 / 0.1);
+
+  --teal: var(--brand-line-from, #00aa95);
+  --blue: var(--brand-line-to, #006fb9);
+  --cyan: var(--brand-line-mid, #008dab);
+  --glow: var(--brand-gradient-line, linear-gradient(to top right, #00aa95, #006fb9));
+
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+  --font-body: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --shell: min(100% - 2.5rem, 78rem);
+  --chapter-pad: clamp(4rem, 10vh, 8rem);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  line-height: 1.65;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A very light film grain keeps the large flat blacks from banding on cheap
+   panels. Generated, not an image asset. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+p {
+  text-wrap: pretty;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.shell {
+  width: var(--shell);
+  margin-inline: auto;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.gradient-text {
+  background: var(--glow);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.figure {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+}
+
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--night);
+  font-weight: 600;
+  transform: translateY(-150%);
+  transition: transform 0.2s;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Every chapter is a full-bleed stage; pinning is added by GSAP only when
+   motion is allowed. */
+.chapter {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding-block: var(--chapter-pad);
+  overflow: clip;
+}
+
+.chapter__number {
+  position: fixed;
+  left: clamp(0.75rem, 2vw, 2rem);
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 30;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+
+/* The counter lives in the margin beside the shell, so it may only appear once
+   that margin is actually wider than the counter. The shell caps at 78rem, so
+   below ~1400px it would sit on top of the text. */
+@media (max-width: 1399px) {
+  .chapter__number {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  /* Without pinning the chapters must not be forced to full height, or the page
+     becomes an endless run of near-empty screens. */
+  .chapter {
+    min-height: 0;
+  }
+}

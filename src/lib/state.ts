@@ -84,13 +84,25 @@ export function setLang(next: Lang): void {
   lang.value = next;
 }
 
+/**
+ * The meta description quotes the size of the portfolio, which grows every time
+ * the organiser sends another batch of sheets. The counts are therefore filled
+ * in from the data rather than written into the string — and because the
+ * language can change before the data has loaded, this watches both.
+ */
+function describe(next: Lang): string {
+  const p = forum.value?.portfolio;
+  return UI_META[next].description
+    .replace('{count}', String(p?.projects.length ?? ''))
+    .replace('{regions}', String(Object.keys(p?.regionCounts ?? {}).length || ''));
+}
+
 watch(
-  lang,
-  (next) => {
+  [lang, forum],
+  ([next]) => {
     i18n.global.locale.value = next;
     localStorage.setItem(LANG_KEY, next);
-    const meta = UI_META[next];
-    applyDocumentSeo({ lang: next, title: meta.title, description: meta.description });
+    applyDocumentSeo({ lang: next, title: UI_META[next].title, description: describe(next) });
     const url = new URL(window.location.href);
     url.searchParams.set('lang', next);
     window.history.replaceState(null, '', url);

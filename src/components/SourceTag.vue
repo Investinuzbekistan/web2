@@ -44,7 +44,9 @@ const accessed = computed(() =>
   border: 1px solid var(--hairline);
   border-radius: 999px;
   font-family: var(--font-body);
-  font-size: 0.6em;
+  /* Sized relative to its host, but never below the readable floor:
+     inside the footer small print 0.6em comes out at 9px. */
+  font-size: max(0.72rem, 0.62em);
   letter-spacing: 0.06em;
   color: var(--ink-dim);
   text-decoration: none;

@@ -400,8 +400,12 @@ h2 {
   display: grid;
   gap: 1.5rem;
 }
+/* Two rows with the figure in a stretching first row, so a figure that wraps
+   to two lines ("1 250,6 mln USD" does, in the band where the columns are
+   narrowest) does not drop its own caption below the other two. */
 .portfolio__totals li {
   display: grid;
+  grid-template-rows: 1fr auto;
   gap: 0.2rem;
   padding-block-end: 1.25rem;
   border-block-end: 1px solid var(--hairline);
@@ -447,7 +451,7 @@ h2 {
   gap: 0.3rem;
 }
 .field label {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-dim);

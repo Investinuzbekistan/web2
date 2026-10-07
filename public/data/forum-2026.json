@@ -48,7 +48,7 @@
     "organiser": {
       "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
       "ru": "Комитет по туризму Республики Узбекистан",
-      "en": "Committee on Tourism of the Republic of Uzbekistan"
+      "en": "Tourism Committee of the Republic of Uzbekistan"
     },
     "motto": {
       "line1": {
@@ -146,9 +146,9 @@
       "id": "infrastructure",
       "icon": "hotel",
       "title": {
-        "uz": "Turizm infratuzilmasiga investitsiyalar",
-        "ru": "Инвестиции в туристическую инфраструктуру",
-        "en": "Investment in tourism infrastructure"
+        "uz": "Mehmonxonalar va turizm infratuzilmasi",
+        "ru": "Гостиницы и туристическая инфраструктура",
+        "en": "Hotels and tourism infrastructure"
       },
       "body": {
         "uz": "Mehmonxonalar, kurort majmualari, turistik qishloqlar, apart-otellar, kempinglar, glempinglar, joylashtirish obyektlari va unga bogʻliq infratuzilma.",
@@ -431,7 +431,7 @@
         "body": {
           "uz": "Oʻzbekiston Respublikasi Hukumati nomidan tabrik soʻzi, Turizm qoʻmitasi rahbariyatining nutqi, xalqaro moliya instituti vakilining chiqishi va forumning maqsad va vazifalari eʼlon qilinishi.",
           "ru": "Приветственное слово от имени Правительства Республики Узбекистан, выступление руководства Комитета по туризму, выступление представителя международного финансового института и объявление целей и ключевых задач форума.",
-          "en": "A welcome on behalf of the Government of Uzbekistan, remarks from the Committee on Tourism’s leadership, an address by an international financial institution, and the announcement of the forum’s goals."
+          "en": "A welcome on behalf of the Government of Uzbekistan, remarks from the Tourism Committee’s leadership, an address by an international financial institution, and the announcement of the forum’s goals."
         }
       },
       {
@@ -8041,7 +8041,7 @@
       "publisher": {
         "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
         "ru": "Комитет по туризму Республики Узбекистан",
-        "en": "Committee on Tourism of the Republic of Uzbekistan"
+        "en": "Tourism Committee of the Republic of Uzbekistan"
       },
       "document": "КонцепцияI_Tourism_Investment_Forum.docx",
       "asOf": "2026-10-07"
@@ -8056,7 +8056,7 @@
       "publisher": {
         "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
         "ru": "Комитет по туризму Республики Узбекистан",
-        "en": "Committee on Tourism of the Republic of Uzbekistan"
+        "en": "Tourism Committee of the Republic of Uzbekistan"
       },
       "document": "2_Предварительная_программа_Форума.docx",
       "asOf": "2026-10-07"
@@ -8071,7 +8071,7 @@
       "publisher": {
         "uz": "Hudud hokimliklari / Oʻzbekiston Respublikasi Turizm qoʻmitasi",
         "ru": "Хокимияты регионов / Комитет по туризму Республики Узбекистан",
-        "en": "Regional administrations / Committee on Tourism of the Republic of Uzbekistan"
+        "en": "Regional administrations / Tourism Committee of the Republic of Uzbekistan"
       },
       "document": "Лойиҳалар.zip, Samarkand_Investment_OnePager_draft.pptx",
       "asOf": "2026-10-07"

@@ -14,11 +14,11 @@
  * The bar shows five sections. All eight chapters stay in the overlay, which is
  * also the only navigation below 68rem.
  */
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ForumMark from './ForumMark.vue';
-import { scrollToId } from '../lib/motion';
+import { lockPageScroll, scrollToId, unlockPageScroll } from '../lib/motion';
 import { setLang, useStore } from '../lib/state';
 import { LANGS, type Lang } from '../lib/shared/content-types';
 
@@ -121,6 +121,10 @@ function onPointerDown(event: Event) {
   if (!target?.closest('.langs')) langOpen.value = false;
 }
 
+// The overlay covers the page and scrolls itself on a short screen, so the
+// page behind it is held still while it is open.
+watch(menuOpen, (open) => (open ? lockPageScroll() : unlockPageScroll()));
+
 onMounted(() => {
   measure();
   watchChapters();
@@ -137,6 +141,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onPointerDown);
   chapterObserver?.disconnect();
   chapterObserver = null;
+  if (menuOpen.value) unlockPageScroll();
 });
 
 const counter = computed(() => {
@@ -238,7 +243,9 @@ function choose(code: Lang) {
   <p class="chapter__number" aria-hidden="true">{{ counter }}</p>
 
   <Teleport to="body">
-    <div v-if="menuOpen" class="overlay">
+    <!-- data-lenis-prevent: the list can outgrow a short screen and has to
+         scroll itself, which the smooth-scroll driver would otherwise take. -->
+    <div v-if="menuOpen" class="overlay" data-lenis-prevent>
       <button type="button" class="overlay__scrim" :aria-label="t('menu.close')" @click="menuOpen = false" />
       <nav class="overlay__inner" :aria-label="t('menu.label')">
         <button type="button" class="overlay__close" @click="menuOpen = false">
@@ -488,9 +495,11 @@ function choose(code: Lang) {
   position: fixed;
   inset: 0;
   z-index: 90;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .overlay__scrim {
-  position: absolute;
+  position: fixed;
   inset: 0;
   border: 0;
   background: rgb(5 7 10 / 0.92);
@@ -555,7 +564,7 @@ function choose(code: Lang) {
 .overlay__label small {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink-dim);

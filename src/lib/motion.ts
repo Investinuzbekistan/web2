@@ -53,6 +53,34 @@ export function stopSmoothScroll(): void {
  */
 const BAR_CLEARANCE = 96;
 
+/**
+ * Hold the page still while an overlay is open.
+ *
+ * Lenis drives the window scroll from wheel and touch events on the document,
+ * so an overlay cannot simply rely on its own `overflow: auto`: on a phone the
+ * gesture reaches Lenis and the page behind moves instead of the panel. Lenis
+ * is therefore stopped outright and the document's own overflow is locked too,
+ * for the case where Lenis never started (reduced motion).
+ *
+ * Counted rather than boolean: the project panel can be open over the chapter
+ * menu, and the first one to close must not unlock the page under the second.
+ */
+let scrollLocks = 0;
+
+export function lockPageScroll(): void {
+  scrollLocks += 1;
+  if (scrollLocks > 1) return;
+  lenis?.stop();
+  document.documentElement.style.overflow = 'hidden';
+}
+
+export function unlockPageScroll(): void {
+  scrollLocks = Math.max(0, scrollLocks - 1);
+  if (scrollLocks > 0) return;
+  document.documentElement.style.overflow = '';
+  lenis?.start();
+}
+
 export function scrollToId(id: string): void {
   const target = document.getElementById(id);
   if (!target) return;

@@ -168,7 +168,7 @@ h2 {
   margin: 0;
 }
 .day__kind {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;

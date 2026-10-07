@@ -14,17 +14,17 @@ export const UI_META: Record<Lang, { title: string; description: string }> = {
   uz: {
     title: 'Tourism Investment Forum 2026 — Toshkent, 25–27 noyabr',
     description:
-      'Birinchi xalqaro turizm investitsiya forumi. Oʻzbekiston Respublikasi Turizm qoʻmitasi. 12 hududdan 51 ta investitsiya loyihasi, sakkiz yoʻnalish va bir kunlik ishbilarmonlik dasturi. Konsept/demo loyiha — rasmiy maʼlumot: invest.gov.uz',
+      'Birinchi xalqaro turizm investitsiya forumi. Oʻzbekiston Respublikasi Turizm qoʻmitasi. {regions} ta hududdan {count} ta investitsiya loyihasi, sakkiz yoʻnalish va bir kunlik ishbilarmonlik dasturi. Konsept/demo loyiha — rasmiy maʼlumot: invest.gov.uz',
   },
   ru: {
     title: 'Tourism Investment Forum 2026 — Ташкент, 25–27 ноября',
     description:
-      'Первый международный инвестиционный форум в сфере туризма. Комитет по туризму Республики Узбекистан. 51 инвестиционный проект из 12 регионов, восемь направлений и однодневная деловая программа. Концепт/демо — официальная информация: invest.gov.uz',
+      'Первый международный инвестиционный форум в сфере туризма. Комитет по туризму Республики Узбекистан. {count} инвестиционных проектов из {regions} регионов, восемь направлений и однодневная деловая программа. Концепт/демо — официальная информация: invest.gov.uz',
   },
   en: {
     title: 'Tourism Investment Forum 2026 — Tashkent, 25–27 November',
     description:
-      'The First International Tourism Investment Forum, convened by the Committee on Tourism of the Republic of Uzbekistan. 51 investment projects from 12 regions, eight thematic directions and a one-day business programme. Concept/demo project — official information: invest.gov.uz',
+      'The First International Tourism Investment Forum, convened by the Tourism Committee of the Republic of Uzbekistan. {count} investment projects from {regions} regions, eight thematic directions and a one-day business programme. Concept/demo project — official information: invest.gov.uz',
   },
 };
 
@@ -58,7 +58,7 @@ const en = {
     epilogue: { n: 'Epilogue', title: 'Bring us your interest' },
   },
   prologue: {
-    organiser: 'Committee on Tourism of the Republic of Uzbekistan',
+    organiser: 'Tourism Committee of the Republic of Uzbekistan',
     within: 'Within the Tashkent International Tourism Fair 2026',
     lead: 'Three days of a tourism fair, and one day given entirely to capital.',
     cta: 'See the project portfolio',
@@ -189,7 +189,7 @@ const en = {
     links: 'Official links',
     disclaimerTitle: 'Concept project',
     disclaimer:
-      'This site is a concept/demo project and is not operated by the Committee on Tourism or the Agency. For official information see invest.gov.uz.',
+      'This site is a concept/demo project and is not operated by the Tourism Committee or the Agency. For official information see invest.gov.uz.',
   },
 };
 

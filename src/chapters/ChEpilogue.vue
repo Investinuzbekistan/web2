@@ -432,7 +432,7 @@ h2 {
   font-size: 0.92rem;
 }
 .contacts small {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -619,7 +619,7 @@ h2 {
   background: transparent;
   color: var(--ink-dim);
   font: inherit;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   cursor: pointer;

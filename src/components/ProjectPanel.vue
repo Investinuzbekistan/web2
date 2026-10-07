@@ -14,6 +14,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n';
 
 import type { Project } from '../lib/forum-types';
+import { lockPageScroll, unlockPageScroll } from '../lib/motion';
 import { formatMoney } from '../lib/money';
 import { tr, useStore } from '../lib/state';
 
@@ -89,10 +90,12 @@ watch(
   () => props.project,
   async (next, previous) => {
     if (next && !previous) {
+      lockPageScroll();
       returnFocus = document.activeElement as HTMLElement | null;
       await nextTick();
       closeButton.value?.focus();
     } else if (!next && previous) {
+      unlockPageScroll();
       returnFocus?.focus();
       returnFocus = null;
     }
@@ -100,7 +103,10 @@ watch(
 );
 
 onMounted(() => document.addEventListener('keydown', onKey));
-onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', onKey);
+  if (props.project) unlockPageScroll();
+});
 </script>
 
 <template>
@@ -108,7 +114,15 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
     <div v-if="project" class="panel">
       <button type="button" class="panel__scrim" :aria-label="t('portfolio.close')" @click="emit('close')" />
 
-      <div class="panel__sheet" role="dialog" aria-modal="true" :aria-label="project.displayTitle ?? project.title">
+      <!-- data-lenis-prevent: this element scrolls itself, so the smooth-scroll
+           driver must leave its wheel and touch events alone. -->
+      <div
+        class="panel__sheet"
+        data-lenis-prevent
+        role="dialog"
+        aria-modal="true"
+        :aria-label="project.displayTitle ?? project.title"
+      >
         <button ref="closeButton" type="button" class="panel__close" @click="emit('close')">
           {{ t('portfolio.close') }}
         </button>
@@ -210,6 +224,10 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   position: sticky;
   inset-block-start: 0;
   float: inline-end;
+  /* The heading flows around it; without a gutter the eyebrow runs right up
+     to the button on a narrow screen. */
+  margin-inline-start: 1rem;
+  margin-block-end: 0.5rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--hairline);
   border-radius: 999px;
@@ -283,7 +301,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   border-radius: 0.6rem;
 }
 .panel__chips span {
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   color: var(--ink-dim);
 }

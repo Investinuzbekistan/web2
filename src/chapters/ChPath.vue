@@ -219,7 +219,7 @@ h2 {
   background: var(--night);
 }
 .blocks__n {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.18em;
   color: var(--accent-soft);
   font-variant-numeric: tabular-nums;

@@ -39,7 +39,9 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  /* Clears the fixed bar. Kept in step with BAR_CLEARANCE in lib/motion.ts,
+     which Lenis needs because it never reads this property. */
+  scroll-padding-top: 6rem;
 }
 
 body {

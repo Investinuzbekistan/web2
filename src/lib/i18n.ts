@@ -30,7 +30,15 @@ export const UI_META: Record<Lang, { title: string; description: string }> = {
 
 const en = {
   skip: 'Skip to the chapters',
-  menu: { open: 'Menu', close: 'Close', label: 'Chapters', language: 'Language' },
+  menu: { open: 'Menu', close: 'Close', label: 'Chapters', sections: 'Sections', language: 'Language' },
+  nav: {
+    why: 'Why Uzbekistan',
+    themes: 'Directions',
+    projects: 'Projects',
+    programme: 'Programme',
+    contacts: 'Contact',
+    cta: 'Register interest',
+  },
   progress: 'Reading progress',
   scrollHint: 'Scroll',
   state: {
@@ -197,7 +205,15 @@ type Messages = typeof en;
 
 const uz: Messages = {
   skip: 'Boblarga oʻtish',
-  menu: { open: 'Menyu', close: 'Yopish', label: 'Boblar', language: 'Til' },
+  menu: { open: 'Menyu', close: 'Yopish', label: 'Boblar', sections: 'Boʻlimlar', language: 'Til' },
+  nav: {
+    why: 'Nega Oʻzbekiston',
+    themes: 'Yoʻnalishlar',
+    projects: 'Loyihalar',
+    programme: 'Dastur',
+    contacts: 'Aloqa',
+    cta: 'Qiziqishni bildirish',
+  },
   progress: 'Oʻqish jarayoni',
   scrollHint: 'Pastga',
   state: {
@@ -362,7 +378,15 @@ const uz: Messages = {
 
 const ru: Messages = {
   skip: 'Перейти к главам',
-  menu: { open: 'Меню', close: 'Закрыть', label: 'Главы', language: 'Язык' },
+  menu: { open: 'Меню', close: 'Закрыть', label: 'Главы', sections: 'Разделы', language: 'Язык' },
+  nav: {
+    why: 'Почему Узбекистан',
+    themes: 'Направления',
+    projects: 'Проекты',
+    programme: 'Программа',
+    contacts: 'Контакты',
+    cta: 'Заявить интерес',
+  },
   progress: 'Прогресс чтения',
   scrollHint: 'Вниз',
   state: {

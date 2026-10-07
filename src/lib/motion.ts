@@ -46,10 +46,17 @@ export function stopSmoothScroll(): void {
   lenis = null;
 }
 
+/**
+ * How far above a section to stop, so the fixed bar does not sit on its heading.
+ * Lenis drives the scroll itself and never reads `scroll-padding-top`, so the
+ * two have to be kept in step by hand; the CSS value is in styles/index.css.
+ */
+const BAR_CLEARANCE = 96;
+
 export function scrollToId(id: string): void {
   const target = document.getElementById(id);
   if (!target) return;
-  if (lenis) lenis.scrollTo(target, { offset: 0 });
+  if (lenis) lenis.scrollTo(target, { offset: -BAR_CLEARANCE });
   else target.scrollIntoView({ behavior: canAnimate() ? 'smooth' : 'auto' });
 }
 

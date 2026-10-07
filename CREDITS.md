@@ -82,12 +82,19 @@ families. It is **not extracted from the agency artwork** (`logo/invest Uzb 2.*`
 those pages are a concept rendering and must not carry state insignia.
 
 The emblem is also part of the Tourism Investment Forum lockup the organiser
-issued (`brand/newlogo/`). That file is extracted, because it is the client's own
-event mark, and `brand/svg/forum-lockup.svg` and `forum-emblem.svg` are built from
-it — but **site 2 does not use them**. The site is built on the emblem-free
-`forum-wordmark`, so nothing on the page carries state insignia. Switching to the
-full lockup is a one-line change in `SiteChrome.vue` and `ChPrologue.vue` if the
-client asks for it.
+issued (`brand/newlogo/`). **Site 2 uses that lockup in full**, on the client's
+written instruction of 2026-10-07: the page is to become the forum's official
+site, and the lockup with the emblem is the mark the organiser issued for it. It
+appears in the header, the title card and the footer, and the emblem alone is the
+site's icon.
+
+`brand/svg/forum-wordmark.svg` remains as the emblem-free reduction, for any slot
+where the emblem would be too small to survive.
+
+The concept/demo disclaimer in the footer is **still switched on**. The client
+authorised the emblem, not the removal of the disclaimer; that is a separate
+decision and `meta.disclaimer_enabled` in `shared/data/content.json` is the single
+switch for it.
 
 ## Third-party organisations
 

@@ -14,7 +14,7 @@
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ForumWordmark from '../components/ForumWordmark.vue';
+import ForumMark from '../components/ForumMark.vue';
 import SourceTag from '../components/SourceTag.vue';
 import { setLang, tr, useStore } from '../lib/state';
 import { formatDate } from '../lib/shared/content';
@@ -279,7 +279,7 @@ async function submit() {
         </p>
 
         <div class="footer__end">
-          <ForumWordmark variant="white" class="footer__mark" />
+          <ForumMark form="lockup" variant="white" class="footer__mark" />
           <div class="footer__langs">
             <button v-for="code in ['uz', 'ru', 'en'] as const" :key="code" type="button" @click="setLang(code)">
               {{ code }}
@@ -605,7 +605,7 @@ h2 {
   gap: 1.5rem;
 }
 .footer__mark {
-  width: clamp(9rem, 20vw, 12rem);
+  width: clamp(7rem, 16vw, 9.5rem);
   opacity: 0.6;
 }
 .footer__langs {

@@ -8,7 +8,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ForumWordmark from '../components/ForumWordmark.vue';
+import ForumMark from '../components/ForumMark.vue';
 import { canAnimate, hasWebGl, onIdle, scrollToId, useChapterTimeline } from '../lib/motion';
 import { eventDates, tr, useStore } from '../lib/state';
 
@@ -76,7 +76,7 @@ useChapterTimeline(
 
       <h1 class="prologue__mark">
         <span class="sr-only">{{ event ? tr(event.name) : '' }}</span>
-        <ForumWordmark animate drift aria-hidden="true" />
+        <ForumMark form="lockup" animate drift aria-hidden="true" />
       </h1>
 
       <p v-if="event" class="prologue__when prologue__reveal">
@@ -146,7 +146,7 @@ useChapterTimeline(
 .prologue__mark {
   margin-block: 1.5rem 0;
   /* The wordmark is 1.91:1; this keeps it off the right edge on wide screens. */
-  width: min(94%, 30rem);
+  width: min(82%, 23rem);
 }
 
 .prologue__when {

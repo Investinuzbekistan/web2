@@ -9,7 +9,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ForumWordmark from './ForumWordmark.vue';
+import ForumMark from './ForumMark.vue';
 import { scrollToId } from '../lib/motion';
 import { setLang, useStore } from '../lib/state';
 import { LANGS, type Lang } from '../lib/shared/content-types';
@@ -136,7 +136,7 @@ function choose(code: Lang) {
       @click.prevent="go('prologue')"
     >
       <!-- The link carries the name; the mark inside it must not repeat it. -->
-      <ForumWordmark variant="white" aria-hidden="true" />
+      <ForumMark form="lockup" variant="white" class="mark--by-height" aria-hidden="true" />
     </a>
 
     <div class="bar__right">
@@ -208,7 +208,7 @@ function choose(code: Lang) {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem clamp(1rem, 3vw, 2.5rem);
+  padding: 0.9rem clamp(1rem, 3vw, 2.5rem);
   background: linear-gradient(to bottom, rgb(5 7 10 / 0.85), transparent);
   transition: background-color 0.25s, border-color 0.25s;
 }
@@ -220,10 +220,10 @@ function choose(code: Lang) {
   backdrop-filter: blur(10px);
 }
 .logo {
-  /* The wordmark is three lines of type at 1.91:1; sizing by width keeps it
-     from eating the header's height on small screens. */
+  /* The lockup is 1.33:1 — nearly square — so in a bar it is sized by height,
+     not by width, or it pushes the bar open on small screens. */
   display: block;
-  width: clamp(4.75rem, 12vw, 7.5rem);
+  height: clamp(3rem, 6.5vw, 4rem);
 }
 
 .bar__right {

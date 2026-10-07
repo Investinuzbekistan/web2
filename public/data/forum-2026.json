@@ -1175,7 +1175,7 @@
       {
         "region": "andijan",
         "title": "Safari Tourism",
-        "subtitle": "Establishment of a Safari Tourism Destination in Ulugnor District, Andijan Region · Andijan Region, Uzbekistan",
+        "subtitle": "Establishment of a Safari Tourism Destination in Ulugnor District, Andijan Region",
         "issues": [],
         "investment": 22000000,
         "currency": "USD",
@@ -1200,7 +1200,7 @@
       {
         "region": "andijan",
         "title": "Eco-Tourism Destinations",
-        "subtitle": "Establishment of Eco-Tourism Destinations in Boston District, Andijan Region · Andijan Region, Uzbekistan",
+        "subtitle": "Establishment of Eco-Tourism Destinations in Boston District, Andijan Region",
         "issues": [],
         "investment": 20000000,
         "currency": "USD",
@@ -1510,13 +1510,15 @@
         "region": "bukhara",
         "title": "Gastro-bazar in the City of Bukhara",
         "subtitle": null,
-        "issues": [],
+        "issues": [
+          "activity corrected from \"Medical tourism\" to \"Gastronomy\": carried over from the previous slide in the same deck (Olot Salt Mine); a gastro-bazar is not medical tourism"
+        ],
         "investment": 1000000,
         "currency": "USD",
         "investmentDisplay": "USD 1M",
         "landArea": "0.8 ha",
         "capacity": "350 people/day",
-        "activity": "Medical tourism",
+        "activity": "Gastronomy",
         "jobs": "30",
         "place": null,
         "status": null,
@@ -1526,15 +1528,15 @@
         "address": "Bukhara City",
         "structure": "Medical tourism",
         "opening": null,
-        "overview": "Gastro-bazar in the City of Bukhara is an investment project in Bukhara City. The source presentation identifies the project activity as medical tourism, with a land area of 0.8 ha and a minimum investment requirement of USD 1M.",
+        "overview": "Gastro-bazar in the City of Bukhara is an investment project in Bukhara City. The source presentation identifies the project activity as gastronomy, with a land area of 0.8 ha and a minimum investment requirement of USD 1M.",
         "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
         "id": "bukhara-gastro-bazar-in-the-city-of-bukhara",
-        "segment": "wellness"
+        "segment": "leisure"
       },
       {
         "region": "jizzakh",
         "title": "Sayyod glemping resort",
-        "subtitle": "Sayyod glemping resort in Jizzakh Region · Jizzakh Region, Uzbekistan",
+        "subtitle": "Sayyod glemping resort in Jizzakh Region",
         "issues": [],
         "investment": 500000,
         "currency": "USD",
@@ -1559,7 +1561,7 @@
       {
         "region": "jizzakh",
         "title": "Sports Tourism Base",
-        "subtitle": "Sports Tourism Base in Jizzakh Region · Jizzakh Region, Uzbekistan",
+        "subtitle": "Sports Tourism Base in Jizzakh Region",
         "issues": [],
         "investment": 350000,
         "currency": "USD",
@@ -1584,7 +1586,7 @@
       {
         "region": "syrdarya",
         "title": "Regular Intercity Bus Service",
-        "subtitle": "Regular Intercity Bus Service in Sirdaryo and Xovos Districts in Syrdarya region · Syrdarya Region, Uzbekistan",
+        "subtitle": "Regular Intercity Bus Service in Sirdaryo and Xovos Districts in Syrdarya region",
         "issues": [],
         "investment": 680000,
         "currency": "USD",
@@ -1709,7 +1711,7 @@
       {
         "region": "syrdarya",
         "title": "Picnic and Camping Area",
-        "subtitle": "Eco-tourism services along the Sardoba Reservoir in the Syrdarya region · Syrdarya Region, Uzbekistan",
+        "subtitle": "Eco-tourism services along the Sardoba Reservoir in the Syrdarya region",
         "issues": [],
         "investment": 1200000,
         "currency": "USD",
@@ -1784,7 +1786,7 @@
       {
         "region": "surkhandarya",
         "title": "Omonxona Hotel",
-        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region",
         "issues": [],
         "investment": 1000000,
         "currency": "USD",
@@ -1809,7 +1811,7 @@
       {
         "region": "surkhandarya",
         "title": "An unfinished Sayrob Hotel",
-        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region",
         "issues": [],
         "investment": 5500000,
         "currency": "USD",
@@ -1834,7 +1836,7 @@
       {
         "region": "surkhandarya",
         "title": "Sharq Hotel",
-        "subtitle": "Hotel for sale&Development of hotel services in the city Termez, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "subtitle": "Hotel for sale&Development of hotel services in the city Termez, Surkhandarya Region",
         "issues": [],
         "investment": 2500000,
         "currency": "USD",
@@ -1934,7 +1936,7 @@
       {
         "region": "tashkent_city",
         "title": "Asmald Hotel",
-        "subtitle": "Luxury Urban Hotel & Business Hub Development in the heart of Tashkent City,Uzbekistan · Tashkent, Uzbekistan",
+        "subtitle": "Luxury Urban Hotel & Business Hub Development in the heart of Tashkent City,Uzbekistan",
         "issues": [],
         "investment": 17000000,
         "currency": "USD",
@@ -2036,7 +2038,7 @@
       {
         "region": "tashkent_city",
         "title": "FAROVON TASHKENT BOUTIQUE HOTEL",
-        "subtitle": "Luxury in the historic heart of the capital. · Hotel Overview · Tashkent, Uzbekistan",
+        "subtitle": "Luxury in the historic heart of the capital. · Tashkent, Uzbekistan",
         "issues": [],
         "investment": 12300000,
         "currency": "USD",
@@ -2111,7 +2113,7 @@
       {
         "region": "fergana",
         "title": "AVVAL GUZARI",
-        "subtitle": "Integrated Wellness & Resort Development in Avval, Fergana Region · Fergana Region, Uzbekistan",
+        "subtitle": "Integrated Wellness & Resort Development in Avval, Fergana Region",
         "issues": [],
         "investment": 750000,
         "currency": "USD",
@@ -2136,7 +2138,7 @@
       {
         "region": "khorezm",
         "title": "Qalajiq Qala Oasis",
-        "subtitle": "Eco-tourism & Heritage Resort Development in Bagat District, Khorezm Region · Khorezm Region, Uzbekistan",
+        "subtitle": "Eco-tourism & Heritage Resort Development in Bagat District, Khorezm Region",
         "issues": [],
         "investment": 10000000,
         "currency": "USD",
@@ -2161,7 +2163,7 @@
       {
         "region": "khorezm",
         "title": "“Yangiariq Sho‘rko‘l” complex",
-        "subtitle": "Public Recreation & Entertainment Complex in Yangiariq, Khorezm Region · Khorezm Region, Uzbekistan",
+        "subtitle": "Public Recreation & Entertainment Complex in Yangiariq, Khorezm Region",
         "issues": [],
         "investment": 15000000,
         "currency": "USD",
@@ -2236,9 +2238,9 @@
       {
         "region": "kashkadarya",
         "title": "Medical Treatment and Recreation Sanatorium, Kashkadarya, Dehkonobod Region",
-        "subtitle": null,
+        "subtitle": "Kashkadarya Region, Uzbekistan",
         "issues": [
-          "subtitle names namangan, deck filed under kashkadarya"
+          "subtitle said \"namangan\" where the deck is filed under kashkadarya; rewritten"
         ],
         "investment": 18000000,
         "currency": "USD",
@@ -2263,9 +2265,9 @@
       {
         "region": "kashkadarya",
         "title": "Maydanak High-Mountain Recreation Tourism Center (Hotel) Kamashi, Kashkadarya Region",
-        "subtitle": null,
+        "subtitle": "Kashkadarya Region, Uzbekistan",
         "issues": [
-          "subtitle names namangan, deck filed under kashkadarya"
+          "subtitle said \"namangan\" where the deck is filed under kashkadarya; rewritten"
         ],
         "investment": 10000000,
         "currency": "USD",
@@ -2290,7 +2292,7 @@
       {
         "region": "kashkadarya",
         "title": "Yakkabog’ Resort",
-        "subtitle": "Integrated Wellness & Resort Development in Yakkabog’, Kashkadarya Region · Namangan Region, Uzbekistan",
+        "subtitle": "Integrated Wellness & Resort Development in Yakkabog’, Kashkadarya Region",
         "issues": [],
         "investment": 25000000,
         "currency": "USD",
@@ -2315,7 +2317,7 @@
       {
         "region": "kashkadarya",
         "title": "Pachkamar Reservoir",
-        "subtitle": "Recreation Center in the Reservoir Area Pachkamar in Guzar, Kashkadarya Region · Namangan Region, Uzbekistan",
+        "subtitle": "Recreation Center in the Reservoir Area Pachkamar in Guzar, Kashkadarya Region",
         "issues": [],
         "investment": 30000000,
         "currency": "USD",
@@ -2340,7 +2342,7 @@
       {
         "region": "kashkadarya",
         "title": "Qaynar Resort",
-        "subtitle": "Mountain cable car in Qaynar, Kashkadarya Region · Kashkadarya Region, Uzbekistan",
+        "subtitle": "Mountain cable car in Qaynar, Kashkadarya Region",
         "issues": [],
         "investment": 15000000,
         "currency": "USD",
@@ -2365,7 +2367,7 @@
       {
         "region": "karakalpakstan",
         "title": "Akchakul Resort",
-        "subtitle": "Integrated Wellness & Resort Development in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "subtitle": "Integrated Wellness & Resort Development in Ellikkala, Karakalpakstan Region",
         "issues": [],
         "investment": 2000000,
         "currency": "USD",
@@ -2393,7 +2395,7 @@
       {
         "region": "karakalpakstan",
         "title": "Akchakul Hotel",
-        "subtitle": "Hotel complex in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "subtitle": "Hotel complex in Ellikkala, Karakalpakstan Region",
         "issues": [],
         "investment": 1000000,
         "currency": "USD",
@@ -2418,7 +2420,7 @@
       {
         "region": "karakalpakstan",
         "title": "Akchakul Pool",
-        "subtitle": "Swimming pool and aquapark complexis in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "subtitle": "Swimming pool and aquapark complexis in Ellikkala, Karakalpakstan Region",
         "issues": [],
         "investment": 500000,
         "currency": "USD",
@@ -2443,9 +2445,9 @@
       {
         "region": "samarkand",
         "title": "OUTLET VILLAGE",
-        "subtitle": null,
+        "subtitle": "Samarkand Region, Uzbekistan",
         "issues": [
-          "subtitle names namangan, deck filed under samarkand"
+          "subtitle said \"namangan\" where the deck is filed under samarkand; rewritten"
         ],
         "investment": 100000000,
         "currency": "USD",
@@ -2553,8 +2555,8 @@
       "eco": 12,
       "infrastructure": 24,
       "heritage": 5,
-      "wellness": 3,
-      "leisure": 4,
+      "wellness": 2,
+      "leisure": 5,
       "transport": 3
     },
     "totalUsd": 855300000,

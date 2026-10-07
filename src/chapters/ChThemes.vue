@@ -115,7 +115,11 @@ h2 {
   display: flex;
   gap: 1.25rem;
   margin: clamp(2.5rem, 7vh, 4rem) 0 0;
-  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  /* The track is full-bleed, but its first card lines up with the heading:
+     the same gutter .shell computes from min(100% - 2.5rem, 78rem). Without
+     this the row starts at the page edge and, past about 1600px, visibly
+     misses the column the chapter is set in. */
+  padding-inline: max(1.25rem, calc((100% - 78rem) / 2));
   list-style: none;
   will-change: transform;
 }
@@ -124,6 +128,10 @@ h2 {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-block-end: 1rem;
+  /* Without this the snap puts the first card flush against the scroll port
+     and the gutter above is scrolled straight past, so the row starts at the
+     page edge while the heading starts at the column. */
+  scroll-padding-inline-start: max(1.25rem, calc((100% - 78rem) / 2));
 }
 .themes__track--free .themes__card {
   scroll-snap-align: start;

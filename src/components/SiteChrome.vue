@@ -20,6 +20,8 @@ const { t } = useI18n();
 const { lang } = useStore();
 
 const progress = ref(0);
+/** Past the title card the bar sits over body copy and needs a real backdrop. */
+const scrolled = ref(false);
 const activeIndex = ref(0);
 const menuOpen = ref(false);
 
@@ -41,6 +43,7 @@ function measure() {
 
 function updateProgress() {
   progress.value = maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0;
+  scrolled.value = window.scrollY > 120;
 }
 
 function onScroll() {
@@ -125,7 +128,7 @@ function choose(code: Lang) {
     <span :style="{ transform: `scaleX(${progress})` }" />
   </div>
 
-  <header class="bar">
+  <header class="bar" :class="{ 'bar--solid': scrolled }">
     <a
       href="#prologue"
       class="logo"
@@ -207,6 +210,14 @@ function choose(code: Lang) {
   gap: 1rem;
   padding: 1.25rem clamp(1rem, 3vw, 2.5rem);
   background: linear-gradient(to bottom, rgb(5 7 10 / 0.85), transparent);
+  transition: background-color 0.25s, border-color 0.25s;
+}
+/* Over the title card a gradient scrim is enough. Below it the bar crosses
+   running text, so it takes a surface of its own. */
+.bar--solid {
+  background: rgb(5 7 10 / 0.82);
+  border-block-end: 1px solid var(--hairline);
+  backdrop-filter: blur(10px);
 }
 .logo {
   /* The wordmark is three lines of type at 1.91:1; sizing by width keeps it

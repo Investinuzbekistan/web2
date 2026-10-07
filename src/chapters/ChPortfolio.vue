@@ -106,8 +106,8 @@ const filtered = computed(
 
 /* --------------------------------------------------------------- the plot */
 
-const VIEW = { w: 1000, h: 330 };
-const PLOT = { left: 160, right: 972, top: 22, bottom: 252 };
+const VIEW = { w: 1000, h: 296 };
+const PLOT = { left: 160, right: 972, top: 18, bottom: 218 };
 const TICKS = [1e5, 1e6, 1e7, 1e8];
 
 const usdProjects = computed(() => projects.value.filter((p) => p.currency === 'USD' && p.investment));

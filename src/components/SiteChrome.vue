@@ -9,14 +9,12 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ForumWordmark from './ForumWordmark.vue';
 import { scrollToId } from '../lib/motion';
 import { setLang, useStore } from '../lib/state';
 import { LANGS, type Lang } from '../lib/shared/content-types';
 
 const props = defineProps<{ chapters: { id: string; key: string }[] }>();
-
-/** Served from public/, written there by scripts/sync-shared.mjs. */
-const LOGO_WHITE = 'brand/logo-white.svg';
 
 const { t } = useI18n();
 const { lang } = useStore();
@@ -128,10 +126,14 @@ function choose(code: Lang) {
   </div>
 
   <header class="bar">
-    <a href="#prologue" class="logo" aria-label="Invest in Uzbekistan" @click.prevent="go('prologue')">
-      <!-- Bound, not literal: a literal `src` is rewritten into a build-time
-           import, and these files are copied into public/ by sync-shared. -->
-      <img :src="LOGO_WHITE" alt="Invest in Uzbekistan" width="150" height="84" />
+    <a
+      href="#prologue"
+      class="logo"
+      aria-label="Tourism Investment Forum 2026"
+      @click.prevent="go('prologue')"
+    >
+      <!-- The link carries the name; the mark inside it must not repeat it. -->
+      <ForumWordmark variant="white" aria-hidden="true" />
     </a>
 
     <div class="bar__right">
@@ -206,10 +208,11 @@ function choose(code: Lang) {
   padding: 1.25rem clamp(1rem, 3vw, 2.5rem);
   background: linear-gradient(to bottom, rgb(5 7 10 / 0.85), transparent);
 }
-.logo img {
+.logo {
+  /* The wordmark is three lines of type at 1.91:1; sizing by width keeps it
+     from eating the header's height on small screens. */
   display: block;
-  height: clamp(2rem, 4vw, 2.6rem);
-  width: auto;
+  width: clamp(4.75rem, 12vw, 7.5rem);
 }
 
 .bar__right {
@@ -257,7 +260,7 @@ function choose(code: Lang) {
   transition: border-color 0.18s;
 }
 .menu-toggle:hover {
-  border-color: var(--teal);
+  border-color: var(--accent);
 }
 
 .overlay {

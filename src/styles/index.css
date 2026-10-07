@@ -14,10 +14,13 @@
   --night-2: #0a0f16;
   --hairline: rgb(255 255 255 / 0.1);
 
-  --teal: var(--brand-line-from, #00aa95);
-  --blue: var(--brand-line-to, #006fb9);
-  --cyan: var(--brand-line-mid, #008dab);
-  --glow: var(--brand-gradient-line, linear-gradient(to top right, #00aa95, #006fb9));
+  /* Site 2 carries the Tourism Investment Forum identity, so the accent is the
+     forum's own gold rather than the agency's teal. All three tones clear AA on
+     --night; see brand/palette.json for the measurements. */
+  --accent-soft: var(--brand-forum-from, #e4bb7d);
+  --accent: var(--brand-forum-mid, #d2a156);
+  --accent-deep: var(--brand-forum-to, #c18429);
+  --glow: var(--brand-gradient-forum, linear-gradient(to top right, #e4bb7d, #c18429));
 
   --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
   --font-body: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
@@ -84,7 +87,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--teal);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -144,6 +147,50 @@ a {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+/* Buttons. Two weights only: one solid call to action per screen, outlines for
+   everything else. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+}
+.btn:hover {
+  border-color: var(--accent);
+}
+.btn--solid {
+  border-color: transparent;
+  background: var(--accent-soft);
+  color: var(--night);
+  font-weight: 600;
+}
+.btn--solid:hover {
+  background: var(--ink);
+  border-color: transparent;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A hairline card. Used by the theme cards, the programme rows and the project
+   panel, so they stay visually one family. */
+.card {
+  border: 1px solid var(--hairline);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.015);
 }
 
 /* Every chapter is a full-bleed stage; pinning is added by GSAP only when

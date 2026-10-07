@@ -1,12 +1,12 @@
 {
-  "name": "Invest in Uzbekistan",
-  "short_name": "Invest Uzbekistan",
-  "description": "Concept/demo landing page. Official information: invest.gov.uz",
+  "name": "Tourism Investment Forum 2026",
+  "short_name": "Forum 2026",
+  "description": "Concept/demo page for the First International Tourism Investment Forum, Tashkent, 25–27 November 2026. Official information: invest.gov.uz",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#006FB9",
+  "background_color": "#05070A",
+  "theme_color": "#C18429",
   "icons": [
     {
       "src": "icon-192.png",

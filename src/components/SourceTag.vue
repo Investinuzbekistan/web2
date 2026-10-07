@@ -53,7 +53,7 @@ const accessed = computed(() =>
 }
 .source:hover,
 .source:focus-visible {
-  color: var(--teal);
-  border-color: var(--teal);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 </style>

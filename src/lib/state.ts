@@ -6,14 +6,16 @@
  */
 import { computed, ref, watch } from 'vue';
 
-import { loadContent } from './shared/content';
+import { formatDateRange, loadContent } from './shared/content';
 import { isLang, type Content, type Lang } from './shared/content-types';
 import { applyDocumentSeo } from './shared/seo';
+import { loadForum, type ForumData } from './forum-types';
 import { i18n, UI_META } from './i18n';
 
 const LANG_KEY = 'iu-lang';
 
 const content = ref<Content | null>(null);
+const forum = ref<ForumData | null>(null);
 const error = ref<string | null>(null);
 const lang = ref<Lang>(readInitialLang());
 
@@ -29,9 +31,12 @@ let started = false;
 export function startLoading(): void {
   if (started) return;
   started = true;
-  loadContent()
-    .then((data) => {
-      content.value = data;
+  // Both files or neither: every chapter after the prologue needs the forum
+  // data, and a page that renders half its facts is worse than an error.
+  Promise.all([loadContent(), loadForum()])
+    .then(([site, event]) => {
+      content.value = site;
+      forum.value = event;
     })
     .catch((cause: unknown) => {
       error.value = cause instanceof Error ? cause.message : String(cause);
@@ -42,6 +47,37 @@ export function retry(): void {
   error.value = null;
   started = false;
   startLoading();
+}
+
+/**
+ * Portfolio filter state.
+ *
+ * It lives here rather than inside the portfolio chapter because chapter III
+ * links into it: picking a theme there sets the segment and scrolls down, and
+ * the portfolio has to already be showing that segment when it arrives.
+ */
+export type PortfolioSort = 'largest' | 'smallest' | 'region' | 'name';
+
+export const filters = ref({
+  region: 'all',
+  segment: 'all',
+  query: '',
+  sort: 'largest' as PortfolioSort,
+});
+
+export function showSegment(segment: string): void {
+  filters.value = { ...filters.value, segment, region: 'all', query: '' };
+}
+
+export function clearFilters(): void {
+  filters.value = { region: 'all', segment: 'all', query: '', sort: filters.value.sort };
+}
+
+/** The event dates as one string: "25-27 noyabr 2026". */
+export function eventDates(): string {
+  const event = forum.value?.event;
+  if (!event) return '';
+  return formatDateRange(`${event.dateStart}/${event.dateEnd}`, lang.value);
 }
 
 export function setLang(next: Lang): void {
@@ -70,9 +106,10 @@ watch(
  */
 export const useStore = () => ({
   content,
+  forum,
   error,
   lang,
-  isReady: computed(() => content.value !== null),
+  isReady: computed(() => content.value !== null && forum.value !== null),
 });
 
 /** Read a {uz, ru, en} triple with the active language. */

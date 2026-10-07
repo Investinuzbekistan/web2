@@ -6,9 +6,10 @@ import SiteChrome from './components/SiteChrome.vue';
 import ChPrologue from './chapters/ChPrologue.vue';
 import ChCrossroads from './chapters/ChCrossroads.vue';
 import ChMomentum from './chapters/ChMomentum.vue';
-import ChYoung from './chapters/ChYoung.vue';
-import ChSectors from './chapters/ChSectors.vue';
-import ChRoadmap from './chapters/ChRoadmap.vue';
+import ChThemes from './chapters/ChThemes.vue';
+import ChPortfolio from './chapters/ChPortfolio.vue';
+import ChProgramme from './chapters/ChProgramme.vue';
+import ChPath from './chapters/ChPath.vue';
 import ChEpilogue from './chapters/ChEpilogue.vue';
 import { ScrollTrigger, startSmoothScroll, stopSmoothScroll } from './lib/motion';
 import { retry, startLoading, useStore } from './lib/state';
@@ -21,9 +22,10 @@ const CHAPTERS = [
   { id: 'prologue', key: 'prologue' },
   { id: 'crossroads', key: 'crossroads' },
   { id: 'momentum', key: 'momentum' },
-  { id: 'young', key: 'young' },
-  { id: 'sectors', key: 'sectors' },
-  { id: 'roadmap', key: 'roadmap' },
+  { id: 'themes', key: 'themes' },
+  { id: 'portfolio', key: 'portfolio' },
+  { id: 'programme', key: 'programme' },
+  { id: 'path', key: 'path' },
   { id: 'epilogue', key: 'epilogue' },
 ];
 
@@ -67,9 +69,10 @@ onBeforeUnmount(stopSmoothScroll);
       <ChPrologue />
       <ChCrossroads />
       <ChMomentum />
-      <ChYoung />
-      <ChSectors />
-      <ChRoadmap />
+      <ChThemes />
+      <ChPortfolio />
+      <ChProgramme />
+      <ChPath />
       <ChEpilogue />
     </template>
   </main>

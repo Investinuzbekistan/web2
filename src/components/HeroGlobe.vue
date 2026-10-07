@@ -59,8 +59,8 @@ onMounted(async () => {
   world.rotation.y = -1.25;
   scene.add(world);
 
-  const teal = new THREE.Color('#00AA95');
-  const blue = new THREE.Color('#006FB9');
+  const teal = new THREE.Color('#E4BB7D');
+  const blue = new THREE.Color('#C18429');
 
   // Wireframe shell.
   const shell = new THREE.LineSegments(

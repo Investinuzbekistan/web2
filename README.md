@@ -1,6 +1,6 @@
-# Invest in Uzbekistan — Buyuk Ipak yoʻlidan 2030 gacha
+# Tourism Investment Forum 2026 — Toshkent, 25–27 noyabr
 
-Immersiv hikoya: yetti bob, toʻq sahna, skroll bilan boshqariladigan grafika.
+Immersiv hikoya: sakkiz bob, toʻq sahna, skroll bilan boshqariladigan grafika. 12 hududdan 51 ta investitsiya loyihasi, sakkizta yoʻnalish va forumning bir kunlik dasturi.
 
 > **Konsept/demo loyiha.** Bu sayt agentlik tomonidan yuritilmaydi.
 > Rasmiy maʼlumot: <https://invest.gov.uz>

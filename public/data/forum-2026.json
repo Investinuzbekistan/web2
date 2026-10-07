@@ -1,0 +1,2642 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "collected_at": "2026-10-07",
+    "languages": [
+      "uz",
+      "ru",
+      "en"
+    ],
+    "default_language": "uz",
+    "disclaimer_enabled": true,
+    "note": "Forum framing transcribed from the organiser’s concept and programme documents and translated here; the project portfolio is parsed mechanically from the regional one-pagers. Project titles and descriptions stay in the English the organiser prepared them in.",
+    "generated_by": "scripts/build-forum-data.mjs"
+  },
+  "event": {
+    "name": {
+      "uz": "I Turizm investitsiya forumi",
+      "ru": "I Международный инвестиционный форум в сфере туризма",
+      "en": "First International Tourism Investment Forum"
+    },
+    "shortName": {
+      "uz": "I Tourism Investment Forum",
+      "ru": "I Tourism Investment Forum",
+      "en": "I Tourism Investment Forum"
+    },
+    "edition": {
+      "uz": "Birinchi",
+      "ru": "Первый",
+      "en": "First"
+    },
+    "dateStart": "2026-11-25",
+    "dateEnd": "2026-11-27",
+    "city": {
+      "uz": "Toshkent",
+      "ru": "Ташкент",
+      "en": "Tashkent"
+    },
+    "country": {
+      "uz": "Oʻzbekiston Respublikasi",
+      "ru": "Республика Узбекистан",
+      "en": "Republic of Uzbekistan"
+    },
+    "within": {
+      "uz": "Toshkent xalqaro turizm yarmarkasi — 2026 doirasida",
+      "ru": "в рамках Ташкентской международной туристической ярмарки — 2026",
+      "en": "held within the Tashkent International Tourism Fair 2026"
+    },
+    "organiser": {
+      "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
+      "ru": "Комитет по туризму Республики Узбекистан",
+      "en": "Committee on Tourism of the Republic of Uzbekistan"
+    },
+    "motto": {
+      "line1": {
+        "uz": "INVEST IN UZBEKISTAN TOURISM",
+        "ru": "INVEST IN UZBEKISTAN TOURISM",
+        "en": "INVEST IN UZBEKISTAN TOURISM"
+      },
+      "line2": {
+        "uz": "Imkoniyatlarni kashf eting. Hamkorlik quring. Kelajakni yarating.",
+        "ru": "Открывайте возможности. Создавайте партнёрства. Формируйте будущее.",
+        "en": "Discover Opportunities. Build Partnerships. Create the Future."
+      }
+    },
+    "format": {
+      "uz": "Uch kunlik Toshkent xalqaro turizm yarmarkasi doirasidagi bir kunlik ixtisoslashtirilgan investitsiya dasturi.",
+      "ru": "Однодневная специализированная инвестиционная программа в рамках трёхдневной Ташкентской международной туристической ярмарки.",
+      "en": "A one-day specialised investment programme inside the three-day Tashkent International Tourism Fair."
+    },
+    "source": "concept §title, §1, §7, §15"
+  },
+  "intro": {
+    "purpose": {
+      "uz": "Oʻzbekiston Respublikasi turizm sohasiga mahalliy va xorijiy investitsiyalarni jalb qilish, istiqbolli investitsiya loyihalarini ilgari surish va ularni amalda roʻyobga chiqarish uchun sharoit yaratadigan xalqaro investitsiya platformasini shakllantirish.",
+      "ru": "Формирование международной инвестиционной платформы для привлечения отечественных и зарубежных инвестиций в туристическую отрасль Республики Узбекистан, продвижения перспективных инвестиционных проектов и создания условий для их практической реализации.",
+      "en": "To build an international investment platform that draws domestic and foreign capital into Uzbekistan’s tourism industry, carries promising projects to market, and creates the conditions for them to be built."
+    },
+    "paragraphs": [
+      {
+        "uz": "Forum davlat organlari, hudud hokimiyatlari, mahalliy va xorijiy investorlar, moliya institutlari, developerlar, xalqaro tashkilotlar va turizm kompaniyalari oʻrtasidagi bevosita muloqot uchun ixtisoslashtirilgan maydon boʻlishga qaratilgan.",
+        "ru": "Форум призван стать специализированной площадкой для прямого взаимодействия государственных органов, региональных администраций, отечественных и иностранных инвесторов, финансовых институтов, девелоперов, международных организаций и туристических компаний.",
+        "en": "The forum is designed as a specialised venue for direct dealings between government bodies, regional administrations, domestic and foreign investors, financial institutions, developers, international organisations and tourism companies."
+      },
+      {
+        "uz": "Turizm imkoniyatlarini namoyish etishga qaratilgan tadbirlardan farqli ravishda, forum diqqat markazida investitsiya loyihalarini amaliy ilgari surish, moliya manbalarini topish, ishbilarmonlik aloqalarini oʻrnatish va loyihalarning keyingi roʻyobga chiqishi uchun shart-sharoit yaratish turadi.",
+        "ru": "В отличие от мероприятий, ориентированных преимущественно на презентацию туристических возможностей, форум будет сосредоточен на практическом продвижении инвестиционных проектов, поиске источников финансирования, установлении деловых контактов и формировании условий для последующей реализации проектов.",
+        "en": "Unlike events built around showcasing a country’s tourism appeal, this one is built around moving projects forward: finding the money, making the contacts, and setting up the conditions under which a project actually gets built."
+      },
+      {
+        "uz": "Loyihalar yagona tuzilgan bazaga jamlanadi, investitsiya jozibadorligi va tayyorlik darajasi baholanadi, yer uchastkalari, infratuzilma, ruxsat berish tartiblari va davlat qoʻllab-quvvatlash choralari haqida ishonchli maʼlumot beriladi — forumdan keyingi kuzatuv bilan birga.",
+        "ru": "Проекты консолидируются в единую структурированную базу, оценивается их инвестиционная привлекательность и степень готовности, инвесторам предоставляется достоверная информация о земельных участках, инфраструктуре, разрешительных процедурах и мерах государственной поддержки — с сопровождением проектов после форума.",
+        "en": "Projects are consolidated into one structured pipeline, assessed for investment appeal and readiness, and documented for investors down to the land parcel, the utilities, the permits and the available state support — with follow-through after the forum closes."
+      }
+    ],
+    "source": "concept §1, §2, §3"
+  },
+  "goals": [
+    {
+      "uz": "Oʻzbekiston turizmining investitsiya salohiyatini — istiqbolli yoʻnalishlar, hududlar, turizm zonalari, klasterlar va infratuzilma imkoniyatlarini namoyish etish.",
+      "ru": "Презентация инвестиционного потенциала Узбекистана в сфере туризма, включая перспективные направления, регионы, туристические зоны, кластеры и инфраструктурные возможности.",
+      "en": "Present Uzbekistan’s tourism investment potential: priority segments, regions, tourism zones, clusters and infrastructure capacity."
+    },
+    {
+      "uz": "Hududlar, davlat organlari va boshqa manfaatdor tashkilotlar bilan birgalikda tayyorlangan yagona turizm investitsiya loyihalari portfelini shakllantirish va taqdim etish.",
+      "ru": "Формирование и представление единого портфеля инвестиционных проектов в сфере туризма, подготовленного совместно с регионами, государственными органами и другими заинтересованными организациями.",
+      "en": "Assemble and present a single tourism project portfolio, prepared together with the regions, government bodies and other stakeholders."
+    },
+    {
+      "uz": "Mahalliy va xorijiy investorlar, xalqaro moliya institutlari, investitsiya fondlari, banklar, developerlar va turizm infratuzilmasi operatorlarini jalb qilish.",
+      "ru": "Привлечение отечественных и зарубежных инвесторов, международных финансовых институтов, инвестиционных фондов, банков, девелоперов и операторов туристической инфраструктуры.",
+      "en": "Attract domestic and foreign investors, international financial institutions, investment funds, banks, developers and tourism infrastructure operators."
+    },
+    {
+      "uz": "Investorlar va loyiha tashabbuskorlari — hudud hokimiyatlari, davlat organlari, xususiy sektor va potensial hamkorlar oʻrtasida bevosita muloqot yoʻlga qoʻyish.",
+      "ru": "Создание прямого диалога между инвесторами и инициаторами проектов, включая хокимияты регионов, государственные органы, частный сектор и потенциальных партнёров.",
+      "en": "Open a direct line between investors and project initiators — regional administrations, government bodies, the private sector and prospective partners."
+    },
+    {
+      "uz": "Davlat-xususiy sheriklik (DXSH) loyihalari va investitsiya tashabbuslarini amalga oshirishning boshqa mexanizmlarini ilgari surish.",
+      "ru": "Продвижение проектов государственно-частного партнёрства (ГЧП) и других механизмов реализации инвестиционных инициатив.",
+      "en": "Promote public-private partnership projects and the other delivery models open to investment initiatives."
+    },
+    {
+      "uz": "Turizmning ustuvor segmentlaridagi investitsiya imkoniyatlarini taqdim etish.",
+      "ru": "Представление инвестиционных возможностей в приоритетных сегментах туризма.",
+      "en": "Set out the investment opportunities in tourism’s priority segments."
+    },
+    {
+      "uz": "Investitsiya loyihalarini moliyalashtirish va davlat tomonidan qoʻllab-quvvatlash mexanizmlarini muhokama qilish.",
+      "ru": "Обсуждение механизмов финансирования и государственной поддержки инвестиционных проектов.",
+      "en": "Work through the financing mechanisms and the state support available to investment projects."
+    },
+    {
+      "uz": "Ishbilarmonlik aloqalarini oʻrnatish va keyingi muzokaralarga tayyorgarlik uchun B2B va B2G uchrashuvlarini tashkil etish.",
+      "ru": "Организация B2B- и B2G-встреч, направленных на установление деловых контактов и подготовку дальнейших переговоров.",
+      "en": "Run B2B and B2G meetings aimed at making contacts and setting up the negotiations that follow."
+    },
+    {
+      "uz": "Forumda taqdim etilgan investitsiya loyihalarini keyinchalik kuzatib borish mexanizmini shakllantirish.",
+      "ru": "Формирование последующего механизма сопровождения инвестиционных проектов, представленных в рамках форума.",
+      "en": "Establish the mechanism that will follow the forum’s projects after the event."
+    }
+  ],
+  "themes": [
+    {
+      "id": "infrastructure",
+      "icon": "hotel",
+      "title": {
+        "uz": "Turizm infratuzilmasiga investitsiyalar",
+        "ru": "Инвестиции в туристическую инфраструктуру",
+        "en": "Investment in tourism infrastructure"
+      },
+      "body": {
+        "uz": "Mehmonxonalar, kurort majmualari, turistik qishloqlar, apart-otellar, kempinglar, glempinglar, joylashtirish obyektlari va unga bogʻliq infratuzilma.",
+        "ru": "Гостиницы, курортные комплексы, туристические деревни, апарт-отели, кемпинги, глэмпинги, объекты размещения и сопутствующая инфраструктура.",
+        "en": "Hotels, resort complexes, tourist villages, aparthotels, campsites, glamping, accommodation and the infrastructure around it."
+      }
+    },
+    {
+      "id": "clusters",
+      "icon": "map",
+      "title": {
+        "uz": "Turizm klasterlari va destinatsiyalarini rivojlantirish",
+        "ru": "Развитие туристических кластеров и дестинаций",
+        "en": "Tourism clusters and destinations"
+      },
+      "body": {
+        "uz": "Turizm zonalari, togʻ va tabiiy hududlar, tarixiy shaharlar, kurort zonalari va yangi turizm markazlarini kompleks rivojlantirish.",
+        "ru": "Комплексное развитие туристических зон, горных и природных территорий, исторических городов, курортных зон и новых туристических центров.",
+        "en": "Integrated development of tourism zones, mountain and natural areas, historic cities, resort areas and new tourism centres."
+      }
+    },
+    {
+      "id": "heritage",
+      "icon": "heritage",
+      "title": {
+        "uz": "Madaniy, tarixiy va meros asosidagi rivojlanish",
+        "ru": "Культурное, историческое и наследие-ориентированное развитие",
+        "en": "Culture, history and heritage-led development"
+      },
+      "body": {
+        "uz": "Meros obyektlarini restavratsiya qilish va moslashtirish, madaniy-turistik majmualar, muzeylar, tematik parklar va yangi turizm mahsulotlarini yaratish.",
+        "ru": "Реставрация и адаптация объектов наследия, создание культурно-туристических комплексов, музеев, тематических парков и новых туристических продуктов.",
+        "en": "Restoring and adapting heritage sites; cultural-tourism complexes, museums, theme parks and new tourism products."
+      }
+    },
+    {
+      "id": "eco",
+      "icon": "mountain",
+      "title": {
+        "uz": "Ekologik, tabiiy va ekstremal turizm",
+        "ru": "Экологический, природный и экстремальный туризм",
+        "en": "Eco, nature and adventure tourism"
+      },
+      "body": {
+        "uz": "Togʻ, ekologik, sarguzasht va sport turizmiga, tabiatda dam olish infratuzilmasiga va tabiiy resurslardan barqaror foydalanishga investitsiyalar.",
+        "ru": "Инвестиции в горный, экологический, приключенческий и спортивный туризм, инфраструктуру отдыха на природе и устойчивое использование природных ресурсов.",
+        "en": "Mountain, ecological, adventure and sports tourism; outdoor recreation infrastructure and the sustainable use of natural resources."
+      }
+    },
+    {
+      "id": "wellness",
+      "icon": "wellness",
+      "title": {
+        "uz": "Tibbiy, sanatoriy-kurort va wellness turizmi",
+        "ru": "Медицинский, санаторно-курортный и wellness-туризм",
+        "en": "Medical, sanatorium and wellness tourism"
+      },
+      "body": {
+        "uz": "Sanatoriylar, tibbiyot klasterlari, wellness markazlari, reabilitatsiya va sogʻlomlashtirish majmualarini rivojlantirish.",
+        "ru": "Развитие санаториев, медицинских кластеров, wellness-центров, реабилитационных и оздоровительных комплексов.",
+        "en": "Sanatoria, medical clusters, wellness centres, rehabilitation and health complexes."
+      }
+    },
+    {
+      "id": "mice",
+      "icon": "mice",
+      "title": {
+        "uz": "MICE turizmi va ishbilarmonlik infratuzilmasi",
+        "ru": "MICE-туризм и деловая инфраструктура",
+        "en": "MICE tourism and business infrastructure"
+      },
+      "body": {
+        "uz": "Kongress-markazlar, koʻrgazma majmualari, mehmonxona infratuzilmasi va xalqaro tadbirlar oʻtkazish uchun obyektlar.",
+        "ru": "Конгресс-центры, выставочные комплексы, гостиничная инфраструктура и объекты для проведения международных мероприятий.",
+        "en": "Congress centres, exhibition complexes, hotel capacity and venues built for international events."
+      }
+    },
+    {
+      "id": "leisure",
+      "icon": "family",
+      "title": {
+        "uz": "Koʻngilochar, oilaviy va tematik infratuzilma",
+        "ru": "Развлекательная, семейная и тематическая инфраструктура",
+        "en": "Entertainment, family and themed attractions"
+      },
+      "body": {
+        "uz": "Tematik parklar, koʻngilochar markazlar, oilaviy kurortlar, akvaparklar va sport-koʻngilochar majmualar.",
+        "ru": "Тематические парки, центры развлечений, семейные курорты, аквапарки и спортивно-развлекательные комплексы.",
+        "en": "Theme parks, entertainment centres, family resorts, water parks and sports-leisure complexes."
+      }
+    },
+    {
+      "id": "transport",
+      "icon": "transport",
+      "title": {
+        "uz": "Transport va unga bogʻliq infratuzilma",
+        "ru": "Транспортная и сопутствующая инфраструктура",
+        "en": "Transport and connecting infrastructure"
+      },
+      "body": {
+        "uz": "Aeroportlar, temir yoʻl qatnovi, avtomobil yoʻllari, logistika yechimlari, osma yoʻllar va turistik oqimlar bilan bogʻliq boshqa obyektlar.",
+        "ru": "Аэропорты, железнодорожное сообщение, автомобильные дороги, логистические решения, канатные дороги и другие объекты, связанные с туристическими потоками.",
+        "en": "Airports, rail services, roads, logistics, cable cars and the other assets that carry tourist flows."
+      }
+    }
+  ],
+  "participants": [
+    {
+      "id": "government",
+      "category": {
+        "uz": "Davlat organlari",
+        "ru": "Государственные органы",
+        "en": "Government bodies"
+      },
+      "who": {
+        "uz": "Vazirliklar, idoralar, hudud hokimiyatlari va investitsiya siyosatini amalga oshirishda qatnashadigan tashkilotlar.",
+        "ru": "Министерства, ведомства, региональные хокимияты и организации, участвующие в реализации инвестиционной политики.",
+        "en": "Ministries, agencies, regional administrations and the organisations that carry out investment policy."
+      }
+    },
+    {
+      "id": "investors",
+      "category": {
+        "uz": "Investorlar va developerlar",
+        "ru": "Инвесторы и девелоперы",
+        "en": "Investors and developers"
+      },
+      "who": {
+        "uz": "Mahalliy va xorijiy xususiy investorlar, investitsiya fondlari, mehmonxona operatorlari va developerlik kompaniyalari.",
+        "ru": "Отечественные и зарубежные частные инвесторы, инвестиционные фонды, гостиничные операторы и девелоперские компании.",
+        "en": "Domestic and foreign private investors, investment funds, hotel operators and development companies."
+      }
+    },
+    {
+      "id": "finance",
+      "category": {
+        "uz": "Moliya institutlari",
+        "ru": "Финансовые институты",
+        "en": "Financial institutions"
+      },
+      "who": {
+        "uz": "Xalqaro moliya tashkilotlari, banklar, taraqqiyot fondlari, investitsiya va moliya maslahatchilari.",
+        "ru": "Международные финансовые организации, банки, фонды развития, инвестиционные и финансовые консультанты.",
+        "en": "International financial organisations, banks, development funds, investment and financial advisers."
+      }
+    },
+    {
+      "id": "international",
+      "category": {
+        "uz": "Xalqaro hamkorlar",
+        "ru": "Международные партнёры",
+        "en": "International partners"
+      },
+      "who": {
+        "uz": "Xalqaro tashkilotlar, diplomatik vakolatxonalar, savdo-sanoat palatalari, biznes assotsiatsiyalari va tarmoq birlashmalari.",
+        "ru": "Международные организации, дипломатические представительства, торгово-промышленные палаты, бизнес-ассоциации и отраслевые объединения.",
+        "en": "International organisations, diplomatic missions, chambers of commerce, business associations and industry bodies."
+      }
+    },
+    {
+      "id": "industry",
+      "category": {
+        "uz": "Turizm biznesi",
+        "ru": "Туристический бизнес",
+        "en": "The tourism industry"
+      },
+      "who": {
+        "uz": "Turoperatorlar, mehmonxona tarmoqlari, boshqaruv kompaniyalari, transport operatorlari, DMC va mehmondoʻstlik sanoati vakillari.",
+        "ru": "Туроператоры, гостиничные сети, управляющие компании, транспортные операторы, DMC и представители индустрии гостеприимства.",
+        "en": "Tour operators, hotel chains, management companies, transport operators, DMCs and the hospitality trade."
+      }
+    },
+    {
+      "id": "experts",
+      "category": {
+        "uz": "Ekspert jamoasi",
+        "ru": "Экспертное сообщество",
+        "en": "The expert community"
+      },
+      "who": {
+        "uz": "Konsalting kompaniyalari, arxitektorlar, loyihachilar, yuridik va investitsiya maslahatchilari, ilmiy va taʼlim muassasalari.",
+        "ru": "Консалтинговые компании, архитекторы, проектировщики, юридические и инвестиционные советники, научные и образовательные учреждения.",
+        "en": "Consultancies, architects, designers, legal and investment advisers, research and education institutions."
+      }
+    }
+  ],
+  "sessions": [
+    {
+      "id": "s1",
+      "number": 1,
+      "title": {
+        "uz": "Oʻzbekiston turizm sohasining investitsiya salohiyati",
+        "ru": "Инвестиционный потенциал туристической отрасли Узбекистана",
+        "en": "The investment potential of Uzbekistan’s tourism industry"
+      },
+      "workingTitle": "Uzbekistan Tourism Investment Opportunities: From Potential to Projects",
+      "topics": {
+        "uz": "Investitsiya imkoniyatlari, hududiy salohiyat, davlat siyosati, investitsiya muhiti va xalqaro hamkorlik.",
+        "ru": "Инвестиционные возможности, региональный потенциал, государственная политика, инвестиционный климат и международное сотрудничество.",
+        "en": "Investment opportunities, regional potential, state policy, the investment climate and international cooperation."
+      }
+    },
+    {
+      "id": "s2",
+      "number": 2,
+      "title": {
+        "uz": "Turizm infratuzilmasi va yangi destinatsiyalar",
+        "ru": "Туристическая инфраструктура и новые дестинации",
+        "en": "Tourism infrastructure and new destinations"
+      },
+      "workingTitle": "Building the Future of Tourism: Infrastructure, Destinations and Investment",
+      "topics": {
+        "uz": "Turizm klasterlari, mehmonxona va kurort infratuzilmasi, yangi turizm mahsulotlari va transport qulayligini rivojlantirish.",
+        "ru": "Развитие туристических кластеров, гостиничной и курортной инфраструктуры, новых туристических продуктов и транспортной доступности.",
+        "en": "Developing tourism clusters, hotel and resort capacity, new tourism products and transport access."
+      }
+    },
+    {
+      "id": "s3",
+      "number": 3,
+      "title": {
+        "uz": "Moliyalashtirish va investitsiya mexanizmlari",
+        "ru": "Финансирование и инвестиционные механизмы",
+        "en": "Financing and investment mechanisms"
+      },
+      "workingTitle": "Financing Tourism Growth: Public-Private Partnerships and Investment Models",
+      "topics": {
+        "uz": "DXSH, banklar va xalqaro moliya institutlarining qatnashuvi, investitsiya fondlari, loyihalarni tayyorlash va risklarni kamaytirish.",
+        "ru": "ГЧП, участие банков и международных финансовых институтов, инвестиционные фонды, подготовка проектов и снижение рисков.",
+        "en": "PPP, the role of banks and international financial institutions, investment funds, project preparation and risk reduction."
+      }
+    },
+    {
+      "id": "s4",
+      "number": 4,
+      "title": {
+        "uz": "Amaliy investitsiya loyihalari",
+        "ru": "Практические инвестиционные проекты",
+        "en": "Projects on the table"
+      },
+      "workingTitle": "Invest in Uzbekistan Tourism: Regional Projects and Opportunities",
+      "topics": {
+        "uz": "Hududlar va xususiy sektor loyihalarini taqdim etish, investitsiya parametrlari, amalga oshirish modellari va potensial hamkorliklar.",
+        "ru": "Презентация проектов регионов и частного сектора, инвестиционные параметры, модели реализации и потенциальные партнёрства.",
+        "en": "Regional and private-sector projects presented with their investment parameters, delivery models and partnership options."
+      }
+    }
+  ],
+  "programme": {
+    "day": {
+      "uz": "1-kun",
+      "ru": "День 1",
+      "en": "Day 1"
+    },
+    "note": {
+      "uz": "Dastur dastlabki — tashkilotchi tomonidan tasdiqlangan oraliq varianti.",
+      "ru": "Предварительная программа форума.",
+      "en": "Preliminary programme as circulated by the organiser."
+    },
+    "items": [
+      {
+        "start": "08:30",
+        "end": "09:30",
+        "kind": "break",
+        "title": {
+          "uz": "Qatnashchilarni roʻyxatdan oʻtkazish va Welcome Coffee",
+          "ru": "Регистрация участников и Welcome Coffee",
+          "en": "Registration and welcome coffee"
+        }
+      },
+      {
+        "start": "09:30",
+        "end": "10:00",
+        "kind": "opening",
+        "title": {
+          "uz": "Forumning tantanali ochilishi",
+          "ru": "Торжественное открытие форума",
+          "en": "Official opening"
+        },
+        "body": {
+          "uz": "Oʻzbekiston Respublikasi Hukumati nomidan tabrik soʻzi, Turizm qoʻmitasi rahbariyatining nutqi, xalqaro moliya instituti vakilining chiqishi va forumning maqsad va vazifalari eʼlon qilinishi.",
+          "ru": "Приветственное слово от имени Правительства Республики Узбекистан, выступление руководства Комитета по туризму, выступление представителя международного финансового института и объявление целей и ключевых задач форума.",
+          "en": "A welcome on behalf of the Government of Uzbekistan, remarks from the Committee on Tourism’s leadership, an address by an international financial institution, and the announcement of the forum’s goals."
+        }
+      },
+      {
+        "start": "10:00",
+        "end": "10:30",
+        "kind": "keynote",
+        "title": {
+          "uz": "«Oʻzbekiston turizm sohasiga investitsiya kiritish uchun istiqbolli yoʻnalish sifatida: imkoniyatlar, loyihalar va hamkorlik mexanizmlari»",
+          "ru": "«Узбекистан как перспективное направление для инвестиций в туристическую отрасль: возможности, проекты и механизмы сотрудничества»",
+          "en": "“Uzbekistan as a destination for tourism investment: opportunities, projects and cooperation mechanisms”"
+        },
+        "bullets": [
+          {
+            "uz": "Turizm sanoatining bugungi holati va rivojlanish istiqbollari",
+            "ru": "Текущее состояние и перспективы развития туристической индустрии",
+            "en": "Where the tourism industry stands and where it is going"
+          },
+          {
+            "uz": "Investitsiyalar uchun ustuvor yoʻnalishlar",
+            "ru": "Приоритетные направления для инвестиций",
+            "en": "Priority directions for investment"
+          },
+          {
+            "uz": "Oʻzbekiston hududlarining investitsiya imkoniyatlari",
+            "ru": "Инвестиционные возможности регионов Узбекистана",
+            "en": "The investment opportunities of Uzbekistan’s regions"
+          },
+          {
+            "uz": "Davlat qoʻllab-quvvatlashi va investitsiyalarni jalb qilish mexanizmlari",
+            "ru": "Государственная поддержка и механизмы привлечения инвестиций",
+            "en": "State support and the mechanisms for attracting investment"
+          }
+        ],
+        "body": {
+          "uz": "Shakli: tahliliy materiallar va mamlakat investitsiya salohiyatining taqdimoti.",
+          "ru": "Формат: презентация аналитических материалов и инвестиционного потенциала страны.",
+          "en": "Format: a presentation of analytical material and the country’s investment potential."
+        }
+      },
+      {
+        "start": "10:30",
+        "end": "11:30",
+        "kind": "plenary",
+        "plenary": 1,
+        "title": {
+          "uz": "Investitsiya muhiti va turizm hududlarini rivojlantirish: konsepsiyadan kompleks loyihaga",
+          "ru": "Инвестиционный климат и развитие туристических территорий: от концепции к комплексному проекту",
+          "en": "Investment climate and the making of tourism territories: from concept to integrated project"
+        },
+        "body": {
+          "uz": "Turizm destinatsiyalarini kompleks rivojlantirishga va raqobatbardosh infratuzilma yaratishga investitsiyalar.",
+          "ru": "Инвестиции в комплексное развитие туристических дестинаций и создание конкурентоспособной инфраструктуры.",
+          "en": "Investing in the integrated development of destinations and in infrastructure that can compete."
+        },
+        "bullets": [
+          {
+            "uz": "Jahon darajasidagi turizm hududlarini yaratish: master planning va kompleks rivojlanish",
+            "ru": "Создание туристических территорий мирового уровня: master planning и комплексное развитие",
+            "en": "Creating world-class tourism territories: master planning and integrated development"
+          },
+          {
+            "uz": "Turizm infratuzilmasida davlat-xususiy sheriklik (PPP)",
+            "ru": "Государственно-частное партнёрство (PPP) в туристической инфраструктуре",
+            "en": "Public-private partnership in tourism infrastructure"
+          },
+          {
+            "uz": "Kurort koʻchmas mulki va kompleks Mixed-Use loyihalar",
+            "ru": "Курортная недвижимость и комплексные проекты Mixed-Use",
+            "en": "Resort real estate and mixed-use projects"
+          },
+          {
+            "uz": "Turizm hududlarining transport, injinering va raqamli infratuzilmasiga investitsiyalar",
+            "ru": "Инвестиции в транспортную, инженерную и цифровую инфраструктуру туристических территорий",
+            "en": "Investing in the transport, utility and digital infrastructure of tourism territories"
+          }
+        ]
+      },
+      {
+        "start": "11:30",
+        "end": "13:00",
+        "kind": "plenary",
+        "plenary": 2,
+        "title": {
+          "uz": "Aviatsiya — turizm drayveri: bogʻlanish, yangi marshrutlar va turizm bozorlariga investitsiyalar",
+          "ru": "Авиация как драйвер туризма: инвестиции в связанность, новые маршруты и туристические рынки",
+          "en": "Aviation as a driver of tourism: investing in connectivity, new routes and new markets"
+        },
+        "body": {
+          "uz": "Yangi aviamarshrutlar, aeroportlar, turizm hublari va xalqaro hamda hududiy turizmni rivojlantirish uchun investitsiya imkoniyatlari.",
+          "ru": "Новые авиамаршруты, аэропорты, туристические хабы и инвестиционные возможности для развития международного и регионального туризма.",
+          "en": "New air routes, airports, tourism hubs, and the investment opportunities in international and regional tourism they open up."
+        },
+        "bullets": [
+          {
+            "uz": "Havo bogʻlanishi va turistik oqimlarning rivojlanishi",
+            "ru": "Воздушная связанность и развитие туристических потоков",
+            "en": "Air connectivity and the growth of tourist flows"
+          },
+          {
+            "uz": "Aviakompaniyalar va turizm bozori uchun yangi imkoniyatlar",
+            "ru": "Авиакомпании и новые возможности для туристического рынка",
+            "en": "Airlines and the new openings for the tourism market"
+          },
+          {
+            "uz": "Yangi avlod aeroportlari: transport tugunidan turizm hubiga",
+            "ru": "Аэропорты нового поколения: от транспортных узлов к туристическим хабам",
+            "en": "Next-generation airports: from transport nodes to tourism hubs"
+          },
+          {
+            "uz": "Aviatsiya hududiy turizm rivojining omili sifatida",
+            "ru": "Авиация как фактор регионального туристического развития",
+            "en": "Aviation as a factor in regional tourism development"
+          },
+          {
+            "uz": "Aviatsiya bogʻlanishi va xalqaro MICE turizmi",
+            "ru": "Авиационная связанность и международный MICE-туризм",
+            "en": "Air connectivity and international MICE tourism"
+          },
+          {
+            "uz": "Investitsiya imkoniyatlari va davlat-xususiy sheriklik",
+            "ru": "Инвестиционные возможности и государственно-частное партнёрство",
+            "en": "Investment opportunities and public-private partnership"
+          }
+        ]
+      },
+      {
+        "start": "13:00",
+        "end": "14:00",
+        "kind": "break",
+        "title": {
+          "uz": "Investitsiya lanchi va ishbilarmonlik netvorkingi",
+          "ru": "Инвестиционный ланч и деловой нетворкинг",
+          "en": "Investment lunch and business networking"
+        },
+        "body": {
+          "uz": "Norasmiy muloqot, loyiha egalari va potensial investorlar bilan tanishish, hamkorlik imkoniyatlari va keyingi uchrashuvlarni muhokama qilish.",
+          "ru": "Неформальное общение участников форума, знакомство с владельцами проектов и потенциальными инвесторами, обсуждение возможностей сотрудничества и дальнейших встреч.",
+          "en": "Informal conversation, introductions between project owners and prospective investors, and the setting-up of further meetings."
+        }
+      },
+      {
+        "start": "14:00",
+        "end": "15:10",
+        "kind": "plenary",
+        "plenary": 3,
+        "title": {
+          "uz": "Turizm loyihalarini moliyalashtirish: investitsiya gʻoyasidan amalga oshirishgacha",
+          "ru": "Финансирование туристических проектов: от инвестиционной идеи к реализации",
+          "en": "Financing tourism projects: from investment idea to delivery"
+        },
+        "body": {
+          "uz": "Moliyaviy vositalar, loyihalarning investitsiyaga tayyorligi va kapitalni jalb qilish mexanizmlari.",
+          "ru": "Финансовые инструменты, инвестиционная готовность проектов и механизмы привлечения капитала.",
+          "en": "Financial instruments, the investment readiness of projects, and how capital is raised."
+        },
+        "bullets": [
+          {
+            "uz": "Turizm loyihalarini moliyalashtirish mexanizmlari va manbalari",
+            "ru": "Инвестиционные механизмы и источники финансирования туристических проектов",
+            "en": "Investment mechanisms and sources of finance for tourism projects"
+          },
+          {
+            "uz": "Toʻgʻridan-toʻgʻri xorijiy investitsiyalar (FDI) va strategik sheriklik",
+            "ru": "Прямые иностранные инвестиции (FDI) и стратегическое партнёрство",
+            "en": "Foreign direct investment and strategic partnership"
+          },
+          {
+            "uz": "Davlat-xususiy sheriklik va konsessiya mexanizmlari",
+            "ru": "Государственно-частное партнёрство и концессионные механизмы",
+            "en": "Public-private partnership and concession mechanisms"
+          },
+          {
+            "uz": "Bank moliyalashtirishi, private equity va investitsiya fondlari",
+            "ru": "Банковское финансирование, private equity и инвестиционные фонды",
+            "en": "Bank finance, private equity and investment funds"
+          },
+          {
+            "uz": "Loyihalarni kapital jalb qilishga tayyorlash va investitsiya samaradorligi",
+            "ru": "Подготовка инвестиционных проектов к привлечению капитала и инвестиционная эффективность",
+            "en": "Preparing projects to raise capital, and investment performance"
+          },
+          {
+            "uz": "Investitsiya risklarini kamaytirish mexanizmlari",
+            "ru": "Механизмы снижения инвестиционных рисков",
+            "en": "Mechanisms for reducing investment risk"
+          }
+        ]
+      },
+      {
+        "start": "15:10",
+        "end": "15:40",
+        "kind": "showcase",
+        "title": {
+          "uz": "Oʻzbekistonning istiqbolli turizm loyihalari — Investment Project Showcase",
+          "ru": "Перспективные туристические проекты Узбекистана — Investment Project Showcase",
+          "en": "Uzbekistan’s pipeline — Investment Project Showcase"
+        },
+        "body": {
+          "uz": "Investorlarga taqdim etishga tayyorlangan 5–6 ta tanlangan loyihaning taqdimoti: har biriga 5 daqiqa, savollar uchun 1–2 daqiqa.",
+          "ru": "Презентации 5–6 отобранных инвестиционных проектов, подготовленных к представлению инвесторам: 5 минут на презентацию и 1–2 минуты на уточняющие вопросы.",
+          "en": "Five or six selected projects, prepared for investors: five minutes each, with one or two minutes of questions."
+        },
+        "bullets": [
+          {
+            "uz": "Loyiha nomi va joylashuvi",
+            "ru": "Наименование и местоположение проекта",
+            "en": "Project name and location"
+          },
+          {
+            "uz": "Qisqa konsepsiya va investitsiya modeli",
+            "ru": "Краткая концепция и инвестиционная модель",
+            "en": "The concept in brief, and the investment model"
+          },
+          {
+            "uz": "Talab qilinadigan investitsiya hajmi",
+            "ru": "Объём необходимых инвестиций",
+            "en": "How much investment is needed"
+          },
+          {
+            "uz": "Taklif etilayotgan hamkorlik shakli",
+            "ru": "Предлагаемый формат сотрудничества",
+            "en": "The form of cooperation on offer"
+          },
+          {
+            "uz": "Yer uchastkasi va loyiha hujjatlarining holati",
+            "ru": "Статус земельного участка и проектной документации",
+            "en": "The status of the land and of the design documentation"
+          },
+          {
+            "uz": "Kutilayotgan natijalar va amalga oshirish istiqbollari",
+            "ru": "Ожидаемые результаты и перспективы реализации",
+            "en": "Expected results and delivery outlook"
+          }
+        ]
+      },
+      {
+        "start": "15:40",
+        "end": "18:00",
+        "kind": "b2b",
+        "title": {
+          "uz": "Investorlar va loyihalar oʻrtasida aloqa oʻrnatish — B2B uchrashuvlar",
+          "ru": "Установление контактов между инвесторами и проектами — B2B-встречи",
+          "en": "Matching investors with projects — B2B meetings"
+        },
+        "body": {
+          "uz": "Investitsiya loyihalari egalari, investorlar, operatorlar va potensial hamkorlar oʻrtasida oldindan belgilangan ishbilarmonlik uchrashuvlari.",
+          "ru": "Заранее запланированные деловые встречи между владельцами инвестиционных проектов, инвесторами, операторами и потенциальными партнёрами.",
+          "en": "Pre-scheduled meetings between project owners, investors, operators and prospective partners."
+        }
+      },
+      {
+        "start": "18:00",
+        "end": "18:30",
+        "kind": "closing",
+        "title": {
+          "uz": "Forum yakunlari va investitsiya hamkorligini rivojlantirishning keyingi qadamlari",
+          "ru": "Итоги форума и дальнейшие шаги по развитию инвестиционного сотрудничества",
+          "en": "Conclusions, and the next steps in investment cooperation"
+        }
+      }
+    ],
+    "source": "programme, Day 1"
+  },
+  "standard": [
+    {
+      "n": 1,
+      "block": {
+        "uz": "Umumiy maʼlumot",
+        "ru": "Общие сведения",
+        "en": "General information"
+      },
+      "body": {
+        "uz": "Loyiha nomi, viloyat, tuman, tashabbuskor.",
+        "ru": "Название проекта, регион, район, инициатор.",
+        "en": "Project name, region, district, initiator."
+      }
+    },
+    {
+      "n": 2,
+      "block": {
+        "uz": "Konsepsiya",
+        "ru": "Концепция",
+        "en": "Concept"
+      },
+      "body": {
+        "uz": "Loyiha mazmuni, turizm mahsuloti, maqsadli auditoriya.",
+        "ru": "Содержание проекта, туристический продукт, целевая аудитория.",
+        "en": "What the project is, the tourism product, the target audience."
+      }
+    },
+    {
+      "n": 3,
+      "block": {
+        "uz": "Lokatsiya",
+        "ru": "Локация",
+        "en": "Location"
+      },
+      "body": {
+        "uz": "Yer uchastkasi, maydoni, joylashuvi, qulayligi.",
+        "ru": "Земельный участок, площадь, местоположение, доступность.",
+        "en": "The land parcel, its area, where it is and how you reach it."
+      }
+    },
+    {
+      "n": 4,
+      "block": {
+        "uz": "Investitsiya parametrlari",
+        "ru": "Инвестиционные параметры",
+        "en": "Investment parameters"
+      },
+      "body": {
+        "uz": "Umumiy qiymat, talab qilinadigan investitsiya hajmi, valyuta.",
+        "ru": "Общая стоимость, требуемый объём инвестиций, валюта.",
+        "en": "Total cost, investment required, currency."
+      }
+    },
+    {
+      "n": 5,
+      "block": {
+        "uz": "Amalga oshirish modeli",
+        "ru": "Модель реализации",
+        "en": "Delivery model"
+      },
+      "body": {
+        "uz": "Xususiy investitsiyalar, DXSH, qoʻshma korxona yoki boshqa model.",
+        "ru": "Частные инвестиции, ГЧП, совместное предприятие, иная модель.",
+        "en": "Private investment, PPP, joint venture, or another model."
+      }
+    },
+    {
+      "n": 6,
+      "block": {
+        "uz": "Tayyorlik bosqichi",
+        "ru": "Стадия готовности",
+        "en": "Readiness stage"
+      },
+      "body": {
+        "uz": "Gʻoya, loyiha oldi bosqichi, loyihalash, amalga oshirishga tayyor.",
+        "ru": "Идея, предпроектная стадия, проектирование, готов к реализации.",
+        "en": "Idea, pre-design, design, ready to build."
+      }
+    },
+    {
+      "n": 7,
+      "block": {
+        "uz": "Infratuzilma",
+        "ru": "Инфраструктура",
+        "en": "Infrastructure"
+      },
+      "body": {
+        "uz": "Elektr energiyasi, suv, gaz, yoʻllar, aloqa va boshqa shartlar.",
+        "ru": "Электроэнергия, вода, газ, дороги, связь и другие условия.",
+        "en": "Power, water, gas, roads, communications and other conditions."
+      }
+    },
+    {
+      "n": 8,
+      "block": {
+        "uz": "Davlat qoʻllab-quvvatlashi",
+        "ru": "Государственная поддержка",
+        "en": "State support"
+      },
+      "body": {
+        "uz": "Taklif etilayotgan yoki mavjud qoʻllab-quvvatlash choralari.",
+        "ru": "Предлагаемые или доступные меры поддержки.",
+        "en": "The support measures offered or already available."
+      }
+    },
+    {
+      "n": 9,
+      "block": {
+        "uz": "Iqtisodiy samara",
+        "ru": "Экономический эффект",
+        "en": "Economic effect"
+      },
+      "body": {
+        "uz": "Ish joylari, turistik oqim, daromadlar, hududiy samara.",
+        "ru": "Рабочие места, туристический поток, доходы, региональный эффект.",
+        "en": "Jobs, visitor numbers, revenue, the effect on the region."
+      }
+    },
+    {
+      "n": 10,
+      "block": {
+        "uz": "Aloqa maʼlumotlari",
+        "ru": "Контактные данные",
+        "en": "Contact details"
+      },
+      "body": {
+        "uz": "Masʼul tashkilot va aloqa uchun shaxs.",
+        "ru": "Ответственная организация и контактное лицо.",
+        "en": "The responsible organisation and a contact person."
+      }
+    }
+  ],
+  "criteria": {
+    "items": [
+      {
+        "uz": "turizmni rivojlantirish ustuvorliklariga muvofiqligi",
+        "ru": "соответствие приоритетам развития туризма",
+        "en": "fits the priorities set for tourism development"
+      },
+      {
+        "uz": "aniq lokatsiya va yer-huquqiy asoslarning mavjudligi",
+        "ru": "наличие конкретной локации и земельно-правовых оснований",
+        "en": "has a specific site and the legal title to the land"
+      },
+      {
+        "uz": "investitsiya modelining realligi",
+        "ru": "реалистичность инвестиционной модели",
+        "en": "the investment model is realistic"
+      },
+      {
+        "uz": "injinerlik infratuzilmasi bor yoki taʼminlanishi mumkin",
+        "ru": "наличие или возможность обеспечения инженерной инфраструктурой",
+        "en": "utilities are in place or can be brought in"
+      },
+      {
+        "uz": "iqtisodiy va turistik jozibadorligi",
+        "ru": "экономическая и туристическая привлекательность",
+        "en": "is attractive both economically and as tourism"
+      },
+      {
+        "uz": "tashabbuskorning investor bilan ishlashga tayyorligi",
+        "ru": "готовность инициатора к взаимодействию с инвестором",
+        "en": "the initiator is ready to work with an investor"
+      },
+      {
+        "uz": "ish joylari yaratish va turistik oqimni oshirish salohiyati",
+        "ru": "потенциал создания рабочих мест и увеличения туристического потока",
+        "en": "can create jobs and raise visitor numbers"
+      },
+      {
+        "uz": "ekologik va ijtimoiy barqarorligi",
+        "ru": "экологическая и социальная устойчивость",
+        "en": "is environmentally and socially sustainable"
+      }
+    ],
+    "note": {
+      "uz": "Forumda nafaqat moliyalashtirishga toʻliq tayyor loyihalar, balki turli bosqichdagi istiqbolli loyihalar ham taqdim etiladi — ularning haqiqiy tayyorlik darajasi albatta koʻrsatiladi. Bu investorlarda oshirib yuborilgan kutilmalar paydo boʻlishining oldini oladi.",
+      "ru": "В рамках форума представляются не только проекты, полностью подготовленные к финансированию, но и перспективные проекты на разных стадиях — с обязательным указанием их фактической степени готовности. Это позволяет избежать завышенных ожиданий со стороны инвесторов.",
+      "en": "The forum deliberately carries projects at every stage, not only those ready for financing — each one stating the readiness it has actually reached. That is how investors are kept from forming expectations the project cannot meet."
+    }
+  },
+  "mechanism": [
+    {
+      "n": 1,
+      "title": {
+        "uz": "Investitsiya takliflarini yigʻish",
+        "ru": "Сбор инвестиционных предложений",
+        "en": "Collecting proposals"
+      },
+      "body": {
+        "uz": "Hududlar va davlat organlaridan loyihalar bazasini shakllantirish.",
+        "ru": "Формирование базы проектов из регионов и государственных органов.",
+        "en": "Building the project base from the regions and government bodies."
+      }
+    },
+    {
+      "n": 2,
+      "title": {
+        "uz": "Verifikatsiya va tayyorlikni baholash",
+        "ru": "Верификация и оценка готовности",
+        "en": "Verification and readiness assessment"
+      },
+      "body": {
+        "uz": "Dastlabki maʼlumotlar, investitsiya parametrlari va amalga oshirish shartlarini tekshirish.",
+        "ru": "Проверка исходных данных, инвестиционных параметров и условий реализации.",
+        "en": "Checking the underlying data, the investment parameters and the delivery conditions."
+      }
+    },
+    {
+      "n": 3,
+      "title": {
+        "uz": "Investitsiya materiallarini tayyorlash",
+        "ru": "Подготовка инвестиционных материалов",
+        "en": "Preparing the investment material"
+      },
+      "body": {
+        "uz": "Investitsiya pasportlari, taqdimotlar, katalog va loyihalarning raqamli bazasi.",
+        "ru": "Инвестиционные паспорта, презентации, каталог и цифровая база проектов.",
+        "en": "Investment passports, presentations, the catalogue and the digital project base."
+      }
+    },
+    {
+      "n": 4,
+      "title": {
+        "uz": "Investorlar va loyihalarni dastlabki solishtirish",
+        "ru": "Предварительное сопоставление инвесторов и проектов",
+        "en": "Pre-matching investors and projects"
+      },
+      "body": {
+        "uz": "Investorlarning qiziqishini aniqlash va maqsadli uchrashuvlarni tashkil etish.",
+        "ru": "Определение интересов инвесторов и организация целевых встреч.",
+        "en": "Establishing what each investor is looking for, and arranging the meetings that follow from it."
+      }
+    },
+    {
+      "n": 5,
+      "title": {
+        "uz": "Forum va B2B/B2G uchrashuvlari",
+        "ru": "Проведение форума и B2B/B2G-встреч",
+        "en": "The forum itself, and the B2B/B2G meetings"
+      },
+      "body": {
+        "uz": "Taqdimotlar, muzokaralar va hamkorlik shartlarini muhokama qilish.",
+        "ru": "Презентации, переговоры и обсуждение условий сотрудничества.",
+        "en": "Presentations, negotiations, and the terms of cooperation."
+      }
+    },
+    {
+      "n": 6,
+      "title": {
+        "uz": "Forumdan keyingi kuzatuv",
+        "ru": "Постфорумное сопровождение",
+        "en": "After the forum"
+      },
+      "body": {
+        "uz": "Kelishuvlar monitoringi, loyihalarni masʼul organlarga topshirish va keyingi muzokaralarni tashkil etish.",
+        "ru": "Мониторинг договорённостей, передача проектов ответственным органам и организация дальнейших переговоров.",
+        "en": "Tracking what was agreed, handing projects to the responsible bodies, and organising the next round of talks."
+      }
+    }
+  ],
+  "stages": [
+    {
+      "n": 1,
+      "roman": "I",
+      "title": {
+        "uz": "Konseptual tayyorgarlik",
+        "ru": "Концептуальная подготовка",
+        "en": "Concept"
+      },
+      "body": {
+        "uz": "Konsepsiya, format, tematik yoʻnalishlar va tashkiliy modelni tasdiqlash.",
+        "ru": "Утверждение концепции, формата, тематических направлений и организационной модели.",
+        "en": "Approving the concept, the format, the themes and the organising model."
+      }
+    },
+    {
+      "n": 2,
+      "roman": "II",
+      "title": {
+        "uz": "Loyihalar bazasini shakllantirish",
+        "ru": "Формирование базы проектов",
+        "en": "Building the project base"
+      },
+      "body": {
+        "uz": "Hududlar va davlat organlariga soʻrovlar yuborish, investitsiya takliflarini yigʻish va tizimlashtirish.",
+        "ru": "Направление запросов регионам и государственным органам, сбор и систематизация инвестиционных предложений.",
+        "en": "Requests to the regions and government bodies; proposals collected and systematised."
+      }
+    },
+    {
+      "n": 3,
+      "roman": "III",
+      "title": {
+        "uz": "Loyihalarni tanlash va tayyorlash",
+        "ru": "Отбор и подготовка проектов",
+        "en": "Selection and preparation"
+      },
+      "body": {
+        "uz": "Maʼlumotlarni verifikatsiya qilish, investitsiya tayyorligini baholash, investitsiya pasportlari va taqdimotlarni tayyorlash.",
+        "ru": "Верификация данных, оценка инвестиционной готовности, подготовка инвестиционных паспортов и презентаций.",
+        "en": "Verifying the data, assessing investment readiness, preparing passports and presentations."
+      }
+    },
+    {
+      "n": 4,
+      "roman": "IV",
+      "title": {
+        "uz": "Xalqaro ilgari surish",
+        "ru": "Международное продвижение",
+        "en": "International outreach"
+      },
+      "body": {
+        "uz": "Investorlar roʻyxatini shakllantirish, elchixonalar, moliya institutlari, biznes assotsiatsiyalari va xalqaro hamkorlar bilan ishlash.",
+        "ru": "Формирование списка инвесторов, взаимодействие с посольствами, финансовыми институтами, бизнес-ассоциациями и международными партнёрами.",
+        "en": "Drawing up the investor list; working with embassies, financial institutions, business associations and international partners."
+      }
+    },
+    {
+      "n": 5,
+      "roman": "V",
+      "title": {
+        "uz": "Ishbilarmonlik dasturini tayyorlash",
+        "ru": "Подготовка деловой программы",
+        "en": "The business programme"
+      },
+      "body": {
+        "uz": "Spikerlar, moderatorlar, sessiyalar, taqdimotlar va B2B/B2G uchrashuvlari jadvalini tasdiqlash.",
+        "ru": "Утверждение спикеров, модераторов, сессий, презентаций и графика B2B/B2G-встреч.",
+        "en": "Confirming speakers, moderators, sessions, presentations and the B2B/B2G schedule."
+      }
+    },
+    {
+      "n": 6,
+      "roman": "VI",
+      "title": {
+        "uz": "Forumni oʻtkazish",
+        "ru": "Проведение форума",
+        "en": "The forum"
+      },
+      "body": {
+        "uz": "Dasturni amalga oshirish, loyihalarni taqdim etish, muzokaralar va erishilgan kelishuvlarni qayd etish.",
+        "ru": "Реализация программы, презентация проектов, переговоры и фиксация достигнутых договорённостей.",
+        "en": "Running the programme, presenting the projects, negotiating, and recording what was agreed."
+      }
+    },
+    {
+      "n": 7,
+      "roman": "VII",
+      "title": {
+        "uz": "Forumdan keyingi kuzatuv",
+        "ru": "Постфорумное сопровождение",
+        "en": "Follow-through"
+      },
+      "body": {
+        "uz": "Yakuniy bayonnomani shakllantirish, aloqalar va kelishuvlar monitoringi, istiqbolli loyihalarni kuzatib borish.",
+        "ru": "Формирование итогового протокола, мониторинг контактов и договорённостей, сопровождение перспективных проектов.",
+        "en": "The closing protocol, monitoring of contacts and agreements, and support for the projects worth pursuing."
+      }
+    }
+  ],
+  "outcomes": {
+    "quantitative": [
+      {
+        "uz": "turizm sohasidagi loyihalarning yagona investitsiya portfeli shakllantiriladi",
+        "ru": "формирование единого инвестиционного портфеля проектов в сфере туризма",
+        "en": "a single tourism investment portfolio is assembled"
+      },
+      {
+        "uz": "hududlar va xususiy sektorning ustuvor loyihalari investorlarga taqdim etiladi",
+        "ru": "представление инвесторам приоритетных проектов регионов и частного сектора",
+        "en": "the priority projects of the regions and the private sector are put in front of investors"
+      },
+      {
+        "uz": "mahalliy va xorijiy investorlar, moliya institutlari va xalqaro hamkorlar jalb qilinadi",
+        "ru": "привлечение отечественных и зарубежных инвесторов, финансовых институтов и международных партнёров",
+        "en": "domestic and foreign investors, financial institutions and international partners are brought in"
+      },
+      {
+        "uz": "maqsadli B2B va B2G uchrashuvlari tashkil etiladi",
+        "ru": "организация целевых B2B- и B2G-встреч",
+        "en": "targeted B2B and B2G meetings take place"
+      },
+      {
+        "uz": "istiqbolli investitsiya aloqalari va kelishuvlar roʻyxati tuziladi",
+        "ru": "формирование перечня перспективных инвестиционных контактов и договорённостей",
+        "en": "a list of promising contacts and agreements is drawn up"
+      },
+      {
+        "uz": "forumda taqdim etilgan loyihalarning keyingi kuzatuvi taʼminlanadi",
+        "ru": "обеспечение последующего сопровождения проектов, представленных на форуме",
+        "en": "the projects presented are followed up afterwards"
+      }
+    ],
+    "quantitativeNote": {
+      "uz": "Aniq raqamli koʻrsatkichlar — qatnashchilar, investorlar, loyihalar, uchrashuvlar soni va potensial investitsiya hajmi — loyiha takliflarini yigʻish va taklif qilinadigan investorlar roʻyxati shakllantirilgandan soʻng tasdiqlanadi.",
+      "ru": "Конкретные количественные показатели — количество участников, инвесторов, проектов, встреч и объём потенциальных инвестиций — утверждаются после завершения сбора проектных предложений и формирования списка приглашённых инвесторов.",
+      "en": "The hard numbers — participants, investors, projects, meetings and the volume of potential investment — are to be fixed once the call for projects closes and the investor list is settled."
+    },
+    "qualitative": [
+      {
+        "uz": "Oʻzbekistonning istiqbolli turizm investitsiya yoʻnalishi sifatida xalqaro tanilishi ortadi",
+        "ru": "повышение международной узнаваемости Узбекистана как перспективного туристического инвестиционного направления",
+        "en": "Uzbekistan becomes better known internationally as a tourism investment destination"
+      },
+      {
+        "uz": "investitsiya takliflarining shaffofligi va tuzilganligi oshadi",
+        "ru": "повышение прозрачности и структурированности инвестиционных предложений",
+        "en": "investment proposals become more transparent and better structured"
+      },
+      {
+        "uz": "turizm loyihalarining investor bilan muzokaraga tayyorlanish sifati yaxshilanadi",
+        "ru": "улучшение качества подготовки туристических проектов к переговорам с инвесторами",
+        "en": "projects arrive at the negotiating table better prepared"
+      },
+      {
+        "uz": "davlat va xususiy sektor oʻrtasidagi hamkorlik kengayadi",
+        "ru": "расширение взаимодействия между государственным и частным секторами",
+        "en": "cooperation between the public and private sectors widens"
+      },
+      {
+        "uz": "DXSH va boshqa investitsiya modellari mexanizmlari rivojlanadi",
+        "ru": "развитие механизмов ГЧП и других инвестиционных моделей",
+        "en": "PPP and other investment models develop"
+      },
+      {
+        "uz": "forumdan keyin loyihalarni kuzatib borishning barqaror mexanizmi yaratiladi",
+        "ru": "создание устойчивого механизма сопровождения инвестиционных проектов после форума",
+        "en": "a durable mechanism for shepherding projects after the forum is created"
+      }
+    ],
+    "source": "concept §11"
+  },
+  "promotion": [
+    {
+      "uz": "forumning rasmiy investitsiya katalogini rus va ingliz tillarida ishlab chiqish",
+      "ru": "разработка официального инвестиционного каталога форума на русском и английском языках",
+      "en": "an official investment catalogue in Russian and English"
+    },
+    {
+      "uz": "rasmiy resurslarda forumning alohida maʼlumot sahifasini yaratish",
+      "ru": "создание отдельной информационной страницы форума на официальных ресурсах",
+      "en": "a dedicated forum page on the official channels"
+    },
+    {
+      "uz": "loyihalarni xalqaro turizm va investitsiya tarmoqlari orqali ilgari surish",
+      "ru": "продвижение инвестиционных проектов через международные туристические и инвестиционные сети",
+      "en": "promotion of the projects through international tourism and investment networks"
+    },
+    {
+      "uz": "xorijiy investorlar, mehmonxona tarmoqlari, developerlar va moliya institutlariga rasmiy taklifnomalar yuborish",
+      "ru": "направление официальных приглашений иностранным инвесторам, гостиничным сетям, девелоперам и финансовым институтам",
+      "en": "formal invitations to foreign investors, hotel chains, developers and financial institutions"
+    },
+    {
+      "uz": "Oʻzbekiston elchixonalari va xorijiy davlatlarning diplomatik vakolatxonalarini jalb qilish",
+      "ru": "привлечение посольств Республики Узбекистан за рубежом и дипломатических представительств иностранных государств в Узбекистане",
+      "en": "engagement of Uzbekistan’s embassies abroad and foreign missions in the country"
+    },
+    {
+      "uz": "xalqaro turizm va investitsiya tashkilotlari bilan hamkorlik",
+      "ru": "взаимодействие с международными туристическими и инвестиционными организациями",
+      "en": "work with international tourism and investment organisations"
+    },
+    {
+      "uz": "forumni milliy va xalqaro OAVda yoritish",
+      "ru": "освещение форума в национальных и международных СМИ",
+      "en": "coverage in national and international media"
+    },
+    {
+      "uz": "investitsiya loyihalari boʻyicha videotaqdimotlar va raqamli materiallar tayyorlash",
+      "ru": "подготовка видеопрезентаций и цифровых материалов по инвестиционным проектам",
+      "en": "video presentations and digital material for the projects"
+    }
+  ],
+  "portfolio": {
+    "projects": [
+      {
+        "region": "andijan",
+        "title": "Safari Tourism",
+        "subtitle": "Establishment of a Safari Tourism Destination in Ulugnor District, Andijan Region · Andijan Region, Uzbekistan",
+        "issues": [],
+        "investment": 22000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 22 M",
+        "landArea": "6,6 ha",
+        "capacity": "40+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Andijan",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "In 2027–2028, it is planned to establish a Safari Tourism Destination in Ulugnor District by effectively utilizing the district’s natural potential. The project envisages developing travel and excursion routes through natural areas, establishing recreation and observation points for tourists, and promoting photo tours and ecotourism services.",
+        "source": "Investment_OnePager_draft (andijan).pptx",
+        "id": "andijan-safari-tourism",
+        "segment": "eco"
+      },
+      {
+        "region": "andijan",
+        "title": "Eco-Tourism Destinations",
+        "subtitle": "Establishment of Eco-Tourism Destinations in Boston District, Andijan Region · Andijan Region, Uzbekistan",
+        "issues": [],
+        "investment": 20000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 20 M",
+        "landArea": "6 ha",
+        "capacity": "50+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Andijan",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2029",
+        "overview": "In 2028–2029, it is planned to establish eco-tourism destinations within the forestry area of Boston District by effectively utilizing its natural potential, enhancing the area’s tourism appeal, and promoting the development of ecotourism.",
+        "source": "Investment_OnePager_draft (andijan).pptx",
+        "id": "andijan-eco-tourism-destinations",
+        "segment": "eco"
+      },
+      {
+        "region": "bukhara",
+        "title": "HOTEL",
+        "subtitle": null,
+        "issues": [
+          "title \"HOTEL\" is shared with another project in the same region"
+        ],
+        "investment": 38500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 38.5M",
+        "landArea": "1.27 ha",
+        "capacity": "300 people/day",
+        "activity": "Hotel",
+        "jobs": "100",
+        "place": null,
+        "status": null,
+        "payback": "3–4 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 5 / 13 km",
+        "address": "Bukhara city, A. Navoiy street",
+        "structure": "Hotel",
+        "opening": null,
+        "overview": "HOTEL is an investment project in Bukhara city, A. Navoiy street. The source presentation identifies the project activity as hotel, with a land area of 1.27 ha and a minimum investment requirement of USD 38.5M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "displayTitle": "HOTEL — Bukhara city, A. Navoiy street, 1.27 ha",
+        "id": "bukhara-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "bukhara",
+        "title": "HOTEL",
+        "subtitle": null,
+        "issues": [
+          "title \"HOTEL\" is shared with another project in the same region"
+        ],
+        "investment": 93600000,
+        "currency": "USD",
+        "investmentDisplay": "USD 93.6M",
+        "landArea": "4 ha",
+        "capacity": "350 people/day",
+        "activity": "Hotel",
+        "jobs": "110",
+        "place": null,
+        "status": null,
+        "payback": "3–4 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 5 / 13 km",
+        "address": "Bukhara city, A. Navoiy street",
+        "structure": "Hotel",
+        "opening": null,
+        "overview": "HOTEL is an investment project in Bukhara city, A. Navoiy street. The source presentation identifies the project activity as hotel, with a land area of 4 ha and a minimum investment requirement of USD 93.6M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "displayTitle": "HOTEL — Bukhara city, A. Navoiy street, 4 ha",
+        "id": "bukhara-hotel-2",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "bukhara",
+        "title": "HOTEL",
+        "subtitle": null,
+        "issues": [
+          "title \"HOTEL\" is shared with another project in the same region"
+        ],
+        "investment": 2500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 2.5M",
+        "landArea": "0.2 ha",
+        "capacity": "200 people/day",
+        "activity": "Hotel",
+        "jobs": "40",
+        "place": null,
+        "status": null,
+        "payback": "3–4 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 5 / 13 km",
+        "address": "Bukhara city, Hamza street",
+        "structure": "Hotel",
+        "opening": null,
+        "overview": "HOTEL is an investment project in Bukhara city, Hamza street. The source presentation identifies the project activity as hotel, with a land area of 0.2 ha and a minimum investment requirement of USD 2.5M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "displayTitle": "HOTEL — Bukhara city, Hamza street",
+        "id": "bukhara-hotel-3",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "bukhara",
+        "title": "“Varakhsha” Archaeological Park",
+        "subtitle": null,
+        "issues": [],
+        "investment": 200000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 200M",
+        "landArea": "1.5 ha",
+        "capacity": "200 people/day",
+        "activity": "Archaeological park",
+        "jobs": "50",
+        "place": null,
+        "status": null,
+        "payback": "5–6 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 44 / 54 km",
+        "address": "Jondor district",
+        "structure": "Archaeological park",
+        "opening": null,
+        "overview": "“Varakhsha” Archaeological Park is an investment project in Jondor district. The source presentation identifies the project activity as archaeological park, with a land area of 1.5 ha and a minimum investment requirement of USD 200M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-varakhsha-archaeological-park",
+        "segment": "heritage"
+      },
+      {
+        "region": "bukhara",
+        "title": "“Ogitma” Eco-tourism Center",
+        "subtitle": null,
+        "issues": [],
+        "investment": 1000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1.0M",
+        "landArea": "5.6 ha",
+        "capacity": "200 people/day",
+        "activity": "Eco-tourism center",
+        "jobs": "20",
+        "place": null,
+        "status": null,
+        "payback": "5–6 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 110 / 120 km",
+        "address": "Shofirkon district",
+        "structure": "Eco-tourism center",
+        "opening": null,
+        "overview": "“Ogitma” Eco-tourism Center is an investment project in Shofirkon district. The source presentation identifies the project activity as eco-tourism center, with a land area of 5.6 ha and a minimum investment requirement of USD 1.0M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-ogitma-eco-tourism-center",
+        "segment": "eco"
+      },
+      {
+        "region": "bukhara",
+        "title": "Modern Tourist Caravanserai",
+        "subtitle": null,
+        "issues": [],
+        "investment": 5000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 5M",
+        "landArea": "3.5 ha",
+        "capacity": "500 people/day",
+        "activity": "INN (Caravanserai)",
+        "jobs": "40",
+        "place": null,
+        "status": null,
+        "payback": "4–5 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 15 / 25 km",
+        "address": "Kogon district (A-380 highway)",
+        "structure": "INN (Caravanserai)",
+        "opening": null,
+        "overview": "Modern Tourist Caravanserai is an investment project in Kogon district (A-380 highway). The source presentation identifies the project activity as inn (caravanserai), with a land area of 3.5 ha and a minimum investment requirement of USD 5M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-modern-tourist-caravanserai",
+        "segment": "heritage"
+      },
+      {
+        "region": "bukhara",
+        "title": "Chor Bakr “Etno House”",
+        "subtitle": null,
+        "issues": [],
+        "investment": 1200000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1.2M",
+        "landArea": "1 ha",
+        "capacity": "250 people/day",
+        "activity": "Ethno house",
+        "jobs": "30",
+        "place": null,
+        "status": null,
+        "payback": "4–5 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 17 / 25 km",
+        "address": "Bukhara district",
+        "structure": "Ethno house",
+        "opening": null,
+        "overview": "Chor Bakr “Etno House” is an investment project in Bukhara district. The source presentation identifies the project activity as ethno house, with a land area of 1 ha and a minimum investment requirement of USD 1.2M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-chor-bakr-etno-house",
+        "segment": "heritage"
+      },
+      {
+        "region": "bukhara",
+        "title": "Olot Salt Mine",
+        "subtitle": null,
+        "issues": [],
+        "investment": 300000,
+        "currency": "USD",
+        "investmentDisplay": "USD 0.3M",
+        "landArea": "12 ha",
+        "capacity": "150 people/day",
+        "activity": "Medical tourism",
+        "jobs": "20",
+        "place": null,
+        "status": null,
+        "payback": "4–5 years",
+        "utilities": "Not available",
+        "access": "Airport / railway: 105 / 115 km",
+        "address": "Olot district",
+        "structure": "Medical tourism",
+        "opening": null,
+        "overview": "Olot Salt Mine is an investment project in Olot district. The source presentation identifies the project activity as medical tourism, with a land area of 12 ha and a minimum investment requirement of USD 0.3M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-olot-salt-mine",
+        "segment": "wellness"
+      },
+      {
+        "region": "bukhara",
+        "title": "Suzani Shopping Centre",
+        "subtitle": null,
+        "issues": [],
+        "investment": 1000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1M",
+        "landArea": "0.8 ha",
+        "capacity": "350 people/day",
+        "activity": "Handicraft shop",
+        "jobs": "30",
+        "place": null,
+        "status": null,
+        "payback": "3–4 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 50 / 65 km",
+        "address": "Shofirkon district",
+        "structure": "Handicraft shop",
+        "opening": null,
+        "overview": "Suzani Shopping Centre is an investment project in Shofirkon district. The source presentation identifies the project activity as handicraft shop, with a land area of 0.8 ha and a minimum investment requirement of USD 1M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-suzani-shopping-centre",
+        "segment": "heritage"
+      },
+      {
+        "region": "bukhara",
+        "title": "Bukhara “Ice Palace”",
+        "subtitle": null,
+        "issues": [],
+        "investment": 15000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 15M",
+        "landArea": "2.2 ha",
+        "capacity": "900 people/day",
+        "activity": "Sport tourism",
+        "jobs": "100",
+        "place": null,
+        "status": null,
+        "payback": "5–6 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 24 / 12 km",
+        "address": "Bukhara city",
+        "structure": "Sport tourism",
+        "opening": null,
+        "overview": "Bukhara “Ice Palace” is an investment project in Bukhara city. The source presentation identifies the project activity as sport tourism, with a land area of 2.2 ha and a minimum investment requirement of USD 15M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-bukhara-ice-palace",
+        "segment": "leisure"
+      },
+      {
+        "region": "bukhara",
+        "title": "Gulchorbog Eco Park Adjacent Project",
+        "subtitle": null,
+        "issues": [],
+        "investment": 15000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 15M",
+        "landArea": "2.2 ha",
+        "capacity": "900 people/day",
+        "activity": "Sport tourism",
+        "jobs": "100",
+        "place": null,
+        "status": null,
+        "payback": "5–6 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 24 / 12 km",
+        "address": "Bukhara city",
+        "structure": "Sport tourism",
+        "opening": null,
+        "overview": "Gulchorbog Eco Park Adjacent Project is an investment project in Bukhara city. The source presentation identifies the project activity as sport tourism, with a land area of 2.2 ha and a minimum investment requirement of USD 15M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-gulchorbog-eco-park-adjacent-project",
+        "segment": "eco"
+      },
+      {
+        "region": "bukhara",
+        "title": "Gastro-bazar in the City of Bukhara",
+        "subtitle": null,
+        "issues": [],
+        "investment": 1000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1M",
+        "landArea": "0.8 ha",
+        "capacity": "350 people/day",
+        "activity": "Medical tourism",
+        "jobs": "30",
+        "place": null,
+        "status": null,
+        "payback": "4–5 years",
+        "utilities": "Available",
+        "access": "Airport / railway: 50 / 65 km",
+        "address": "Bukhara City",
+        "structure": "Medical tourism",
+        "opening": null,
+        "overview": "Gastro-bazar in the City of Bukhara is an investment project in Bukhara City. The source presentation identifies the project activity as medical tourism, with a land area of 0.8 ha and a minimum investment requirement of USD 1M.",
+        "source": "Bukhara_Investment_Projects_OnePager_Style last.pptx",
+        "id": "bukhara-gastro-bazar-in-the-city-of-bukhara",
+        "segment": "wellness"
+      },
+      {
+        "region": "jizzakh",
+        "title": "Sayyod glemping resort",
+        "subtitle": "Sayyod glemping resort in Jizzakh Region · Jizzakh Region, Uzbekistan",
+        "issues": [],
+        "investment": 500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 0,5M",
+        "landArea": "1,5 ha",
+        "capacity": "30+ glemping",
+        "activity": null,
+        "jobs": null,
+        "place": "Jizzakh",
+        "status": "Glemping resort",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Glemping resort development",
+        "opening": "2028",
+        "overview": "The project to establish the \"Sayyod Glamping Resort\" in the Sayyod neighborhood of the Forish district is a significant investment initiative aimed at effectively utilizing the area's natural and recreational potential, expanding modern tourism services, and developing eco-tourism. The project's primary significance lies in the opportunity to leverage the Sayyod area's natural landscape, its setting amidst foothills and rural surroundings, and its tranquil, ecologically attractive environment to offer tourists modern glamping-style leisure services that harmonize with nature—distinct from traditional hotel accommodations.",
+        "source": "Sayyod glemping Investment_OnePager_draft.pptx",
+        "id": "jizzakh-sayyod-glemping-resort",
+        "segment": "eco"
+      },
+      {
+        "region": "jizzakh",
+        "title": "Sports Tourism Base",
+        "subtitle": "Sports Tourism Base in Jizzakh Region · Jizzakh Region, Uzbekistan",
+        "issues": [],
+        "investment": 350000,
+        "currency": "USD",
+        "investmentDisplay": "USD 0,35M",
+        "landArea": "2,0 ha",
+        "capacity": "30+ camping",
+        "activity": null,
+        "jobs": null,
+        "place": "Jizzakh",
+        "status": "Sports",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Sports Tourism development",
+        "opening": "2028",
+        "overview": "The project to establish a \"Sports and Tourism Base\" and construct trekking, hiking, and roller-skating paths in the Nushkent *mahalla* area of ​​the Baxmal district is significant for effectively utilizing the region's natural and recreational potential, integrating sports with tourism, and developing modern active leisure services. The project's primary importance lies in creating opportunities for tourists, youth, sports enthusiasts, and local residents to engage in outdoor physical activity, enjoy healthy recreation, and practice sports amidst nature. The creation of trekking, hiking, and roller-skating paths will expand the range of available tourism services.",
+        "source": "Sport turizm Investment_OnePager_draft.pptx",
+        "id": "jizzakh-sports-tourism-base",
+        "segment": "leisure"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Regular Intercity Bus Service",
+        "subtitle": "Regular Intercity Bus Service in Sirdaryo and Xovos Districts in Syrdarya region · Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 680000,
+        "currency": "USD",
+        "investmentDisplay": "USD 680 000",
+        "landArea": null,
+        "capacity": "180 000 people",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Public-Private Partnership",
+        "opening": "2027",
+        "overview": "Currently, residents and transit tourists in the Syrdarya region must detour through Tashkent or rely on expensive taxis for long-distance travel. This project introduces a regular, safe, and cost-effective bus service connecting the region directly to major tourist destinations and border checkpoints, saving significant time and travel costs.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-regular-intercity-bus-service",
+        "segment": "transport"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Eco & Agrotourism Transport Services",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 170000,
+        "currency": "USD",
+        "investmentDisplay": "USD 170,000",
+        "landArea": null,
+        "capacity": "6 seats/vehicle",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "This project aims to establish specialized transport services for tourists and vacationers in the eco and agrotourism zones of the Syrdarya region. It provides a safe, comfortable, and environmentally friendly transportation solution tailored specifically for nature destinations.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-eco-agrotourism-transport-services",
+        "segment": "transport"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Modern Public Restrooms (Sanitary-Hygiene Facilities)",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 50000,
+        "currency": "USD",
+        "investmentDisplay": "USD 50 000",
+        "landArea": null,
+        "capacity": "2,000 people/day",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "This project establishes modern public restrooms to improve tourism infrastructure in the Syrdarya region. Facilities will be strategically placed in major farmers' and consumer markets, significant tourist and pilgrimage sites, rest stops along the Tashkent-Termez (M-39) highway, and highly crowded central public spaces.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-modern-public-restrooms-sanitary-hygiene-facilit",
+        "segment": "transport"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Border Retail and Service Outlets",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 2360000,
+        "currency": "USD",
+        "investmentDisplay": "USD 2,360,000",
+        "landArea": null,
+        "capacity": "USD 78 000/ year",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "The project involves systematically organizing and increasing modern trade, general catering, and consumer service outlets for passengers, tourists, and the local population in the areas adjacent to the \"Xovosobod\" border customs post in the Xavos district of the Syrdarya region.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-border-retail-and-service-outlets",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Eco-Friendly Gastronomic Center",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 1600000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1,600,000",
+        "landArea": null,
+        "capacity": "160 jobs",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "Establishment of an eco-friendly gastronomic center in the Sokhilobod area of the Sardoba district. This center will bring together the renowned fish dishes of the Syrdarya region and the most famous restaurants of the republic into one unified destination.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-eco-friendly-gastronomic-center",
+        "segment": "eco"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Picnic and Camping Area",
+        "subtitle": "Eco-tourism services along the Sardoba Reservoir in the Syrdarya region · Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 1200000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1,200,000",
+        "landArea": null,
+        "capacity": "800 visitors/day",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "The project involves establishing a world-class picnic and camping area along the Sardoba reservoir in the Syrdarya region, or near the water reservoirs close to the city of Gulistan.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-picnic-and-camping-area",
+        "segment": "eco"
+      },
+      {
+        "region": "syrdarya",
+        "title": "24-Hour Night Tourism Market",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 80000,
+        "currency": "USD",
+        "investmentDisplay": "USD 80 000",
+        "landArea": null,
+        "capacity": "50 retail outlets",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "The project involves establishing a world-class picnic and camping area along the Sardoba reservoir in the Syrdarya region, or near the water reservoirs close to the city of Gulistan.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-24-hour-night-tourism-market",
+        "segment": "leisure"
+      },
+      {
+        "region": "syrdarya",
+        "title": "Extreme Water Sports and Active Recreation Center",
+        "subtitle": "Syrdarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 160000,
+        "currency": "USD",
+        "investmentDisplay": "USD 160 000",
+        "landArea": null,
+        "capacity": "50–200 visitors/day",
+        "activity": null,
+        "jobs": null,
+        "place": "Syrdarya",
+        "status": "Concept",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private Investment",
+        "opening": "2027",
+        "overview": "Establishment of a modern, world-class \"Extreme Water Sports and Active Recreation\" center on the banks of the Syrdarya River flowing through the Syrdarya region. The center is designed to offer high-tech extreme sports and outdoor recreational activities that strictly comply with international safety standards for local residents, domestic visitors, and tourists.",
+        "source": "Investment_OnePager_draft Sirdaryo.pptx",
+        "id": "syrdarya-extreme-water-sports-and-active-recreation-cente",
+        "segment": "eco"
+      },
+      {
+        "region": "surkhandarya",
+        "title": "Omonxona Hotel",
+        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 1000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1,0M",
+        "landArea": "0,3 ha",
+        "capacity": "35+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Surkhandarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": null,
+        "source": "Surxondaryo Investment_OnePager_draft.pptx",
+        "id": "surkhandarya-omonxona-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "surkhandarya",
+        "title": "An unfinished Sayrob Hotel",
+        "subtitle": "Hotel for sale&Development of hotel services in Baysun, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 5500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 5,5 M",
+        "landArea": "0,35 ha",
+        "capacity": "60+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Surkhandarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": null,
+        "source": "Surxondaryo Investment_OnePager_draft.pptx",
+        "id": "surkhandarya-an-unfinished-sayrob-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "surkhandarya",
+        "title": "Sharq Hotel",
+        "subtitle": "Hotel for sale&Development of hotel services in the city Termez, Surkhandarya Region · Surkhandarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 2500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 2,5 M",
+        "landArea": "0,4 ha",
+        "capacity": "40+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Surkhandarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": null,
+        "source": "Surxondaryo Investment_OnePager_draft.pptx",
+        "id": "surkhandarya-sharq-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "surkhandarya",
+        "title": "An unfinished Hotel",
+        "subtitle": "Surkhandarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 2000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 2,0 M",
+        "landArea": "0,45 ha",
+        "capacity": "25+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Surkhandarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": null,
+        "source": "Surxondaryo Investment_OnePager_draft.pptx",
+        "id": "surkhandarya-an-unfinished-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_region",
+        "title": "Oltinbel Mountain Ski Resort",
+        "subtitle": "Kumushkon, Parkent District, Tashkent Region",
+        "issues": [],
+        "investment": 105700000000,
+        "currency": "UZS",
+        "investmentDisplay": "105.7 bln UZS",
+        "landArea": "45.25 ha",
+        "capacity": "83 rooms / 165 beds",
+        "activity": null,
+        "jobs": null,
+        "place": "Kumushkon",
+        "status": "Design",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Integrated resort development",
+        "opening": null,
+        "overview": "The master plan proposes a mountain ski resort within the “Oltinbel” Recreation Center in Kumushkon. The integrated concept combines ski and mountain recreation infrastructure with hotel accommodation, chalet houses, a restaurant, wellness facilities and leisure attractions. The project drawings identify six development lots totaling 45.25 ha, with a 2.35 ha Phase 1.",
+        "source": "Oltinbel_Kumushkon_Investment_OnePager.pptx",
+        "id": "tashkent_region-oltinbel-mountain-ski-resort",
+        "segment": "eco"
+      },
+      {
+        "region": "tashkent_region",
+        "title": "Tog' Olkasi Maskani Tourism Complex",
+        "subtitle": "Ovjazsoy, Ohangaron District, Tashkent Region",
+        "issues": [],
+        "investment": 15000000000,
+        "currency": "UZS",
+        "investmentDisplay": "15 bln UZS",
+        "landArea": "12.0 ha",
+        "capacity": "40 rooms / 150 beds",
+        "activity": null,
+        "jobs": "60",
+        "place": "APPROX. LOCATION / MASTER PLAN",
+        "status": "Project proposal",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": null,
+        "opening": null,
+        "overview": "The project proposes a mountain tourism complex on 12.0 ha in Ovjazsoy, combining accommodation, sanatorium, sports and recreation facilities with cable transport, cottages and outdoor attractions.",
+        "source": "Tog_Olkasi_Maskani_Investment_OnePager.pptx",
+        "id": "tashkent_region-tog-olkasi-maskani-tourism-complex",
+        "segment": "eco"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "Asmald Hotel",
+        "subtitle": "Luxury Urban Hotel & Business Hub Development in the heart of Tashkent City,Uzbekistan · Tashkent, Uzbekistan",
+        "issues": [],
+        "investment": 17000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 17M",
+        "landArea": "0.73 ha",
+        "capacity": "94 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Olmazor",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "Asmald Hotel is located near the Hazrati Imam Complex and is within close proximity to the metro. It offers 94 rooms of various types and is considered a promising hotel project. The hotel is also conveniently located near many of Tashkent’s historical landmarks, making it possible for guests to reach several attractions on foot.",
+        "source": "Asmald Hotel.pptx",
+        "id": "tashkent_city-asmald-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "Hotel New Uzbekistan",
+        "subtitle": "Modern midscale,upper midscale · Tashkent, Uzbekistan",
+        "issues": [],
+        "investment": 12000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 12 mln",
+        "landArea": "ha",
+        "capacity": "62 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Tashkent",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "\"New Hotel adjacent to the park “Yangi O‘zbekistan” consists of 62 rooms of various types. It features a convenient location and is close to the New Uzbekistan Park. There are also many entertainment venues available there.\"",
+        "source": "Hotel NEW UZBEKISTAN.pptx",
+        "id": "tashkent_city-hotel-new-uzbekistan",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "Novza Metro Station Hotel",
+        "subtitle": "Modern midscale,upper midscale · Tashkent, Uzbekistan",
+        "issues": [],
+        "investment": 40000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 40 mln",
+        "landArea": "ha",
+        "capacity": "100 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Tashkent",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "Direct proximity to Novza Metro Station — the only transportation hub of its kind in the immediate area, ensuring a constant flow of business and leisure travelers. 8 floor and the 100-room inventory is distributed across multiple guest floors with 14 rooms per typical floor. The mix balances high-yield compact rooms with premium suites to optimize RevPAR while catering to diverse guest segments — from business travelers to extended-stay visitors.",
+        "source": "Novza Metro Station Hotel.pptx",
+        "id": "tashkent_city-novza-metro-station-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "Park Inn by Radisson",
+        "subtitle": "Tashkent, Uzbekistan",
+        "issues": [
+          "unreadable investment figure \"USD M\""
+        ],
+        "investment": null,
+        "currency": "USD",
+        "investmentDisplay": "USD M",
+        "landArea": "ha",
+        "capacity": "172 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Tashkent",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "E Block – Park Inn by Radisson offers a premier 25-story multi-use complex featuring a prestigious 8-meter high entrance lobby, an efficient layout with 112 standard rooms, 56 junior suites, and 4 luxury suites, plus dedicated office spaces, residential apartments, and a penthouse. Backed by an international licensing agreement with Radisson since April 2019, it guarantees world-class hospitality standards, professional design support, and expert operational management.",
+        "source": "Park Inn by Radisson.pptx",
+        "id": "tashkent_city-park-inn-by-radisson",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "FAROVON TASHKENT BOUTIQUE HOTEL",
+        "subtitle": "Luxury in the historic heart of the capital. · Hotel Overview · Tashkent, Uzbekistan",
+        "issues": [],
+        "investment": 12300000,
+        "currency": "USD",
+        "investmentDisplay": "USD 12,3 mln",
+        "landArea": "0.3 ha",
+        "capacity": "56 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Tashkent",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": null,
+        "overview": "The hotel has a Halal certificate from Crescent Rating (Singapore), making it the first hotel+restaurant project in Uzbekistan to receive this certification.Opportunities for conferences, coffee breaks, as well as lunches and dinners for the corporate segment. A convenient location for tourists, within walking distance of the Islamic Civilization Center, Khast-Imam, and Chorsu Bazaar.",
+        "source": "Toshkent Farovon Hotel.pptx",
+        "id": "tashkent_city-farovon-tashkent-boutique-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "tashkent_city",
+        "title": "WEST 6",
+        "subtitle": "Tashkent, Uzbekistan",
+        "issues": [],
+        "investment": 10000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 10 M",
+        "landArea": "ha",
+        "capacity": "80 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Tashkent",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "\"This hotel has a convenient location: it is just a 5–10 minute drive from the airport and is also close to the railway station, making it ideal for traveling to other regions. Additionally, it features 69 standard rooms and 11 luxury (suite) rooms.\"",
+        "source": "West 6.pptx",
+        "id": "tashkent_city-west-6",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "fergana",
+        "title": "AVVAL RESORT HOTEL",
+        "subtitle": "Integrated Wellness & Resort Development in Avval, Fergana Region",
+        "issues": [],
+        "investment": 3500000,
+        "currency": "USD",
+        "investmentDisplay": "$3.5M",
+        "landArea": "2 396 ha",
+        "capacity": "150 rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Fergana",
+        "status": "4-star resort hotel",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2029",
+        "overview": "Avval Resort Hotel is proposed as a 150-room, 4-star resort hotel in Avval, Fergana Region, Uzbekistan. The product combines European-standard hospitality with Fergana Valley nature, Uzbek craftsmanship, regional cuisine and wellness.The Fergana Tourism and Recreation Zone is being developed across 2,396 hectares with mountain, wellness, agricultural and leisure tourism opportunities. Official tourism materials also describe the Avval Entertainment and Tourist Complex as a modern recreation and tourist destination in a scenic natural environment.",
+        "source": "Investment Avval Resort hotel and Avval Guzari.pptx",
+        "id": "fergana-avval-resort-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "fergana",
+        "title": "AVVAL GUZARI",
+        "subtitle": "Integrated Wellness & Resort Development in Avval, Fergana Region · Fergana Region, Uzbekistan",
+        "issues": [],
+        "investment": 750000,
+        "currency": "USD",
+        "investmentDisplay": "$750K",
+        "landArea": "3 000 м²",
+        "capacity": null,
+        "activity": null,
+        "jobs": null,
+        "place": "Fergana",
+        "status": null,
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2029",
+        "overview": "\"AVVAL GUZARI\" is a flagship luxury restaurant and recreational resort complex located on 30 sotix (3,000 m²) in the designated Avval Tourist-Recreation Zone in Fergana, Uzbekistan",
+        "source": "Investment Avval Resort hotel and Avval Guzari.pptx",
+        "id": "fergana-avval-guzari",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "khorezm",
+        "title": "Qalajiq Qala Oasis",
+        "subtitle": "Eco-tourism & Heritage Resort Development in Bagat District, Khorezm Region · Khorezm Region, Uzbekistan",
+        "issues": [],
+        "investment": 10000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 10 M",
+        "landArea": "125 ha",
+        "capacity": "300 rooms + 40 yurts",
+        "activity": null,
+        "jobs": null,
+        "place": "Bagat",
+        "status": "PPP",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Private / own funds",
+        "opening": "2027",
+        "overview": "Qalajiq Qala Oasis is an eco-tourism and heritage destination in Bagat district, Khorezm Region. The project combines accommodation, recreation, cultural heritage, lake-based leisure and traditional tourism services around the ancient \"Qalajiq\" fortress and salt lake, with infrastructure designed for domestic and international visitors.",
+        "source": "Ilova (Investment_OnePager).pptx",
+        "id": "khorezm-qalajiq-qala-oasis",
+        "segment": "heritage"
+      },
+      {
+        "region": "khorezm",
+        "title": "“Yangiariq Sho‘rko‘l” complex",
+        "subtitle": "Public Recreation & Entertainment Complex in Yangiariq, Khorezm Region · Khorezm Region, Uzbekistan",
+        "issues": [],
+        "investment": 15000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 15 M",
+        "landArea": "40 ha",
+        "capacity": "50K visitors",
+        "activity": null,
+        "jobs": null,
+        "place": "Yangiariq",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": null,
+        "overview": "Shorkol Recreation Resort is a greenfield public recreation and entertainment development in the Uyg'ur mahalla territory of Yangiariq district, Khorezm region. The project combines accommodation, dining, wellness, fishing, swimming, retail and extreme-tourism facilities in a single lakeside destination, creating 315 new jobs and positioned to attract an estimated 50,000 visitors a year.",
+        "source": "Ilova (Investment_OnePager).pptx",
+        "id": "khorezm-yangiariq-sho-rko-l-complex",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "khorezm",
+        "title": "Amudaryo Tourism Complex",
+        "subtitle": "Tourism-Recreation Complex on the Amu Darya, Urgench District · Khorezm Region, Uzbekistan",
+        "issues": [],
+        "investment": 41000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 41.0M",
+        "landArea": "110 ha",
+        "capacity": "1M visitors",
+        "activity": null,
+        "jobs": null,
+        "place": "Urgench",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": "Parking & eco pedestrian paths",
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": null,
+        "overview": "Amudaryo Tourism-Recreation Complex is a greenfield development on 110 hectares along the Amu Darya in Urgench district, Khorezm region, combining a national nature park and forestry land with new tourism infrastructure. The project adds hotels, a sanatorium, dining, glamping, swimming and equestrian facilities, targeting 2,000 jobs and 1 million visitors a year by 2031.",
+        "source": "Ilova (Investment_OnePager).pptx",
+        "id": "khorezm-amudaryo-tourism-complex",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Muborak Desert Extreme Tourism",
+        "subtitle": "Kashkadarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 58000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 58 M",
+        "landArea": "2 ha",
+        "capacity": "Yurt-style house 20",
+        "activity": null,
+        "jobs": null,
+        "place": "Kashkadarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "This project has been developed in the desert area of Muborak District, Kashkadarya Region, with the aim of developing leisure, desert tourism, and hunting tourism.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-muborak-desert-extreme-tourism",
+        "segment": "eco"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Medical Treatment and Recreation Sanatorium, Kashkadarya, Dehkonobod Region",
+        "subtitle": null,
+        "issues": [
+          "subtitle names namangan, deck filed under kashkadarya"
+        ],
+        "investment": 18000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 18 M",
+        "landArea": "10 ha",
+        "capacity": "50+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Dehkonobod n",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "Deghkonobod is a greenfield, integrated wellness and hospitality development located in the Hodjaipok district of Kashkadarya Region, in south Uzbekistan. The project combines a wellness sanatorium, a main hotel, a boutique hotel, and premium villas within a single resort destination, supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand for wellness and resort tourism.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-medical-treatment-and-recreation-sanatorium-kash",
+        "segment": "wellness"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Maydanak High-Mountain Recreation Tourism Center (Hotel) Kamashi, Kashkadarya Region",
+        "subtitle": null,
+        "issues": [
+          "subtitle names namangan, deck filed under kashkadarya"
+        ],
+        "investment": 10000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 10 M",
+        "landArea": "1.4 ha",
+        "capacity": "55+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Kashkadarya",
+        "status": "JV",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "Establishing hotel and restaurant services within the Maydanak high-mountain recreational zone in Region Kashkadarya, Kamashi in eastern Uzbekistan. The project combines a wellness sanatorium, a main hotel, a boutique hotel, and premium villas within a single resort destination, supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand for wellness and resort tourism.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-maydanak-high-mountain-recreation-tourism-center",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Yakkabog’ Resort",
+        "subtitle": "Integrated Wellness & Resort Development in Yakkabog’, Kashkadarya Region · Namangan Region, Uzbekistan",
+        "issues": [],
+        "investment": 25000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 25 M",
+        "landArea": "3 ha",
+        "capacity": "100+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Kashkadarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "Yakkabog’ Resort is a greenfield, integrated wellness and hospitality development located in the Chartak district of Namangan Region, in eastern Uzbekistan. The project combines a wellness sanatorium, a main hotel, a boutique hotel, and premium villas within a single resort destination, supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand for wellness and resort tourism.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-yakkabog-resort",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Pachkamar Reservoir",
+        "subtitle": "Recreation Center in the Reservoir Area Pachkamar in Guzar, Kashkadarya Region · Namangan Region, Uzbekistan",
+        "issues": [],
+        "investment": 30000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 30 M",
+        "landArea": "18 ha",
+        "capacity": "40 shale houses and restorans 5",
+        "activity": null,
+        "jobs": null,
+        "place": "Kashkadarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "A project to establish an eco-friendly, modern camping and glamping destination harmoniously integrated with nature and meeting contemporary standards in the Guzar district of Kashkadarya Region, in eastern Uzbekistan. The project combines Parking Area, Summer Kitchen and Health Trails Pontoons, Catamarans and Beach Equipment Geodesic Dome Tents and Frame Houses.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-pachkamar-reservoir",
+        "segment": "eco"
+      },
+      {
+        "region": "kashkadarya",
+        "title": "Qaynar Resort",
+        "subtitle": "Mountain cable car in Qaynar, Kashkadarya Region · Kashkadarya Region, Uzbekistan",
+        "issues": [],
+        "investment": 15000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 15M",
+        "landArea": "5 ha",
+        "capacity": "15 cabin",
+        "activity": null,
+        "jobs": null,
+        "place": "Kashkadarya",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2028",
+        "overview": "The proposed mountain cable car project is located in the Qaynar area of Kitob District, at the Takhtakoracha Pass in the north-eastern part of the region. The project is designed to create a unique tourism attraction, providing visitors with convenient access to the breathtaking mountain landscapes and spectacular natural scenery of the area. The cable car will offer tourists an opportunity to admire and experience the region’s pristine nature, panoramic mountain views, and distinctive landscapes from an elevated perspective. The project is expected to enhance the tourism potential of the region, attract more domestic and international visitors, and contribute to the sustainable development of mountain tourism and related infrastructure.",
+        "source": "project investka Kashkadarya.pptx",
+        "id": "kashkadarya-qaynar-resort",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "karakalpakstan",
+        "title": "Akchakul Resort",
+        "subtitle": "Integrated Wellness & Resort Development in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "issues": [],
+        "investment": 2000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 2M",
+        "landArea": "2,2 ha",
+        "capacity": "100+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Karakalpakstan",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "Akchakul Resort is a greenfield, integrated wellness and hospitality development located in the Ellikkala district of Karakalpakstan Region, in northwest Uzbekistan. Situated on the shores of Lake Akchakul, the project combines a wellness sanatorium, a main hotel, and premium villas within a single resort destination, supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand for wellness and resort tourism.",
+        "source": "Investment_OnePager_draft KR Akchakul 3.pptx",
+        "alsoIn": [
+          "Investment_OnePager_draft KR Akchakul Resort (2).pptx"
+        ],
+        "id": "karakalpakstan-akchakul-resort",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "karakalpakstan",
+        "title": "Akchakul Hotel",
+        "subtitle": "Hotel complex in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "issues": [],
+        "investment": 1000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 1M",
+        "landArea": "1,1 ha",
+        "capacity": "40+rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Karakalpakstan",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "Akchakul Hotel is a greenfield, hospitality development located in the Ellikkala district of Karakalpakstan Region, in northwest Uzbekistan. Situated on the shores of Lake Akchakul, the project a hotel, and within a supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand for hotel tourism.",
+        "source": "Investment_OnePager_draft KR Akchakul 3.pptx",
+        "id": "karakalpakstan-akchakul-hotel",
+        "segment": "infrastructure"
+      },
+      {
+        "region": "karakalpakstan",
+        "title": "Akchakul Pool",
+        "subtitle": "Swimming pool and aquapark complexis in Ellikkala, Karakalpakstan Region · Namangan Region, Uzbekistan",
+        "issues": [],
+        "investment": 500000,
+        "currency": "USD",
+        "investmentDisplay": "USD 0,5M",
+        "landArea": "0,9 ha",
+        "capacity": "120 people",
+        "activity": null,
+        "jobs": null,
+        "place": "Karakalpakstan",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": "2027",
+        "overview": "Swimming pool and aquapark complexis a greenfield, development located in the Ellikkala district of Karakalpakstan Region, in northwest Uzbekistan. Situated on the shores of Lake Akchakul, the project within a supported by recreational and leisure infrastructure, and is positioned to serve domestic, regional and international demand tourism.",
+        "source": "Investment_OnePager_draft KR Akchakul 3.pptx",
+        "id": "karakalpakstan-akchakul-pool",
+        "segment": "leisure"
+      },
+      {
+        "region": "samarkand",
+        "title": "OUTLET VILLAGE",
+        "subtitle": null,
+        "issues": [
+          "subtitle names namangan, deck filed under samarkand"
+        ],
+        "investment": 100000000,
+        "currency": "USD",
+        "investmentDisplay": "USD 100M",
+        "landArea": "10 ha",
+        "capacity": "350+ rooms",
+        "activity": null,
+        "jobs": null,
+        "place": "Samarqkand",
+        "status": "Greenfield",
+        "payback": null,
+        "utilities": null,
+        "access": null,
+        "address": null,
+        "structure": "Greenfield development",
+        "opening": null,
+        "overview": "Branded Fashion Retail Network is a modern retail and tourism-oriented development planned in the Konigil massif of Samarkand District, Samarkand Region, adjacent to the “Silk Road Samarkand” International Tourism Center. The project envisages bringing together international and local fashion brands within a unified retail destination, offering modern shopping opportunities for both tourists and local residents. Its strategic location near one of Samarkand’s major tourism hubs is intended to attract domestic and international visitors, enhance the region’s shopping tourism potential, and create a new retail destination integrated into the city’s growing tourism infrastructure.",
+        "source": "Samarkand_Investment_OnePager_draft.pptx",
+        "id": "samarkand-outlet-village",
+        "segment": "infrastructure"
+      }
+    ],
+    "regionNames": {
+      "andijan": {
+        "uz": "Andijon",
+        "ru": "Андижанская область",
+        "en": "Andijan"
+      },
+      "bukhara": {
+        "uz": "Buxoro",
+        "ru": "Бухарская область",
+        "en": "Bukhara"
+      },
+      "jizzakh": {
+        "uz": "Jizzax",
+        "ru": "Джизакская область",
+        "en": "Jizzakh"
+      },
+      "karakalpakstan": {
+        "uz": "Qoraqalpogʻiston",
+        "ru": "Каракалпакстан",
+        "en": "Karakalpakstan"
+      },
+      "kashkadarya": {
+        "uz": "Qashqadaryo",
+        "ru": "Кашкадарьинская область",
+        "en": "Kashkadarya"
+      },
+      "khorezm": {
+        "uz": "Xorazm",
+        "ru": "Хорезмская область",
+        "en": "Khorezm"
+      },
+      "navoi": {
+        "uz": "Navoiy",
+        "ru": "Навоийская область",
+        "en": "Navoiy"
+      },
+      "samarkand": {
+        "uz": "Samarqand",
+        "ru": "Самаркандская область",
+        "en": "Samarkand"
+      },
+      "surkhandarya": {
+        "uz": "Surxondaryo",
+        "ru": "Сурхандарьинская область",
+        "en": "Surkhandarya"
+      },
+      "syrdarya": {
+        "uz": "Sirdaryo",
+        "ru": "Сырдарьинская область",
+        "en": "Syrdarya"
+      },
+      "tashkent_city": {
+        "uz": "Toshkent shahri",
+        "ru": "город Ташкент",
+        "en": "Tashkent City"
+      },
+      "tashkent_region": {
+        "uz": "Toshkent viloyati",
+        "ru": "Ташкентская область",
+        "en": "Tashkent Region"
+      },
+      "fergana": {
+        "uz": "Fargʻona",
+        "ru": "Ферганская область",
+        "en": "Fergana"
+      }
+    },
+    "regionCounts": {
+      "andijan": 2,
+      "bukhara": 12,
+      "jizzakh": 2,
+      "syrdarya": 8,
+      "surkhandarya": 4,
+      "tashkent_region": 2,
+      "tashkent_city": 6,
+      "fergana": 2,
+      "khorezm": 3,
+      "kashkadarya": 6,
+      "karakalpakstan": 3,
+      "samarkand": 1
+    },
+    "segmentCounts": {
+      "eco": 12,
+      "infrastructure": 24,
+      "heritage": 5,
+      "wellness": 3,
+      "leisure": 4,
+      "transport": 3
+    },
+    "totalUsd": 855300000,
+    "statedUsdCount": 48,
+    "contributedBy": [
+      {
+        "uz": "Qoraqalpogʻiston Respublikasi Vazirlar Kengashi, viloyatlar va Toshkent shahri hokimliklari",
+        "ru": "Кабинет Министров Республики Каракалпакстан, хокимияты областей и города Ташкента",
+        "en": "the Council of Ministers of Karakalpakstan and the regional and Tashkent city administrations"
+      },
+      {
+        "uz": "Investitsiyalar, sanoat va savdo vazirligi",
+        "ru": "Министерство инвестиций, промышленности и торговли",
+        "en": "the Ministry of Investment, Industry and Trade"
+      },
+      {
+        "uz": "Transport vazirligi",
+        "ru": "Министерство транспорта",
+        "en": "the Ministry of Transport"
+      },
+      {
+        "uz": "Tashqi ishlar vazirligi va diplomatik vakolatxonalar",
+        "ru": "Министерство иностранных дел и дипломатические представительства",
+        "en": "the Ministry of Foreign Affairs and the diplomatic missions"
+      },
+      {
+        "uz": "Savdo-sanoat palatasi",
+        "ru": "Торгово-промышленная палата",
+        "en": "the Chamber of Commerce and Industry"
+      },
+      {
+        "uz": "mahalliy va xorijiy investorlar, xususiy kompaniyalar va loyiha tashabbuskorlari",
+        "ru": "отечественные и зарубежные инвесторы, частные компании и инициаторы проектов",
+        "en": "domestic and foreign investors, private companies and project initiators"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "concept",
+      "title": {
+        "uz": "«I Tourism Investment Forum» xalqaro investitsiya forumi konsepsiyasi",
+        "ru": "Концепция международного инвестиционного форума в сфере туризма «I Tourism Investment Forum»",
+        "en": "Concept of the International Tourism Investment Forum “I Tourism Investment Forum”"
+      },
+      "publisher": {
+        "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
+        "ru": "Комитет по туризму Республики Узбекистан",
+        "en": "Committee on Tourism of the Republic of Uzbekistan"
+      },
+      "document": "КонцепцияI_Tourism_Investment_Forum.docx",
+      "asOf": "2026-10-07"
+    },
+    {
+      "id": "programme",
+      "title": {
+        "uz": "Forumning dastlabki dasturi",
+        "ru": "Предварительная программа Форума",
+        "en": "Preliminary programme of the forum"
+      },
+      "publisher": {
+        "uz": "Oʻzbekiston Respublikasi Turizm qoʻmitasi",
+        "ru": "Комитет по туризму Республики Узбекистан",
+        "en": "Committee on Tourism of the Republic of Uzbekistan"
+      },
+      "document": "2_Предварительная_программа_Форума.docx",
+      "asOf": "2026-10-07"
+    },
+    {
+      "id": "portfolio",
+      "title": {
+        "uz": "Hududlarning investitsiya loyihalari boʻyicha bir sahifalik taqdimotlari",
+        "ru": "Инвестиционные одностраничные презентации проектов регионов",
+        "en": "Regional investment project one-pagers"
+      },
+      "publisher": {
+        "uz": "Hudud hokimliklari / Oʻzbekiston Respublikasi Turizm qoʻmitasi",
+        "ru": "Хокимияты регионов / Комитет по туризму Республики Узбекистан",
+        "en": "Regional administrations / Committee on Tourism of the Republic of Uzbekistan"
+      },
+      "document": "Лойиҳалар.zip, Samarkand_Investment_OnePager_draft.pptx",
+      "asOf": "2026-10-07"
+    }
+  ]
+}

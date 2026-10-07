@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Invest Uzbekistan — immersive storytelling concept landing (Silk Road to 2030).",
+  "description": "Tourism Investment Forum 2026 — immersive storytelling concept landing.",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",

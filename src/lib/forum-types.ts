@@ -75,36 +75,48 @@ export interface PreparationStage extends MechanismStep {
   roman: string;
 }
 
-/** One investment project, as parsed out of its regional one-pager. */
+/** A label and value exactly as the project sheet states them. */
+export interface Stat {
+  label: string;
+  value: string;
+}
+
+/**
+ * One investment project, as parsed out of its sheet.
+ *
+ * The organiser has sent three generations of the sheet template with different
+ * field lists, so everything beyond the title and the money is carried as
+ * label/value lists in the sheet's own words rather than squeezed into a fixed
+ * schema. A project that states its number of beds keeps it.
+ */
 export interface Project {
   id: string;
-  region: string;
+  region: string | null;
   segment: string;
   title: string;
   displayTitle?: string;
   subtitle: string | null;
-  /** Normalised to whole units of `currency`; null when the deck left it open. */
+  /** Normalised to whole units of `currency`; null when the sheet left it open. */
   investment: number | null;
   currency: 'USD' | 'UZS' | null;
-  /** The figure exactly as the deck writes it, for the tooltip. */
+  /** The figure exactly as the sheet writes it — including "By agreement". */
   investmentDisplay: string | null;
-  landArea: string | null;
-  capacity: string | null;
-  activity: string | null;
-  jobs: string | null;
-  place: string | null;
-  status: string | null;
-  payback: string | null;
-  utilities: string | null;
-  access: string | null;
-  address: string | null;
-  structure: string | null;
-  opening: string | null;
+  /** The headline chips: INVESTMENT, LAND AREA, CAPACITY, BEDS, OPERATOR… */
+  metrics: Stat[];
+  /** What the project consists of. */
+  concept: Stat[];
+  /** The INVESTMENT OPPORTUNITY table. */
+  opportunity: Stat[];
+  /** The WHY INVEST argument, point by point. */
+  whyInvest: Stat[];
+  /** Access and surroundings. */
+  place: Stat[];
   overview: string | null;
-  source: string;
-  /** Machine-detected problems in the source deck; shown to nobody, used in QA. */
+  statusNote: string | null;
+  /** Every sheet this project was found in. */
+  sheets: string[];
+  /** Machine-detected problems and applied corrections; for QA, not for display. */
   issues: string[];
-  alsoIn?: string[];
 }
 
 export interface ForumSourceRef {
@@ -150,6 +162,8 @@ export interface ForumData {
     segmentCounts: Record<string, number>;
     totalUsd: number;
     statedUsdCount: number;
+    statedUzsCount: number;
+    openCount: number;
     contributedBy: I18nText[];
   };
   sources: ForumSourceRef[];

@@ -105,13 +105,21 @@ Names of organisations that took part in TIIF 2026 appear as **text only**, from
 
 The Tourism Investment Forum content on site 2 comes from documents supplied by
 the organiser for this project: the forum concept, the preliminary programme, and
-the regional investment project one-pagers. They are read by
-`scripts/build-forum-data.mjs` and are **not redistributed** — the originals stay
-out of the repository and only the parsed facts are published.
+three batches of investment project sheets (`onepager .zip`, `Лойиҳалар new.zip`,
+`Лойиҳалар.zip`). They are read by `scripts/build-forum-data.mjs` and are **not
+redistributed** — the originals stay out of the repository and only the parsed
+facts are published.
 
-The regional source material also contains initiator names, personal mobile
-numbers, taxpayer identification numbers and bank details. **None of it is carried
-into `forum-2026.json` or onto the page.**
+The sheets arrive in three generations of the same template with different field
+lists, and the same project appears in more than one batch. The newest sheet for
+a project wins; every sheet it was found in is recorded on the record, so a
+figure can be traced back.
+
+The project sheets contain an `INVESTMENT CONTACT` block with an initiator's name
+and personal mobile number, and the raw Tashkent-region tables add taxpayer
+identification numbers and bank details. **None of it is carried into
+`forum-2026.json` or onto the page** — the contact block is parsed in order to be
+discarded.
 
 ## Data sources
 

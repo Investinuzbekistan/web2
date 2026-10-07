@@ -2,10 +2,13 @@
 /**
  * The full reading of one project, as an overlay.
  *
- * Everything shown here is lifted straight out of the regional one-pager the
- * organiser supplied. Fields the deck left blank are simply absent — nothing is
- * filled in, and the investment figure carries the deck's own wording in its
- * title so a reader can see what was actually written.
+ * Everything shown here is lifted straight out of the sheet the organiser
+ * supplied, in the sheet's own words: the labels are not translated and not
+ * renamed, because three generations of the template use different ones and
+ * mapping them onto a fixed list is how a project loses the one figure that
+ * made it interesting. Fields a sheet left blank are simply absent, and the
+ * investment figure carries the sheet's own wording in its title so a reader
+ * can see what was actually written.
  */
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -24,7 +27,7 @@ let returnFocus: HTMLElement | null = null;
 
 const regionName = computed(() => {
   const names = forum.value?.portfolio.regionNames;
-  const region = props.project ? names?.[props.project.region] : undefined;
+  const region = props.project?.region ? names?.[props.project.region] : undefined;
   return region ? tr(region) : '';
 });
 
@@ -39,25 +42,40 @@ const money = computed(() => {
   return formatMoney(p.investment, p.currency, lang.value);
 });
 
-/** label/value pairs, in the order the one-pagers present them. */
-const rows = computed(() => {
+/** The headline chips, minus the investment, which has its own block above. */
+const metrics = computed(() =>
+  (props.project?.metrics ?? []).filter((m) => !/^INVESTMENT$/i.test(m.label)),
+);
+
+/**
+ * The label/value blocks, in the order a sheet presents them.
+ *
+ * The sheets repeat themselves — a destination named in PROJECT CONCEPT turns
+ * up again under INVESTMENT OPPORTUNITY and a third time in WHY INVEST — so a
+ * value that has already been shown is dropped from the later block. Only an
+ * exact repeat is dropped; a longer sentence that happens to mention the same
+ * place is left alone. Blocks that empty out disappear with it.
+ */
+const blocks = computed(() => {
   const p = props.project;
   if (!p) return [];
-  const pairs: [string, string | null][] = [
-    ['landArea', p.landArea],
-    ['capacity', p.capacity],
-    ['activity', p.activity],
-    ['jobs', p.jobs],
-    ['status', p.status],
-    ['structure', p.structure],
-    ['payback', p.payback],
-    ['opening', p.opening],
-    ['utilities', p.utilities],
-    ['access', p.access],
-    ['place', p.place],
-    ['address', p.address],
-  ];
-  return pairs.filter((pair): pair is [string, string] => Boolean(pair[1]));
+  const shown = new Set((p.metrics ?? []).map((m) => m.value.trim().toLowerCase()));
+  return [
+    { key: 'concept', rows: p.concept },
+    { key: 'opportunity', rows: p.opportunity },
+    { key: 'whyInvest', rows: p.whyInvest },
+    { key: 'place', rows: p.place },
+  ]
+    .map((block) => ({
+      key: block.key,
+      rows: block.rows.filter((row) => {
+        const value = row.value.trim().toLowerCase();
+        if (shown.has(value)) return false;
+        shown.add(value);
+        return true;
+      }),
+    }))
+    .filter((b) => b.rows.length > 0);
 });
 
 function onKey(event: KeyboardEvent) {
@@ -104,7 +122,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 
         <p class="panel__money">
           <span class="eyebrow">{{ t('portfolio.labels.investment') }}</span>
-          <!-- The deck's own wording, so a reader can check our arithmetic. -->
+          <!-- The sheet's own wording, so a reader can check our arithmetic. -->
           <strong
             v-if="money"
             class="figure"
@@ -112,21 +130,35 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
           >
             {{ money }}
           </strong>
-          <strong v-else class="figure panel__money--none">{{ t('portfolio.noFigure') }}</strong>
+          <strong v-else class="figure panel__money--none">
+            {{ project.investmentDisplay ?? t('portfolio.noFigure') }}
+          </strong>
           <small v-if="project.currency === 'UZS'">{{ t('portfolio.uzsNote') }}</small>
         </p>
 
-        <dl v-if="rows.length" class="panel__rows">
-          <div v-for="[key, value] in rows" :key="key">
-            <dt>{{ t(`portfolio.labels.${key}`) }}</dt>
-            <dd>{{ value }}</dd>
-          </div>
-        </dl>
+        <ul v-if="metrics.length" class="panel__chips">
+          <li v-for="m in metrics" :key="m.label">
+            <span>{{ m.label }}</span>
+            <strong>{{ m.value }}</strong>
+          </li>
+        </ul>
 
         <template v-if="project.overview">
           <h4 class="panel__heading">{{ t('portfolio.labels.overview') }}</h4>
           <p class="panel__overview">{{ project.overview }}</p>
         </template>
+
+        <template v-for="block in blocks" :key="block.key">
+          <h4 class="panel__heading">{{ t(`portfolio.blocks.${block.key}`) }}</h4>
+          <dl class="panel__rows">
+            <div v-for="row in block.rows" :key="row.label">
+              <dt>{{ row.label }}</dt>
+              <dd>{{ row.value }}</dd>
+            </div>
+          </dl>
+        </template>
+
+        <p v-if="project.statusNote" class="panel__status">{{ project.statusNote }}</p>
 
         <p class="panel__note">{{ t('sources.projectLanguage') }}</p>
       </div>
@@ -152,9 +184,10 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
 }
 .panel__sheet {
   position: relative;
-  width: min(100%, 36rem);
+  width: min(100%, 38rem);
   height: 100%;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: clamp(1.5rem, 4vw, 3rem);
   background: var(--night-2);
   border-inline-start: 1px solid var(--hairline);
@@ -221,6 +254,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   font-weight: 400;
 }
 .panel__money--none {
+  font-size: clamp(1.1rem, 3vw, 1.5rem) !important;
   color: var(--ink-dim);
 }
 .panel__money small {
@@ -228,21 +262,67 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   color: var(--ink-dim);
 }
 
+/* The headline chips, as a wrapping row — the sheet shows them side by side. */
+/* Each chip carries its own border rather than the grid showing through a 1px
+   gap: the chip count is whatever the sheet states, so the last row is usually
+   short and a see-through grid leaves a lit empty cell beside it. */
+.panel__chips {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.5rem;
+}
+.panel__chips li {
+  display: grid;
+  gap: 0.15rem;
+  align-content: start;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.6rem;
+}
+.panel__chips span {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.panel__chips strong {
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.panel__heading {
+  margin-block-start: 2rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+.panel__overview {
+  margin-block-start: 0.6rem;
+  font-size: 0.95rem;
+}
+
 .panel__rows {
   display: grid;
   gap: 0;
-  margin: 0;
+  margin: 0.6rem 0 0;
 }
 .panel__rows > div {
   display: grid;
-  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
   gap: 1rem;
   padding-block: 0.7rem;
   border-block-end: 1px solid var(--hairline);
 }
 .panel__rows dt {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--ink-dim);
+  text-wrap: balance;
 }
 .panel__rows dd {
   margin: 0;
@@ -250,18 +330,13 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKey));
   color: var(--ink);
 }
 
-.panel__heading {
-  margin-block-start: 2rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.panel__overview {
-  margin-block-start: 0.6rem;
-  font-size: 0.95rem;
+.panel__status {
+  margin-block-start: 1.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
 }
 
 .panel__note {

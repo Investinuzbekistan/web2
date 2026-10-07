@@ -41,6 +41,8 @@ const totals = computed(() => {
     projects: p?.projects.length ?? 0,
     usd: (p?.totalUsd ?? 0) / 1e6,
     statedUsd: p?.statedUsdCount ?? 0,
+    statedUzs: p?.statedUzsCount ?? 0,
+    open: p?.openCount ?? 0,
     regions: Object.keys(p?.regionCounts ?? {}).length,
   };
 });
@@ -63,6 +65,10 @@ const SORT_LABEL: Record<PortfolioSort, string> = {
 
 const title = (p: Project) => p.displayTitle ?? p.title;
 
+/** The sheet's own one-word description of the project, when it gives one. */
+const activityOf = (p: Project) =>
+  p.metrics.find((m) => /^(ACTIVITY|OPERATOR|STATUS)$/i.test(m.label))?.value ?? null;
+
 /** " mln USD" / " млн USD" / " M USD" — the unit word follows the language. */
 const usdSuffix = computed(() => ` ${millionWord(lang.value)} USD`);
 
@@ -72,14 +78,15 @@ function matches(p: Project): boolean {
   if (f.segment !== 'all' && p.segment !== f.segment) return false;
   const q = f.query.trim().toLowerCase();
   if (!q) return true;
+  // Everything the sheet states, so a search for "glamping", "ski" or a
+  // district name finds the project whether the word is in the title, a chip,
+  // the concept list or the overview.
   const haystack = [
     title(p),
     p.subtitle,
-    p.place,
-    p.activity,
-    p.address,
     p.overview,
-    regionNames.value[p.region] ? tr(regionNames.value[p.region]) : '',
+    p.region && regionNames.value[p.region] ? tr(regionNames.value[p.region]) : '',
+    ...[...p.metrics, ...p.concept, ...p.whyInvest, ...p.place].map((s) => `${s.label} ${s.value}`),
   ]
     .filter(Boolean)
     .join(' ')
@@ -95,7 +102,13 @@ const shown = computed(() => {
     if (by === 'largest') return amount(b) - amount(a);
     if (by === 'smallest') return amount(a) - amount(b);
     if (by === 'name') return title(a).localeCompare(title(b));
-    return a.region.localeCompare(b.region) || amount(b) - amount(a);
+    // A sheet can arrive without a region; those sort to the end.
+    if (a.region !== b.region) {
+      if (!a.region) return 1;
+      if (!b.region) return -1;
+      return a.region.localeCompare(b.region);
+    }
+    return amount(b) - amount(a);
   });
 });
 
@@ -161,14 +174,28 @@ const layout = computed(() => {
     placed.push({ x, y, r, p });
   }
 
-  // The lane for everything that cannot be put on a dollar axis.
+  /**
+   * The lane for everything that cannot be put on a dollar axis: the sheets
+   * that state soums and the ones that leave the figure open. Laid out as a
+   * grid sized to the plot, so the lane grows sideways as sheets arrive rather
+   * than spilling past the axis.
+   */
   const aside = projects.value.filter((p) => !(p.currency === 'USD' && p.investment));
-  const asideDots = aside.map((p, i) => ({
-    x: 44 + (i % 2) * 34,
-    y: midY - 24 + Math.floor(i / 2) * 40,
-    r: 9,
-    p,
-  }));
+  const step = 28;
+  const rows = Math.max(1, Math.floor((PLOT.bottom - PLOT.top) / step));
+  const cols = Math.ceil(aside.length / rows);
+  const perCol = Math.ceil(aside.length / cols);
+  const asideDots = aside.map((p, i) => {
+    const col = Math.floor(i / perCol);
+    const row = i % perCol;
+    const colCount = Math.min(perCol, aside.length - col * perCol);
+    return {
+      x: 118 - (cols - 1 - col) * step,
+      y: midY + (row - (colCount - 1) / 2) * step,
+      r: 9,
+      p,
+    };
+  });
 
   return { placed, asideDots };
 });
@@ -200,7 +227,9 @@ function dotTitle(p: Project): string {
     <div class="shell">
       <p class="eyebrow">{{ t('chapters.portfolio.n') }}</p>
       <h2>{{ t('chapters.portfolio.title') }}</h2>
-      <p class="portfolio__lead">{{ t('portfolio.lead') }}</p>
+      <p class="portfolio__lead">
+        {{ t('portfolio.lead', { count: totals.projects, regions: totals.regions }) }}
+      </p>
       <p class="portfolio__body">{{ t('portfolio.body') }}</p>
 
       <ul class="portfolio__totals">
@@ -217,7 +246,9 @@ function dotTitle(p: Project): string {
           <span class="portfolio__caption">{{ t('portfolio.regionsLabel') }}</span>
         </li>
       </ul>
-      <p class="portfolio__footnote">{{ t('portfolio.totalNote', { n: totals.statedUsd }) }}</p>
+      <p class="portfolio__footnote">
+        {{ t('portfolio.totalNote', { n: totals.statedUsd, uzs: totals.statedUzs, open: totals.open }) }}
+      </p>
 
       <!-- Controls -------------------------------------------------------- -->
       <div class="portfolio__controls">
@@ -279,7 +310,10 @@ function dotTitle(p: Project): string {
             </g>
             <text :x="PLOT.right" :y="VIEW.h - 6" text-anchor="end" class="swarm__unit">USD</text>
             <line :x1="128" :y1="PLOT.top" :x2="128" :y2="PLOT.bottom + 18" class="swarm__divider" />
-            <text :x="78" :y="PLOT.bottom + 44" text-anchor="middle">{{ t('portfolio.noFigure') }}</text>
+            <!-- Covers both the soum figures and the ones left open: neither
+                 belongs on a dollar axis, and saying "not stated" of a project
+                 that states soums would be wrong. -->
+            <text :x="72" :y="PLOT.bottom + 44" text-anchor="middle">{{ t('portfolio.offScale') }}</text>
           </g>
 
           <g class="swarm__dots">
@@ -318,8 +352,8 @@ function dotTitle(p: Project): string {
             <span class="row__main">
               <span class="row__title">{{ title(project) }}</span>
               <span class="row__meta">
-                {{ regionNames[project.region] ? tr(regionNames[project.region]) : project.region }}
-                <template v-if="project.activity"> · {{ project.activity }}</template>
+                {{ project.region && regionNames[project.region] ? tr(regionNames[project.region]) : '' }}
+                <template v-if="activityOf(project)"> · {{ activityOf(project) }}</template>
               </span>
             </span>
             <span

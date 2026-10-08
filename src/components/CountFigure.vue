@@ -14,7 +14,7 @@
  */
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { canAnimate, gsap } from '../lib/motion';
+import { canAnimate, gsap, ScrollTrigger } from '../lib/motion';
 import { useStore } from '../lib/state';
 import { formatValue } from '../lib/shared/content';
 
@@ -37,7 +37,7 @@ const render = () => `${props.prefix}${formatValue(shown.value, lang.value)}${pr
 const text = ref(render());
 watch([shown, lang, () => props.value], () => (text.value = render()));
 
-let observer: IntersectionObserver | null = null;
+let trigger: ScrollTrigger | null = null;
 let tween: gsap.core.Tween | null = null;
 
 function run() {
@@ -54,23 +54,29 @@ function run() {
 
 onMounted(() => {
   if (!canAnimate() || !el.value) return;
-  observer = new IntersectionObserver(
-    (entries) => {
-      if (!entries.some((e) => e.isIntersecting)) return;
-      observer?.disconnect();
-      observer = null;
-      run();
-    },
-    // A little before it reaches the middle of the screen, so the count is
-    // already running by the time it is being looked at.
-    { rootMargin: '0px 0px -20% 0px', threshold: 0 },
-  );
-  observer.observe(el.value);
+  /**
+   * ScrollTrigger rather than an IntersectionObserver.
+   *
+   * An observer only reports a crossing, and a figure the reader jumps clean
+   * past — which the bar's links do — goes from "below the viewport" to "above
+   * it" without ever intersecting, so no crossing is reported and the number
+   * sits on zero for good. ScrollTrigger evaluates where the page actually is
+   * and fires either way.
+   *
+   * `once` is what keeps it from running backwards: it counts the first time
+   * the figure is reached and never again.
+   */
+  trigger = ScrollTrigger.create({
+    trigger: el.value,
+    start: 'top 85%',
+    once: true,
+    onEnter: run,
+  });
 });
 
 onBeforeUnmount(() => {
-  observer?.disconnect();
-  observer = null;
+  trigger?.kill();
+  trigger = null;
   tween?.kill();
   tween = null;
 });

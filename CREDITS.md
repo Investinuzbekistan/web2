@@ -47,9 +47,17 @@ dropped**:
   icons repeat on every slide of a deck, so anything appearing on more than two
   slides is dropped.
 
-Some of what remains is a site plan or an annotated satellite collage that the
-client assembled themselves. Those are published as supplied; if any of them
-turns out not to be the client's own, it should be removed.
+Automatic tests cannot tell a render of this project from a stock photograph of
+somebody else's, so **every lead image was looked at**. Fourteen were rejected by
+hand and listed in the script with the reason — satellite grabs with a plot drawn
+on them, a collage of European outlet villages, a photograph of Disneyland Paris,
+a stock jet-ski, a map pin graphic. Six projects are left without a picture
+because their sheets contain nothing else; better no picture than somebody
+else's theme park.
+
+What remains includes site plans and concept boards the client assembled
+themselves. Those are published as supplied; if any turns out not to be the
+client's own, it should be added to that list.
 
 ## Map data
 

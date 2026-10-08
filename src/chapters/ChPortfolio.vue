@@ -17,7 +17,7 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ProjectPanel from '../components/ProjectPanel.vue';
-import ScrubFigure from '../components/ScrubFigure.vue';
+import CountFigure from '../components/CountFigure.vue';
 import StatBars, { type BarRow } from '../components/StatBars.vue';
 import type { Project } from '../lib/forum-types';
 import { formatMoney, millionWord } from '../lib/money';
@@ -201,15 +201,15 @@ useChapterTimeline(
 
       <ul class="portfolio__totals">
         <li>
-          <ScrubFigure :value="totals.projects" />
+          <CountFigure :value="totals.projects" />
           <span class="portfolio__caption">{{ t('portfolio.projectsLabel') }}</span>
         </li>
         <li>
-          <ScrubFigure :value="totals.usd" :suffix="usdSuffix" />
+          <CountFigure :value="totals.usd" :suffix="usdSuffix" />
           <span class="portfolio__caption">{{ t('portfolio.totalLabel') }}</span>
         </li>
         <li>
-          <ScrubFigure :value="totals.regions" />
+          <CountFigure :value="totals.regions" />
           <span class="portfolio__caption">{{ t('portfolio.regionsLabel') }}</span>
         </li>
       </ul>
@@ -353,7 +353,7 @@ h2 {
 }
 /* The figure is itself a <span>, so the caption needs its own class — a bare
    `span` rule here outranks .figure and greys the numbers out. */
-.portfolio__totals :deep(.scrub-figure) {
+.portfolio__totals :deep(.count-figure) {
   font-size: clamp(2rem, 4.6vw, 3.25rem);
   line-height: 1.05;
   text-wrap: balance;

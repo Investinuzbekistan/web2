@@ -1,12 +1,16 @@
 <script setup lang="ts">
 /**
- * Chapter II — the four headline figures of 2025, each arriving on its own as
- * the chapter scrubs. Source and date travel with every number.
+ * Chapter II — the four headline figures of 2025, each arriving on its own.
+ * Source and date travel with every number.
+ *
+ * The arrival fires once rather than being scrubbed with the scroll: tied to
+ * scroll position the rows faded back out on the way up, and a figure that
+ * dims when you scroll back to check it is a figure you cannot check.
  */
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import ScrubFigure from '../components/ScrubFigure.vue';
+import CountFigure from '../components/CountFigure.vue';
 import SourceTag from '../components/SourceTag.vue';
 import { useChapterTimeline } from '../lib/motion';
 import { tr, useStore } from '../lib/state';
@@ -30,11 +34,12 @@ useChapterTimeline(
   () => root.value,
   ({ gsap, root: el }) => {
     gsap.from(el.querySelectorAll('.momentum__row'), {
-      scrollTrigger: { trigger: el, start: 'top 70%', end: 'bottom 60%', scrub: 0.6 },
+      scrollTrigger: { trigger: el, start: 'top 70%' },
       y: 40,
       opacity: 0,
-      stagger: 0.25,
-      ease: 'none',
+      duration: 0.7,
+      stagger: 0.14,
+      ease: 'power2.out',
     });
   },
 );
@@ -50,7 +55,7 @@ useChapterTimeline(
 
       <ol class="momentum__list">
         <li v-for="figure in figures" :key="figure.id" class="momentum__row">
-          <ScrubFigure
+          <CountFigure
             class="momentum__value"
             :value="figure.value"
             :prefix="figure.prefix"

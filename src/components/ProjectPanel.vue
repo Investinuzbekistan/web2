@@ -37,6 +37,29 @@ const themeName = computed(() => {
   return theme ? tr(theme.title) : '';
 });
 
+/**
+ * The featured project carries its own three-language text; the rest keep the
+ * English the organiser prepared them in.
+ */
+const heading = computed(() => {
+  const p = props.project;
+  if (!p) return '';
+  return p.titleI18n ? tr(p.titleI18n) : (p.displayTitle ?? p.title);
+});
+const sub = computed(() => {
+  const p = props.project;
+  return p?.subtitleI18n ? tr(p.subtitleI18n) : (p?.subtitle ?? null);
+});
+const story = computed(() => {
+  const p = props.project;
+  return p?.overviewI18n ? tr(p.overviewI18n) : (p?.overview ?? null);
+});
+
+/** The sheet's own renders and photographs. */
+const shots = computed(() => props.project?.photos ?? []);
+const shown = ref(0);
+watch(() => props.project, () => (shown.value = 0));
+
 const money = computed(() => {
   const p = props.project;
   if (!p?.investment || !p.currency) return null;
@@ -129,10 +152,42 @@ onBeforeUnmount(() => {
 
         <p class="panel__where">
           {{ regionName }}
-          <span v-if="themeName" class="panel__theme">· {{ themeName }}</span>
+          <span v-if="themeName" class="panel__theme">{{ regionName ? '· ' : '' }}{{ themeName }}</span>
         </p>
-        <h3 class="panel__title">{{ project.displayTitle ?? project.title }}</h3>
-        <p v-if="project.subtitle" class="panel__sub">{{ project.subtitle }}</p>
+        <h3 class="panel__title">{{ heading }}</h3>
+        <p v-if="sub" class="panel__sub">{{ sub }}</p>
+
+        <!-- The sheet's own visuals. One image is the common case, so the
+             thumbnail strip only appears when there is something to switch to. -->
+        <figure v-if="shots.length" class="panel__gallery">
+          <img
+            :src="`photos/${shots[shown]}-full.webp`"
+            :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"
+            width="1000"
+            height="625"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption v-if="shots.length > 1" :aria-label="t('portfolio.gallery')">
+            <button
+              v-for="(shot, i) in shots"
+              :key="shot"
+              type="button"
+              :aria-pressed="i === shown"
+              :aria-label="t('portfolio.photoAlt', { title: heading, n: i + 1, total: shots.length })"
+              @click="shown = i"
+            >
+              <img
+                :src="`photos/${shot}-thumb.webp`"
+                alt=""
+                width="220"
+                height="150"
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </figcaption>
+        </figure>
 
         <p class="panel__money">
           <span class="eyebrow">{{ t('portfolio.labels.investment') }}</span>
@@ -157,9 +212,9 @@ onBeforeUnmount(() => {
           </li>
         </ul>
 
-        <template v-if="project.overview">
+        <template v-if="story">
           <h4 class="panel__heading">{{ t('portfolio.labels.overview') }}</h4>
-          <p class="panel__overview">{{ project.overview }}</p>
+          <p class="panel__overview">{{ story }}</p>
         </template>
 
         <template v-for="block in blocks" :key="block.key">
@@ -258,6 +313,50 @@ onBeforeUnmount(() => {
   margin-block-start: 0.5rem;
   color: var(--ink-dim);
   font-size: 0.9rem;
+}
+
+/* The gallery: one large image with a thumbnail strip when there is more than
+   one. Sized by aspect ratio so the panel does not jump as images arrive. */
+.panel__gallery {
+  margin: 1.5rem 0 0;
+}
+.panel__gallery > img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  background: var(--surface-2);
+}
+.panel__gallery figcaption {
+  display: flex;
+  gap: 0.5rem;
+  margin-block-start: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.panel__gallery figcaption button {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+  overflow: hidden;
+  opacity: 0.6;
+  transition: opacity 0.18s, border-color 0.18s;
+}
+.panel__gallery figcaption button:hover,
+.panel__gallery figcaption button[aria-pressed='true'] {
+  opacity: 1;
+  border-color: var(--accent-soft);
+}
+.panel__gallery figcaption img {
+  inline-size: 4.5rem;
+  block-size: 3rem;
+  object-fit: cover;
+  display: block;
 }
 
 .panel__money {

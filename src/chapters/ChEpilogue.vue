@@ -28,6 +28,20 @@ const form = reactive({ role: '', theme: '', name: '', email: '', message: '' })
 const errors = reactive<{ role?: string; name?: string; email?: string }>({});
 
 const org = computed(() => content.value?.organization);
+const contact = computed(() => forum.value?.contact);
+
+/**
+ * The map, from OpenStreetMap's own embed — no key, no account, and the data is
+ * ODbL, which the credit under it satisfies. The coordinates were resolved from
+ * the committee's address through Nominatim rather than guessed.
+ */
+const mapSrc = computed(() => {
+  const c = contact.value;
+  if (!c) return '';
+  const d = 0.004;
+  const box = [c.lon - d, c.lat - d / 2, c.lon + d, c.lat + d / 2].map((n) => n.toFixed(5)).join('%2C');
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${box}&layer=mapnik&marker=${c.lat}%2C${c.lon}`;
+});
 const event = computed(() => forum.value?.event);
 const roles = computed(() => forum.value?.participants ?? []);
 const themes = computed(() => forum.value?.themes ?? []);
@@ -90,7 +104,7 @@ async function submit() {
     return;
   }
 
-  const to = org.value?.contacts.emails[0] ?? 'uzipa@invest.gov.uz';
+  const to = contact.value?.email ?? org.value?.contacts.emails[0] ?? 'uzipa@invest.gov.uz';
   window.location.href = `mailto:${to}?subject=${encodeURIComponent(t('epilogue.submit'))}&body=${encodeURIComponent(body)}`;
   status.value = 'sent';
 }
@@ -180,22 +194,42 @@ async function submit() {
           </template>
         </div>
 
-        <address v-if="org" class="contacts">
-          <p v-if="event" class="contacts__org">{{ tr(event.organiser) }}</p>
+        <address v-if="contact" class="contacts">
+          <p class="contacts__org">
+            <small>{{ t('contact.organiser') }}</small>
+            {{ tr(contact.organisation) }}
+          </p>
+          <p>
+            <small>{{ t('contact.email') }}</small>
+            <a :href="`mailto:${contact.email}`">{{ contact.email }}</a>
+          </p>
           <p>
             <small>{{ t('contact.phone') }}</small>
-            <a :href="org.contacts.phone_href">{{ org.contacts.phone }}</a>
-          </p>
-          <p v-for="email in org.contacts.emails" :key="email">
-            <small>{{ t('contact.email') }}</small>
-            <a :href="`mailto:${email}`">{{ email }}</a>
+            <a :href="contact.phoneHref">{{ contact.phone }}</a>
+            <em>{{ t('contact.shortPhone', { n: contact.shortPhone }) }}</em>
           </p>
           <p>
             <small>{{ t('contact.address') }}</small>
-            {{ tr(org.contacts.address) }}
-            <a :href="org.contacts.map_url" target="_blank" rel="noopener noreferrer">
-              {{ t('contact.map') }}
-            </a>
+            {{ contact.postcode }}, {{ tr(contact.address) }}
+          </p>
+
+          <div class="contacts__map">
+            <iframe
+              :src="mapSrc"
+              :title="t('contact.mapTitle')"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            />
+          </div>
+          <p class="contacts__credit">
+            <a :href="contact.mapUrl" target="_blank" rel="noopener noreferrer">{{ t('contact.map') }}</a>
+            <span>{{ t('contact.mapCredit') }}</span>
+          </p>
+
+          <p v-if="org" class="contacts__also">
+            <small>{{ t('contact.agency') }}</small>
+            <a :href="`mailto:${org.contacts.emails[0]}`">{{ org.contacts.emails[0] }}</a>
+            <a :href="org.contacts.phone_href">{{ org.contacts.phone }}</a>
           </p>
         </address>
       </div>
@@ -423,7 +457,53 @@ h2 {
 .contacts__org {
   padding-block-end: 0.9rem;
   border-block-end: 1px solid var(--hairline);
-  color: var(--accent-soft);
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.contacts p em {
+  font-style: normal;
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+/* The committee's own address on a map. Lazy, so it costs nothing until the
+   epilogue is actually reached.
+   
+   The frame is taller than its box so the embed's own footer bar — a donation
+   appeal and a link to the API terms — falls outside it. The attribution that
+   ODbL actually requires is the line underneath, which is ours and stays. */
+.contacts__map {
+  position: relative;
+  margin-block-start: 0.5rem;
+  block-size: 13rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.contacts__map iframe {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: block;
+  inline-size: 100%;
+  block-size: calc(100% + 5rem);
+  border: 0;
+  filter: saturate(0.82);
+}
+.contacts__credit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+}
+.contacts__also {
+  padding-block-start: 0.9rem;
+  border-block-start: 1px solid var(--hairline);
+}
+.contacts__also a {
   font-size: 0.85rem;
 }
 .contacts p {

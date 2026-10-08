@@ -2,29 +2,36 @@
 /**
  * Chapter IV — the project portfolio.
  *
- * The plot is a beeswarm on a logarithmic investment axis, which is the one
- * view that answers an investor's first question: what sizes of ticket are on
- * the table? Each dot is one project, its area proportional to the investment
- * sought. Filtering dims rather than removes, so the shape of the whole
- * portfolio stays visible while a subset is being read.
+ * Seventy-four projects is too many to read and too few to need a search engine,
+ * so the chapter is built around a breakdown that is also the navigation: three
+ * columns of bars — by region, by direction, by ticket size — where every row
+ * filters the list below it.
  *
- * Three projects cannot sit on a dollar axis — two are stated in soums and one
- * has no figure at all — so they get their own lane at the left rather than
- * being converted at a rate nobody published.
- *
- * The layout is computed in viewBox units against a fixed 1000x420 canvas and
- * scaled by CSS, so nothing here measures the DOM and there is no resize path
- * to feed back on itself.
+ * It replaced a beeswarm on a logarithmic axis. That plot was accurate and
+ * unreadable: it needed a legend for the dot size, another for the axis, and a
+ * third for the lane of projects that state no dollar figure at all. The bars
+ * answer the three questions an investor arrives with, and answer them without
+ * a legend.
  */
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ProjectPanel from '../components/ProjectPanel.vue';
 import ScrubFigure from '../components/ScrubFigure.vue';
+import StatBars, { type BarRow } from '../components/StatBars.vue';
 import type { Project } from '../lib/forum-types';
-import { formatMoney, formatTick, millionWord } from '../lib/money';
+import { formatMoney, millionWord } from '../lib/money';
 import { useChapterTimeline } from '../lib/motion';
-import { clearFilters, filters, tr, useStore, type PortfolioSort } from '../lib/state';
+import {
+  bandOf,
+  clearFilters,
+  filters,
+  SIZE_BANDS,
+  tr,
+  useStore,
+  type PortfolioSort,
+  type SizeBand,
+} from '../lib/state';
 
 const { t } = useI18n();
 const { forum, lang } = useStore();
@@ -47,14 +54,6 @@ const totals = computed(() => {
   };
 });
 
-/** Regions that actually have projects, in the order the data file lists them. */
-const regionOptions = computed(() =>
-  Object.keys(forum.value?.portfolio.regionCounts ?? {}).map((id) => ({
-    id,
-    label: regionNames.value[id] ? tr(regionNames.value[id]) : id,
-  })),
-);
-
 const SORTS: PortfolioSort[] = ['largest', 'smallest', 'region', 'name'];
 const SORT_LABEL: Record<PortfolioSort, string> = {
   largest: 'portfolio.sortLargest',
@@ -63,7 +62,13 @@ const SORT_LABEL: Record<PortfolioSort, string> = {
   name: 'portfolio.sortName',
 };
 
-const title = (p: Project) => p.displayTitle ?? p.title;
+/**
+ * The featured project carries its own three-language text, because its source
+ * document was Uzbek; everything else keeps the English the organiser prepared.
+ */
+const title = (p: Project) => (p.titleI18n ? tr(p.titleI18n) : (p.displayTitle ?? p.title));
+const subtitleOf = (p: Project) => (p.subtitleI18n ? tr(p.subtitleI18n) : p.subtitle);
+const thumb = (p: Project) => (p.photos[0] ? `photos/${p.photos[0]}-thumb.webp` : null);
 
 /** The sheet's own one-word description of the project, when it gives one. */
 const activityOf = (p: Project) =>
@@ -76,6 +81,7 @@ function matches(p: Project): boolean {
   const f = filters.value;
   if (f.region !== 'all' && p.region !== f.region) return false;
   if (f.segment !== 'all' && p.segment !== f.segment) return false;
+  if (f.size !== 'all' && bandOf(p) !== f.size) return false;
   const q = f.query.trim().toLowerCase();
   if (!q) return true;
   // Everything the sheet states, so a search for "glamping", "ski" or a
@@ -99,6 +105,8 @@ const shown = computed(() => {
   const by = filters.value.sort;
   const amount = (p: Project) => (p.currency === 'USD' ? (p.investment ?? -1) : -1);
   return [...list].sort((a, b) => {
+    // The hand-transcribed concept leads the list however it is sorted.
+    if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
     if (by === 'largest') return amount(b) - amount(a);
     if (by === 'smallest') return amount(a) - amount(b);
     if (by === 'name') return title(a).localeCompare(title(b));
@@ -112,114 +120,73 @@ const shown = computed(() => {
   });
 });
 
-const shownIds = computed(() => new Set(shown.value.map((p) => p.id)));
 const filtered = computed(
-  () => filters.value.region !== 'all' || filters.value.segment !== 'all' || filters.value.query.trim() !== '',
+  () =>
+    filters.value.region !== 'all' ||
+    filters.value.segment !== 'all' ||
+    filters.value.size !== 'all' ||
+    filters.value.query.trim() !== '',
 );
 
-/* --------------------------------------------------------------- the plot */
-
-const VIEW = { w: 1000, h: 296 };
-const PLOT = { left: 160, right: 972, top: 18, bottom: 218 };
-const TICKS = [1e5, 1e6, 1e7, 1e8];
-
-const usdProjects = computed(() => projects.value.filter((p) => p.currency === 'USD' && p.investment));
-const domain = computed(() => {
-  const values = usdProjects.value.map((p) => p.investment as number);
-  return values.length ? { min: Math.min(...values), max: Math.max(...values) } : { min: 1e5, max: 1e8 };
-});
-
-function xFor(amount: number): number {
-  const { min, max } = domain.value;
-  const lo = Math.log10(Math.min(min, TICKS[0] as number));
-  const hi = Math.log10(Math.max(max, TICKS[TICKS.length - 1] as number));
-  const t = (Math.log10(amount) - lo) / (hi - lo);
-  return PLOT.left + t * (PLOT.right - PLOT.left);
-}
-
-function radiusFor(amount: number | null): number {
-  if (!amount) return 5;
-  // Area, not diameter: a project twice the size should look twice as big.
-  const t = Math.sqrt(amount / domain.value.max);
-  return 5 + t * 17;
-}
+/* ------------------------------------------------------------- breakdown */
 
 /**
- * Greedy beeswarm packing. Dots are placed left to right and pushed off the
- * centre line until they clear everything already placed, which is O(n^2) on
- * 51 points — a few thousand comparisons, once.
+ * The three bar columns.
+ *
+ * Counted over the whole portfolio, not over what is currently shown: these
+ * rows are the filter, and a filter that recounts itself as you use it tells
+ * you nothing about what else is there.
  */
-const layout = computed(() => {
-  const placed: { x: number; y: number; r: number; p: Project }[] = [];
-  const midY = (PLOT.top + PLOT.bottom) / 2;
-
-  const sorted = [...usdProjects.value].sort(
-    (a, b) => (a.investment as number) - (b.investment as number),
-  );
-  for (const p of sorted) {
-    const x = xFor(p.investment as number);
-    const r = radiusFor(p.investment);
-    let y = midY;
-    for (let step = 0; step < 220; step++) {
-      // Alternate above and below the axis, widening as we go.
-      const offset = Math.ceil(step / 2) * 7 * (step % 2 === 0 ? 1 : -1);
-      y = midY + offset;
-      if (y - r < PLOT.top || y + r > PLOT.bottom) continue;
-      const clash = placed.some((o) => {
-        const need = o.r + r + 1.5;
-        return (x - o.x) ** 2 + (y - o.y) ** 2 < need * need;
-      });
-      if (!clash) break;
-    }
-    placed.push({ x, y, r, p });
+const count = (fn: (p: Project) => string | null) => {
+  const out = new Map<string, number>();
+  for (const p of projects.value) {
+    const key = fn(p);
+    if (key) out.set(key, (out.get(key) ?? 0) + 1);
   }
+  return out;
+};
 
-  /**
-   * The lane for everything that cannot be put on a dollar axis: the sheets
-   * that state soums and the ones that leave the figure open. Laid out as a
-   * grid sized to the plot, so the lane grows sideways as sheets arrive rather
-   * than spilling past the axis.
-   */
-  const aside = projects.value.filter((p) => !(p.currency === 'USD' && p.investment));
-  const step = 28;
-  const rows = Math.max(1, Math.floor((PLOT.bottom - PLOT.top) / step));
-  const cols = Math.ceil(aside.length / rows);
-  const perCol = Math.ceil(aside.length / cols);
-  const asideDots = aside.map((p, i) => {
-    const col = Math.floor(i / perCol);
-    const row = i % perCol;
-    const colCount = Math.min(perCol, aside.length - col * perCol);
-    return {
-      x: 118 - (cols - 1 - col) * step,
-      y: midY + (row - (colCount - 1) / 2) * step,
-      r: 9,
-      p,
-    };
-  });
-
-  return { placed, asideDots };
+const regionRows = computed<BarRow[]>(() => {
+  const counts = count((p) => p.region);
+  return [...counts.entries()]
+    .map(([id, n]) => ({
+      id,
+      label: regionNames.value[id] ? tr(regionNames.value[id]) : id,
+      count: n,
+    }))
+    .sort((a, b) => b.count - a.count);
 });
+
+const segmentRows = computed<BarRow[]>(() => {
+  const counts = count((p) => p.segment);
+  return themes.value
+    .map((theme) => ({ id: theme.id, label: tr(theme.title), count: counts.get(theme.id) ?? 0 }))
+    .sort((a, b) => b.count - a.count);
+});
+
+const sizeRows = computed<BarRow[]>(() => {
+  const counts = count((p) => bandOf(p));
+  return [...SIZE_BANDS.map((b) => b.id), 'open'].map((id) => ({
+    id,
+    label: t(`portfolio.bands.${id}`),
+    count: counts.get(id) ?? 0,
+  }));
+});
+
 
 useChapterTimeline(
   () => root.value,
   ({ gsap, root: el }) => {
-    gsap.from(el.querySelectorAll('.swarm__dot'), {
-      scrollTrigger: { trigger: el.querySelector('.swarm'), start: 'top 80%' },
-      opacity: 0,
-      scale: 0,
-      transformOrigin: '50% 50%',
-      duration: 0.5,
-      stagger: { each: 0.012, from: 'center' },
-      ease: 'back.out(1.7)',
+    gsap.from(el.querySelectorAll('.breakdown .bars__fill'), {
+      scrollTrigger: { trigger: el.querySelector('.breakdown'), start: 'top 82%' },
+      scaleX: 0,
+      transformOrigin: '0% 50%',
+      duration: 0.7,
+      stagger: 0.02,
+      ease: 'power2.out',
     });
   },
 );
-
-function dotTitle(p: Project): string {
-  const money =
-    p.investment && p.currency ? formatMoney(p.investment, p.currency, lang.value) : t('portfolio.noFigure');
-  return `${title(p)} — ${money}`;
-}
 </script>
 
 <template>
@@ -263,24 +230,6 @@ function dotTitle(p: Project): string {
           />
         </p>
         <p class="field">
-          <label for="pf-region">{{ t('portfolio.allRegions') }}</label>
-          <select id="pf-region" v-model="filters.region">
-            <option value="all">{{ t('portfolio.allRegions') }}</option>
-            <option v-for="region in regionOptions" :key="region.id" :value="region.id">
-              {{ region.label }}
-            </option>
-          </select>
-        </p>
-        <p class="field">
-          <label for="pf-segment">{{ t('portfolio.allSegments') }}</label>
-          <select id="pf-segment" v-model="filters.segment">
-            <option value="all">{{ t('portfolio.allSegments') }}</option>
-            <option v-for="theme in themes" :key="theme.id" :value="theme.id">
-              {{ tr(theme.title) }}
-            </option>
-          </select>
-        </p>
-        <p class="field">
           <label for="pf-sort">{{ t('portfolio.sortBy') }}</label>
           <select id="pf-sort" v-model="filters.sort">
             <option v-for="option in SORTS" :key="option" :value="option">
@@ -297,50 +246,26 @@ function dotTitle(p: Project): string {
         </button>
       </p>
 
-      <!-- The swarm ------------------------------------------------------- -->
-      <div class="swarm">
-        <svg :viewBox="`0 0 ${VIEW.w} ${VIEW.h}`" role="img" :aria-label="t('portfolio.fieldAlt', { n: totals.projects })">
-          <g class="swarm__axis">
-            <line :x1="PLOT.left" :y1="PLOT.bottom + 18" :x2="PLOT.right" :y2="PLOT.bottom + 18" />
-            <g v-for="tick in TICKS" :key="tick">
-              <line :x1="xFor(tick)" :y1="PLOT.top" :x2="xFor(tick)" :y2="PLOT.bottom + 18" class="swarm__grid" />
-              <text :x="xFor(tick)" :y="PLOT.bottom + 44" text-anchor="middle">
-                {{ formatTick(tick, lang) }}
-              </text>
-            </g>
-            <text :x="PLOT.right" :y="VIEW.h - 6" text-anchor="end" class="swarm__unit">USD</text>
-            <line :x1="128" :y1="PLOT.top" :x2="128" :y2="PLOT.bottom + 18" class="swarm__divider" />
-            <!-- Covers both the soum figures and the ones left open: neither
-                 belongs on a dollar axis, and saying "not stated" of a project
-                 that states soums would be wrong. -->
-            <text :x="72" :y="PLOT.bottom + 44" text-anchor="middle">{{ t('portfolio.offScale') }}</text>
-          </g>
-
-          <g class="swarm__dots">
-            <g
-              v-for="dot in [...layout.asideDots, ...layout.placed]"
-              :key="dot.p.id"
-              class="swarm__dot"
-              :class="{ 'swarm__dot--dim': !shownIds.has(dot.p.id) }"
-            >
-              <circle :cx="dot.x" :cy="dot.y" :r="dot.r" />
-              <!-- A transparent, finger-sized hit area over small dots. -->
-              <!-- A finger-sized hit area over the smaller dots. It is not
-                   focusable: the list below holds the same 51 projects and is
-                   fully keyboard-operable, so making every dot a tab stop
-                   would only double the journey through the chapter. -->
-              <circle
-                class="swarm__hit"
-                :cx="dot.x"
-                :cy="dot.y"
-                :r="Math.max(dot.r, 12)"
-                @click="selected = dot.p"
-              >
-                <title>{{ dotTitle(dot.p) }}</title>
-              </circle>
-            </g>
-          </g>
-        </svg>
+      <!-- The breakdown, which is also the navigation --------------------- -->
+      <div class="breakdown">
+        <StatBars
+          :title="t('portfolio.byRegion')"
+          :rows="regionRows"
+          :active="filters.region"
+          @pick="(id) => (filters.region = id)"
+        />
+        <StatBars
+          :title="t('portfolio.byDirection')"
+          :rows="segmentRows"
+          :active="filters.segment"
+          @pick="(id) => (filters.segment = id)"
+        />
+        <StatBars
+          :title="t('portfolio.bySize')"
+          :rows="sizeRows"
+          :active="filters.size"
+          @pick="(id) => (filters.size = id as SizeBand)"
+        />
       </div>
 
       <!-- The list -------------------------------------------------------- -->
@@ -348,12 +273,28 @@ function dotTitle(p: Project): string {
 
       <ol v-else class="portfolio__list">
         <li v-for="project in shown" :key="project.id">
-          <button type="button" class="row" @click="selected = project">
+          <button type="button" class="row" :class="{ 'row--featured': project.featured }" @click="selected = project">
+            <!-- The sheets carry their own renders and photographs; a project
+                 described only in figures reads as a spreadsheet row. -->
+            <span class="row__shot" :class="{ 'row__shot--empty': !thumb(project) }">
+              <!-- Intrinsic size given so the browser can schedule the decode
+                   without measuring; CSS still sets how big it draws. -->
+              <img
+                v-if="thumb(project)"
+                :src="thumb(project)!"
+                alt=""
+                width="220"
+                height="150"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
             <span class="row__main">
+              <span v-if="project.featured" class="row__flag">{{ t('portfolio.featured') }}</span>
               <span class="row__title">{{ title(project) }}</span>
               <span class="row__meta">
-                {{ project.region && regionNames[project.region] ? tr(regionNames[project.region]) : '' }}
-                <template v-if="activityOf(project)"> · {{ activityOf(project) }}</template>
+                {{ project.region && regionNames[project.region] ? tr(regionNames[project.region]) : subtitleOf(project) }}
+                <template v-if="project.region && activityOf(project)"> · {{ activityOf(project) }}</template>
               </span>
             </span>
             <span
@@ -442,7 +383,7 @@ h2 {
 }
 @media (min-width: 52rem) {
   .portfolio__controls {
-    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 14rem;
     align-items: end;
   }
 }
@@ -496,51 +437,17 @@ h2 {
   border-color: var(--accent);
 }
 
-.swarm {
-  margin-block-start: clamp(1.5rem, 4vh, 2.5rem);
+/* Three columns on a wide screen, stacked below. */
+.breakdown {
+  margin-block-start: clamp(2rem, 5vh, 3rem);
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
 }
-.swarm svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-.swarm__axis line {
-  stroke: var(--hairline);
-  stroke-width: 1;
-}
-.swarm__grid {
-  stroke-dasharray: 2 6;
-}
-.swarm__divider {
-  stroke: var(--hairline);
-}
-.swarm__axis text {
-  fill: var(--ink-dim);
-  font-family: var(--font-body);
-  font-size: 15px;
-}
-.swarm__unit {
-  font-size: 13px;
-  letter-spacing: 0.12em;
-}
-
-.swarm__dot circle:first-child {
-  fill: var(--accent-soft);
-  fill-opacity: 0.85;
-  transition: fill-opacity 0.25s, fill 0.25s;
-}
-.swarm__dot--dim circle:first-child {
-  fill: var(--ink);
-  fill-opacity: 0.1;
-}
-.swarm__hit {
-  fill: transparent;
-  cursor: pointer;
-}
-.swarm__dot:hover circle:first-child {
-  fill: var(--ink);
-  fill-opacity: 1;
+@media (min-width: 58rem) {
+  .breakdown {
+    /* The direction labels are the longest of the three sets. */
+    grid-template-columns: 1.05fr 1.45fr 1fr;
+  }
 }
 
 .portfolio__empty {
@@ -553,24 +460,65 @@ h2 {
   margin: clamp(2rem, 5vh, 3rem) 0 0;
   padding: 0;
 }
+/* Seventy-four rows, each with an image, is a lot of layout for a section most
+   visitors scroll past. The browser skips the ones it cannot see; the reserved
+   height keeps the scrollbar honest while it does. */
+.portfolio__list li {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4.6rem;
+}
 .row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
-  padding: 0.95rem 0;
+  padding: 0.7rem 0.5rem;
   border: 0;
   border-block-end: 1px solid var(--hairline);
+  border-radius: 0.5rem;
   background: transparent;
   color: inherit;
   font: inherit;
   text-align: start;
   cursor: pointer;
-  transition: color 0.18s;
+  transition: background-color 0.18s, color 0.18s;
 }
 .row:hover {
+  background: var(--surface-2);
   color: var(--ink);
+}
+.row--featured {
+  background: var(--raise);
+}
+
+.row__shot {
+  display: block;
+  inline-size: 4.5rem;
+  block-size: 3.2rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.row__shot img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* A project whose sheet carried no usable image keeps the slot, so the list
+   does not jog left and right as it scrolls. */
+.row__shot--empty {
+  border: 1px dashed var(--hairline);
+  background: transparent;
+}
+
+.row__flag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
 }
 .row__main {
   display: grid;

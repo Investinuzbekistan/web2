@@ -9,8 +9,10 @@ logos.
 
 ## Imagery
 
-**There are no photographs anywhere in the three sites.** Every visual is
-generated at runtime or at build time:
+Sites 1 and 3 carry no photographs at all; every visual in them is generated at
+runtime or at build time. Site 2 carries the project photographs and renders
+that came embedded in the client's own project sheets, and the renders from the
+Madaniyat Hotel concept — see **Project photographs** below.
 
 | Visual | Where | How it is made |
 |---|---|---|
@@ -25,6 +27,38 @@ generated at runtime or at build time:
 | Thematic direction icons | Site 2, chapter III | Eight glyphs drawn by hand on one 24-unit grid in `ThemeIcon.vue` |
 | Film grain | Site 2, the two lit stages | An inline `feTurbulence` SVG data URI at 3.5% opacity |
 | Region choropleth | Site 3, map | d3-geo, over the boundary data below |
+| Locator map | Site 2, contacts | OpenStreetMap's own embed — no key, no account; see below |
+
+## Project photographs
+
+The images on site 2's project cards are the client's own: they came embedded in
+the `.pptx` sheets the organiser supplied, and `scripts/build-project-photos.mjs`
+pulls them out, matched to the slide they belong to. The Madaniyat Hotel's
+renders come from its concept PDF in the same way.
+
+Nothing is sourced from anywhere else. Two classes of image are **deliberately
+dropped**:
+
+- **Screenshots of online maps.** Several sheets illustrate their location with a
+  grab of a mapping service. Those are not the client's to republish, so they are
+  detected and discarded — a map tile has a large area of flat near-neutral paper
+  and almost no texture, which a photograph does not.
+- **Template furniture.** The forum lockup, the masthead rule and the section
+  icons repeat on every slide of a deck, so anything appearing on more than two
+  slides is dropped.
+
+Some of what remains is a site plan or an annotated satellite collage that the
+client assembled themselves. Those are published as supplied; if any of them
+turns out not to be the client's own, it should be removed.
+
+## Map data
+
+The locator map in site 2's contacts block is **OpenStreetMap**'s standard embed
+— no API key and no account. Map data is © OpenStreetMap contributors, available
+under the Open Database Licence; the credit is printed under the map. The
+address was resolved to coordinates through OSM's Nominatim rather than guessed.
+
+<https://www.openstreetmap.org/copyright>
 
 ## Geographic data
 

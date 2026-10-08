@@ -96,6 +96,17 @@ export interface Project {
   title: string;
   displayTitle?: string;
   subtitle: string | null;
+  /**
+   * Set on the projects that did not arrive as a sheet and were transcribed by
+   * hand. They sort to the front and carry their text in all three languages,
+   * because their source document was not in English to begin with.
+   */
+  featured?: boolean;
+  titleI18n?: I18nText;
+  subtitleI18n?: I18nText;
+  overviewI18n?: I18nText;
+  /** Image stems under public/photos/, as `<stem>-thumb.webp` and `-full.webp`. */
+  photos: string[];
   /** Normalised to whole units of `currency`; null when the sheet left it open. */
   investment: number | null;
   currency: 'USD' | 'UZS' | null;
@@ -117,6 +128,20 @@ export interface Project {
   sheets: string[];
   /** Machine-detected problems and applied corrections; for QA, not for display. */
   issues: string[];
+}
+
+/** The organising committee's own contact details. */
+export interface ForumContact {
+  organisation: I18nText;
+  email: string;
+  phone: string;
+  phoneHref: string;
+  shortPhone: string;
+  postcode: string;
+  address: I18nText;
+  lat: number;
+  lon: number;
+  mapUrl: string;
 }
 
 export interface ForumSourceRef {
@@ -155,6 +180,7 @@ export interface ForumData {
     source: string;
   };
   promotion: I18nText[];
+  contact: ForumContact;
   portfolio: {
     projects: Project[];
     regionNames: Record<string, I18nText>;

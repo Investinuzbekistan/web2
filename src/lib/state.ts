@@ -58,19 +58,40 @@ export function retry(): void {
  */
 export type PortfolioSort = 'largest' | 'smallest' | 'region' | 'name';
 
+/**
+ * Ticket-size bands, in the units the sheets state. A project whose figure is
+ * open, or stated in soums, is in `open` — it cannot be put in a dollar band
+ * without inventing a rate.
+ */
+export type SizeBand = 'all' | 'lt1' | 'm1to10' | 'm10to50' | 'gte50' | 'open';
+
+export const SIZE_BANDS: { id: Exclude<SizeBand, 'all'>; min: number; max: number }[] = [
+  { id: 'lt1', min: 0, max: 1e6 },
+  { id: 'm1to10', min: 1e6, max: 1e7 },
+  { id: 'm10to50', min: 1e7, max: 5e7 },
+  { id: 'gte50', min: 5e7, max: Infinity },
+];
+
+/** Which band a project falls in, or 'open' when it states no dollar figure. */
+export function bandOf(project: { investment: number | null; currency: string | null }): string {
+  if (project.currency !== 'USD' || !project.investment) return 'open';
+  return SIZE_BANDS.find((b) => project.investment! >= b.min && project.investment! < b.max)?.id ?? 'open';
+}
+
 export const filters = ref({
   region: 'all',
   segment: 'all',
+  size: 'all' as SizeBand,
   query: '',
   sort: 'largest' as PortfolioSort,
 });
 
 export function showSegment(segment: string): void {
-  filters.value = { ...filters.value, segment, region: 'all', query: '' };
+  filters.value = { ...filters.value, segment, region: 'all', size: 'all', query: '' };
 }
 
 export function clearFilters(): void {
-  filters.value = { region: 'all', segment: 'all', query: '', sort: filters.value.sort };
+  filters.value = { region: 'all', segment: 'all', size: 'all', query: '', sort: filters.value.sort };
 }
 
 /** The event dates as one string: "25-27 noyabr 2026". */

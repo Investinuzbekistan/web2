@@ -462,7 +462,7 @@ h2 {
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--hairline);
   border-radius: 0.6rem;
-  background: var(--night-2);
+  background: var(--surface-2);
   color: var(--ink);
   font: inherit;
   font-size: 0.9rem;

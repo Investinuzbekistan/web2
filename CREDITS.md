@@ -23,7 +23,7 @@ generated at runtime or at build time:
 | Silk Road corridor | Site 2, chapter I | A hand-authored schematic SVG path. Diagrammatic, not a map — it makes no territorial claim |
 | Project beeswarm | Site 2, chapter IV | Inline SVG, one dot per project on a logarithmic investment axis, packed in code from `forum-2026.json` |
 | Thematic direction icons | Site 2, chapter III | Eight glyphs drawn by hand on one 24-unit grid in `ThemeIcon.vue` |
-| Film grain | Site 2 | An inline `feTurbulence` SVG data URI at 3.5% opacity |
+| Film grain | Site 2, the two lit stages | An inline `feTurbulence` SVG data URI at 3.5% opacity |
 | Region choropleth | Site 3, map | d3-geo, over the boundary data below |
 
 ## Geographic data

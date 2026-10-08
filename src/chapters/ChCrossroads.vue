@@ -55,8 +55,8 @@ useChapterTimeline(
         <svg viewBox="0 0 900 340" role="img" :aria-label="t('crossroads.body')">
           <defs>
             <linearGradient id="route-gradient" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#E4BB7D" />
-              <stop offset="1" stop-color="#C18429" />
+              <stop offset="0" stop-color="#2E8FD4" />
+              <stop offset="1" stop-color="#262261" />
             </linearGradient>
           </defs>
 
@@ -72,7 +72,7 @@ useChapterTimeline(
             stroke-linecap="round"
           />
 
-          <g class="route__stops" fill="#E4BB7D">
+          <g class="route__stops" fill="#006FB9">
             <circle class="route__stop" cx="30" cy="220" r="6" />
             <circle class="route__stop" cx="360" cy="190" r="6" />
             <circle class="route__stop" cx="470" cy="150" r="9" />
@@ -129,12 +129,12 @@ h2 {
   font-size: 15px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  fill: #76848f;
+  fill: var(--ink-dim);
 }
 
 .route__label {
   font-family: var(--font-display);
   font-size: 22px;
-  fill: #ffffff;
+  fill: var(--ink);
 }
 </style>

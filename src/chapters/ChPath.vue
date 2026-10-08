@@ -176,7 +176,7 @@ h2 {
   height: 2.3rem;
   border: 1px solid var(--hairline);
   border-radius: 999px;
-  background: var(--night);
+  background: var(--surface);
   color: var(--accent-soft);
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
@@ -216,7 +216,7 @@ h2 {
   gap: 0.25rem;
   align-content: start;
   padding: 1.1rem;
-  background: var(--night);
+  background: var(--surface);
 }
 .blocks__n {
   font-size: 0.72rem;

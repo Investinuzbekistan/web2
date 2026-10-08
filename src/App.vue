@@ -103,7 +103,7 @@ onBeforeUnmount(stopSmoothScroll);
   border: 0;
   border-radius: 999px;
   background: var(--ink);
-  color: var(--night);
+  color: var(--surface);
   font: inherit;
   font-weight: 600;
   cursor: pointer;

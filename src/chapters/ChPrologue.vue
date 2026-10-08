@@ -46,7 +46,7 @@ useChapterTimeline(
 </script>
 
 <template>
-  <section id="prologue" ref="root" class="chapter prologue">
+  <section id="prologue" ref="root" class="chapter stage prologue">
     <div class="prologue__bg">
       <component :is="Globe" v-if="Globe" />
       <!-- Fallback and under-layer: generated arcs, no asset, always present. -->
@@ -55,7 +55,7 @@ useChapterTimeline(
           <radialGradient id="prologue-halo" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#E4BB7D" stop-opacity="0.26" />
             <stop offset="60%" stop-color="#C18429" stop-opacity="0.1" />
-            <stop offset="100%" stop-color="#05070A" stop-opacity="0" />
+            <stop offset="100%" stop-color="#101538" stop-opacity="0" />
           </radialGradient>
         </defs>
         <circle cx="400" cy="400" r="400" fill="url(#prologue-halo)" />

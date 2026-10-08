@@ -11,11 +11,16 @@
  * `form` picks between the full lockup, emblem and all, and the wordmark on its
  * own. The wordmark exists for slots too small or too wide for the emblem to
  * survive; the client has confirmed the lockup is the mark to lead with.
+ *
+ * `variant` is gold on a lit stage, white where the stage is busy behind it,
+ * and mono-dark on paper — the gold is 9.2:1 on the stage navy but only 3.2:1
+ * on white, so it never goes there.
  */
 import { computed, onBeforeUnmount, onMounted, ref, useId } from 'vue';
 
 import lockupGold from '../assets/forum-lockup.svg?raw';
 import lockupWhite from '../assets/forum-lockup-white.svg?raw';
+import lockupDark from '../assets/forum-lockup-mono-dark.svg?raw';
 import wordmarkGold from '../assets/forum-wordmark.svg?raw';
 import wordmarkWhite from '../assets/forum-wordmark-white.svg?raw';
 import { canAnimate, gsap } from '../lib/motion';
@@ -23,7 +28,7 @@ import { canAnimate, gsap } from '../lib/motion';
 const props = withDefaults(
   defineProps<{
     form?: 'lockup' | 'wordmark';
-    variant?: 'gold' | 'white';
+    variant?: 'gold' | 'white' | 'dark';
     /** Animate on mount. Off for the small mark in the header. */
     animate?: boolean;
     /** Keep the gradient drifting after the parts have landed. */
@@ -35,6 +40,7 @@ const props = withDefaults(
 const SOURCES = {
   'lockup-gold': lockupGold,
   'lockup-white': lockupWhite,
+  'lockup-dark': lockupDark,
   'wordmark-gold': wordmarkGold,
   'wordmark-white': wordmarkWhite,
 };

@@ -97,7 +97,7 @@ async function submit() {
 </script>
 
 <template>
-  <section id="epilogue" class="chapter epilogue">
+  <section id="epilogue" class="chapter stage epilogue">
     <div class="shell">
       <p class="eyebrow">{{ t('chapters.epilogue.n') }}</p>
       <h2>{{ t('epilogue.lead') }}</h2>
@@ -325,7 +325,7 @@ h2 {
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--hairline);
   border-radius: 1rem;
-  background: linear-gradient(160deg, rgb(255 255 255 / 0.05), transparent 60%);
+  background: linear-gradient(160deg, var(--raise), transparent 60%);
 }
 .wizard__progress {
   font-size: 0.75rem;
@@ -367,7 +367,7 @@ h2 {
 }
 .wizard__choices label:has(input:checked) {
   border-color: var(--accent-soft);
-  background: rgb(255 255 255 / 0.04);
+  background: var(--surface-2);
 }
 
 .wizard__field {
@@ -386,7 +386,7 @@ h2 {
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--hairline);
   border-radius: 0.6rem;
-  background: var(--night-2);
+  background: var(--surface-2);
   color: var(--ink);
   font: inherit;
   font-size: 0.95rem;
@@ -404,7 +404,7 @@ h2 {
 
 .wizard__error {
   margin-block-start: 0.6rem;
-  color: #f0a3a3;
+  color: var(--danger);
   font-size: 0.85rem;
 }
 .wizard__note {

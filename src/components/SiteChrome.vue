@@ -52,6 +52,15 @@ const langOpen = ref(false);
 const activeId = computed(() => props.chapters[activeIndex.value]?.id);
 
 /**
+ * The page is paper except for the two lit stages it opens and closes on, and
+ * the bar floats over both. It therefore carries whichever token set the
+ * chapter under it uses — and the mark swaps with it, because the white lockup
+ * disappears on paper and the dark one disappears on a stage.
+ */
+const STAGES = new Set(['prologue', 'epilogue']);
+const onStage = computed(() => STAGES.has(activeId.value ?? ''));
+
+/**
  * Scroll handling is split in two so neither part measures layout per event.
  *
  * The progress bar needs the document height, which is a layout read, so it is
@@ -173,7 +182,7 @@ function choose(code: Lang) {
     <span :style="{ transform: `scaleX(${progress})` }" />
   </div>
 
-  <header class="bar" :class="{ 'bar--solid': scrolled }">
+  <header class="bar" :class="{ 'bar--solid': scrolled, 'on-stage': onStage }">
     <a
       href="#prologue"
       class="logo"
@@ -181,7 +190,12 @@ function choose(code: Lang) {
       @click.prevent="go('prologue')"
     >
       <!-- The link carries the name; the mark inside it must not repeat it. -->
-      <ForumMark form="lockup" variant="white" class="mark--by-height" aria-hidden="true" />
+      <ForumMark
+        form="lockup"
+        :variant="onStage ? 'white' : 'dark'"
+        class="mark--by-height"
+        aria-hidden="true"
+      />
     </a>
 
     <!-- Named apart from the overlay's nav: two navigation landmarks with the
@@ -294,15 +308,22 @@ function choose(code: Lang) {
   justify-content: space-between;
   gap: clamp(1rem, 3vw, 2.5rem);
   padding: 0.9rem clamp(1rem, 3vw, 2.5rem);
-  background: linear-gradient(to bottom, rgb(5 7 10 / 0.85), transparent);
+  /* Both states are mixed from --surface, so the bar follows the chapter it is
+     over without either colour being written down twice. */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--surface) 85%, transparent),
+    transparent
+  );
   transition: background-color 0.25s, border-color 0.25s;
 }
 /* Over the title card a gradient scrim is enough. Below it the bar crosses
-   running text, so it takes a surface of its own. */
+   running text, so it takes a surface of its own — opaque, because a
+   translucent white bar picks up whichever chapter is passing beneath and
+   reads as a dirty grey band rather than as paper. */
 .bar--solid {
-  background: rgb(5 7 10 / 0.82);
+  background: var(--surface);
   border-block-end: 1px solid var(--hairline);
-  backdrop-filter: blur(10px);
 }
 
 .logo {
@@ -394,7 +415,7 @@ function choose(code: Lang) {
   list-style: none;
   border: 1px solid var(--hairline);
   border-radius: 0.7rem;
-  background: var(--night-2);
+  background: var(--surface-2);
   box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.45);
 }
 .langs__menu button {
@@ -411,7 +432,7 @@ function choose(code: Lang) {
   cursor: pointer;
 }
 .langs__menu button:hover {
-  background: rgb(255 255 255 / 0.06);
+  background: var(--surface-2);
   color: var(--ink);
 }
 .langs__menu button[aria-current='true'] {
@@ -426,7 +447,7 @@ function choose(code: Lang) {
   border: 0;
   border-radius: 999px;
   background: var(--accent-soft);
-  color: var(--night);
+  color: var(--surface);
   font: inherit;
   font-size: 0.8rem;
   font-weight: 600;
@@ -502,7 +523,7 @@ function choose(code: Lang) {
   position: fixed;
   inset: 0;
   border: 0;
-  background: rgb(5 7 10 / 0.92);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
   backdrop-filter: blur(8px);
   cursor: pointer;
 }

@@ -73,7 +73,7 @@ onMounted(async () => {
   world.add(
     new THREE.Mesh(
       new THREE.SphereGeometry(radius * 0.995, 48, 32),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color('#05070A'), transparent: true, opacity: 0.86 }),
+      new THREE.MeshBasicMaterial({ color: new THREE.Color('#141A42'), transparent: true, opacity: 0.86 }),
     ),
   );
 

@@ -1,26 +1,35 @@
-/* Site 2 is a single, deliberately dark composition — no theme switch, no
-   utility framework. Plain CSS with custom properties keeps the cinematic
-   chapters readable as one file rather than as a cloud of class names. */
+/* Site 2 is a white page with two lit stages — the title card it opens on and
+   the chapter it closes with. No theme switch, no utility framework: plain CSS
+   with custom properties keeps the chapters readable as one file rather than as
+   a cloud of class names.
+   
+   Everything below is written against a surface/ink pair rather than against a
+   colour, so a section only has to say which of the two sets it is on and every
+   border, field and button inside it follows. The sets are `:root` (paper) and
+   `.stage` (navy). */
 @import './tokens.css';
 @import '@fontsource-variable/fraunces';
 @import '@fontsource-variable/space-grotesk';
 
+/* Paper: the page everything is read on.
+   The blues are the agency family's own, measured from logo/invest Uzb 1.*:
+   Invest Blue #006FB9 is 5.28:1 on white and Registan Navy #262261 is 14.15:1.
+   The ink tones were derived to clear AA on both paper surfaces. */
 :root {
-  --ink: #ffffff;
-  --ink-soft: #b8c4cc;
-  --ink-dim: #76848f;
+  --surface: #ffffff;
+  --surface-2: #f4f7fb;
+  --raise: rgb(38 34 97 / 0.03);
 
-  --night: var(--brand-night, #05070a);
-  --night-2: #0a0f16;
-  --hairline: rgb(255 255 255 / 0.1);
+  --ink: #141a2e;
+  --ink-soft: #3f4a66;
+  --ink-dim: #67718b;
+  --hairline: rgb(38 34 97 / 0.14);
 
-  /* Site 2 carries the Tourism Investment Forum identity, so the accent is the
-     forum's own gold rather than the agency's teal. All three tones clear AA on
-     --night; see brand/palette.json for the measurements. */
-  --accent-soft: var(--brand-forum-from, #e4bb7d);
-  --accent: var(--brand-forum-mid, #d2a156);
-  --accent-deep: var(--brand-forum-to, #c18429);
-  --glow: var(--brand-gradient-forum, linear-gradient(to top right, #e4bb7d, #c18429));
+  --accent-soft: var(--brand-line-to, #006fb9);
+  --accent: #0a5c96;
+  --accent-deep: var(--brand-navy, #262261);
+  --glow: linear-gradient(to top right, #2e8fd4, #262261);
+  --danger: #b3261e;
 
   --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
   --font-body: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
@@ -28,7 +37,37 @@
   --shell: min(100% - 2.5rem, 78rem);
   --chapter-pad: clamp(4rem, 10vh, 8rem);
 
+  color-scheme: light;
+}
+
+/* A lit stage. The title card and the closing chapter keep the cinematic
+   ground the page was designed around; the gold mark only reads properly on a
+   dark surface (9.2:1 here, 3.2:1 on white), so this is also where it lives.
+   White on this navy is 15.2:1 and the cyan accent 9.1:1. */
+.stage,
+.on-stage {
+  --surface: #1b2150;
+  --surface-2: #242b60;
+  --raise: rgb(255 255 255 / 0.05);
+
+  --ink: #ffffff;
+  --ink-soft: #c3cbe6;
+  --ink-dim: #9aa4c8;
+  --hairline: rgb(255 255 255 / 0.18);
+
+  --accent-soft: #7fd4ec;
+  --accent: #3fb6dc;
+  --accent-deep: #7fd4ec;
+  --glow: linear-gradient(to top right, #7fd4ec, #2e8fd4);
+  --danger: #f0a3a3;
   color-scheme: dark;
+}
+
+/* `.stage` also paints itself; `.on-stage` only borrows the tokens, which is
+   what the header needs while it floats over a stage without covering it. */
+.stage {
+  background: linear-gradient(170deg, #1b2150, #101538);
+  color: var(--ink-soft);
 }
 
 *,
@@ -46,7 +85,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--night);
+  background: var(--surface);
   color: var(--ink-soft);
   font-family: var(--font-body);
   font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
@@ -55,13 +94,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* A very light film grain keeps the large flat blacks from banding on cheap
-   panels. Generated, not an image asset. */
-body::after {
+/* A very light film grain keeps the large flat navy from banding on cheap
+   panels. Generated, not an image asset. It belongs to the stages only — on
+   paper it would just be dirt. */
+.stage::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 100;
+  z-index: 0;
   pointer-events: none;
   opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -130,7 +170,7 @@ a {
   padding: 0.75rem 1.25rem;
   border-radius: 999px;
   background: var(--ink);
-  color: var(--night);
+  color: var(--surface);
   font-weight: 600;
   transform: translateY(-150%);
   transition: transform 0.2s;
@@ -175,7 +215,7 @@ a {
 .btn--solid {
   border-color: transparent;
   background: var(--accent-soft);
-  color: var(--night);
+  color: var(--surface);
   font-weight: 600;
 }
 .btn--solid:hover {
@@ -192,7 +232,7 @@ a {
 .card {
   border: 1px solid var(--hairline);
   border-radius: 1rem;
-  background: rgb(255 255 255 / 0.015);
+  background: var(--raise);
 }
 
 /* Every chapter is a full-bleed stage; pinning is added by GSAP only when

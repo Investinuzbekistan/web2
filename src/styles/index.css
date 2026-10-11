@@ -42,9 +42,14 @@
   --hairline: rgb(29 53 119 / 0.17);
   --hairline-strong: rgb(29 53 119 / 0.3);
 
-  --accent-soft: var(--brand-line-to, #006fb9); /* 4.5:1 */
-  --accent: #0a4f8f; /* 7.1:1 */
-  --accent-deep: #1d3577; /* Registan cobalt */
+  /* Majolica has three colours and they have three jobs, which is what keeps
+     a page built from them from reading as costume: cobalt is the ground,
+     turquoise is what you can act on, gold is what has been chosen. The
+     turquoise is the other end of the agency logo's own gradient
+     (--brand-line-mid #008DAB), darkened until it clears AA as text. */
+  --accent-soft: #007593; /* 4.5:1 — links, rules, bar fills */
+  --accent: #00566e; /* 7.0:1 — hover and focus */
+  --accent-deep: #1d3577; /* Registan cobalt — the ground */
   --gold: #995f00; /* 4.5:1 — gold that may carry text */
   --gold-leaf: var(--brand-forum-to, #c18429); /* ornament only */
   --turquoise: #007593; /* 4.5:1 */
@@ -59,7 +64,10 @@
   /* How strongly a surface shows the girih behind it. Ganch is carved relief:
      you see it in the light, not in the colour. */
   --ornament-ink: #000;
-  --ornament-opacity: 0.045;
+  /* Low enough that you notice the surface and not the pattern. Turned up to
+     where the stars can be made out behind body copy it stops being plaster
+     and becomes wallpaper. */
+  --ornament-opacity: 0.03;
 
   --font-display: 'Playfair Display Variable', ui-serif, Georgia, serif;
   --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
@@ -99,7 +107,8 @@
   --danger: #f0a3a3;
 
   --ornament-ink: #fff;
-  --ornament-opacity: 0.06;
+  --ornament-opacity: 0.05;
+
 
   color-scheme: dark;
 }
@@ -109,7 +118,7 @@
 .stage {
   background:
     /* The light falls from the top of a portal, not from everywhere. */
-    radial-gradient(130% 80% at 50% -12%, rgb(63 92 168 / 0.85), transparent 68%),
+    radial-gradient(130% 80% at 50% -12%, rgb(63 92 168 / 0.8), transparent 68%),
     linear-gradient(170deg, #1d3577 0%, #16265a 55%, #101a44 100%);
   color: var(--ink-soft);
 }
@@ -228,13 +237,40 @@ a {
 /* ------------------------------------------------------------- ornament */
 
 /**
+ * The wall the page is read against.
+ *
+ * Fixed rather than scrolling: plaster does not move, and a texture that
+ * slides under the text reads as wallpaper on a conveyor. The stages paint
+ * over it with their own ground, which is correct — they are faced in tile,
+ * not plastered.
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--ornament-opacity);
+  background-image: var(--ornament-girih-field-light), var(--ornament-girih-field);
+  background-position: 1px 1px, 0 0;
+  background-size: var(--ornament-girih-field-size);
+}
+
+/**
  * The girih field.
  *
  * A tiled background on a pseudo-element rather than on the box itself, so the
  * opacity applies to the pattern and not to everything on top of it. It is set
- * very low on purpose: carved ganch is read as texture, and a pattern you can
- * actually make out behind body copy is a pattern that has been turned up too
- * far.
+ * very low on purpose: a pattern you can actually make out behind body copy is
+ * a pattern that has been turned up too far.
+ *
+ * On paper it is drawn twice, a dark copy and a light copy a pixel apart, so
+ * the line reads as a groove cut into the plaster rather than as ink printed
+ * on it — which is what ganch is. The light falls from the top left, so the
+ * highlight sits below and to the right of the shadow.
+ *
+ * On the stage it stays flat: glaze is not carved, and an emboss on a tile
+ * would be a lie about the material.
  */
 .field-girih::before,
 .stage::before {
@@ -244,12 +280,14 @@ a {
   z-index: 0;
   pointer-events: none;
   opacity: var(--ornament-opacity);
-  background-image: var(--ornament-girih-field);
+  background-image: var(--ornament-girih-field-light), var(--ornament-girih-field);
+  background-position: 1px 1px, 0 0;
   background-size: var(--ornament-girih-field-size);
 }
 .stage::before,
 .stage.field-girih::before {
   background-image: var(--ornament-girih-field-light);
+  background-position: 0 0;
 }
 
 /** The running border of a tiled panel. Decoration; never announced. */
@@ -391,6 +429,27 @@ a {
   border-radius: 0.15rem;
   opacity: 0.16;
   pointer-events: none;
+}
+/* A koshin border does not simply stop at the corner — a lozenge closes it
+   there. Four copies of one mark, sat across each join. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  opacity: 0.3;
+  background-image: var(--ornament-corner), var(--ornament-corner), var(--ornament-corner),
+    var(--ornament-corner);
+  background-repeat: no-repeat;
+  background-size: var(--ornament-corner-size);
+  background-position: -5px -5px, calc(100% + 5px) -5px, -5px calc(100% + 5px),
+    calc(100% + 5px) calc(100% + 5px);
+}
+.stage .card::after,
+.on-stage .card::after {
+  background-image: var(--ornament-corner-light), var(--ornament-corner-light),
+    var(--ornament-corner-light), var(--ornament-corner-light);
+  opacity: 0.38;
 }
 
 /* ------------------------------------------------------------- chapters */

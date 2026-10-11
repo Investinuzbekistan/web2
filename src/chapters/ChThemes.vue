@@ -64,7 +64,10 @@ useChapterTimeline(
     <ul class="themes__track" :class="{ 'themes__track--free': !animated }">
       <li v-for="(theme, i) in themes" :key="theme.id" class="themes__card card">
         <div class="themes__top">
-          <ThemeIcon :name="theme.icon" class="themes__icon" />
+          <!-- The icon stands in a niche, the way a figure does in a wall. -->
+          <span class="themes__niche">
+            <ThemeIcon :name="theme.icon" class="themes__icon" />
+          </span>
           <span class="themes__n">{{ String(i + 1).padStart(2, '0') }}</span>
         </div>
         <h3>{{ tr(theme.title) }}</h3>
@@ -150,7 +153,20 @@ h2 {
   align-items: center;
   justify-content: space-between;
   margin-block-end: 0.5rem;
-  color: var(--accent-soft);
+}
+
+.themes__niche {
+  display: grid;
+  place-items: center;
+  inline-size: 2.9rem;
+  block-size: 3.5rem;
+  /* Near-square, so the shared arch comes to a point rather than a dome. */
+  clip-path: url(#uz-arch);
+  background: color-mix(in srgb, var(--accent-deep) 9%, transparent);
+  color: var(--accent-deep);
+}
+.themes__niche .theme-icon {
+  margin-block-start: 0.35rem;
 }
 .themes__n {
   font-size: 0.75rem;

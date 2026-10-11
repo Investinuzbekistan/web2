@@ -48,6 +48,20 @@ onBeforeUnmount(stopSmoothScroll);
 </script>
 
 <template>
+  <!-- The pointed arch of a portal, once, for everything that is seen through
+       one: a project's photograph, the niche a direction's icon stands in, the
+       empty slot where a sheet carried no picture. Bounding-box units, so the
+       one path fits whatever box it is applied to — which also means the curve
+       is read through that box's aspect, and a near-square box gives the
+       sharpest point. Decoration; it carries no meaning. -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" class="defs">
+    <defs>
+      <clipPath id="uz-arch" clipPathUnits="objectBoundingBox">
+        <path d="M0 1V0.34C0 0.20 0.27 0.04 0.5 0C0.73 0.04 1 0.20 1 0.34V1Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
   <a class="skip-link" href="#prologue">{{ t('skip') }}</a>
 
   <SiteChrome v-if="isReady" :chapters="CHAPTERS" />
@@ -79,6 +93,12 @@ onBeforeUnmount(stopSmoothScroll);
 </template>
 
 <style scoped>
+/* Takes no space and paints nothing; it exists so `clip-path: url(#uz-arch)`
+   has something to resolve against on every page state. */
+.defs {
+  position: absolute;
+}
+
 .state {
   min-height: 100svh;
   display: grid;

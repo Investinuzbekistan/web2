@@ -593,10 +593,13 @@ h2 {
   display: block;
 }
 /* A project whose sheet carried no usable image keeps the slot, so the list
-   does not jog left and right as it scrolls. */
+   does not jog left and right as it scrolls — as an empty niche rather than a
+   dashed box, which is the same arch the panel shows a photograph through. */
 .row__shot--empty {
-  border: 1px dashed var(--hairline);
-  background: transparent;
+  inline-size: 2.6rem;
+  block-size: 3.2rem;
+  clip-path: url(#uz-arch);
+  background: color-mix(in srgb, var(--accent-deep) 7%, transparent);
 }
 
 .row__flag {

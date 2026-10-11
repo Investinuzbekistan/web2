@@ -160,20 +160,7 @@ onBeforeUnmount(() => {
         <!-- The sheet's own visuals. One image is the common case, so the
              thumbnail strip only appears when there is something to switch to. -->
         <figure v-if="shots.length" class="panel__gallery">
-          <!-- The arch of a portal, as the shape the picture is seen
-               through. Bounding-box units, so one definition fits whatever
-               size the panel is — which also means the curve is read through
-               the image's own aspect, so the springing and the tangents at
-               the apex are set against the 3:2 below rather than drawn as a
-               true two-centred arch, which comes out a dome once the box
-               stretches it. The image itself is untouched. -->
-          <svg width="0" height="0" aria-hidden="true" focusable="false">
-            <defs>
-              <clipPath id="uz-arch" clipPathUnits="objectBoundingBox">
-                <path d="M0 1V0.34C0 0.20 0.27 0.04 0.5 0C0.73 0.04 1 0.20 1 0.34V1Z" />
-              </clipPath>
-            </defs>
-          </svg>
+          <!-- Seen through the arch defined once in App.vue. -->
           <img
             :src="`photos/${shots[shown]}-full.webp`"
             :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"

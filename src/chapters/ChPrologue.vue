@@ -8,6 +8,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ActionIcon from '../components/ActionIcon.vue';
 import ForumMark from '../components/ForumMark.vue';
 import { canAnimate, hasWebGl, onIdle, scrollToId, useChapterTimeline } from '../lib/motion';
 import { eventDates, tr, useStore } from '../lib/state';
@@ -20,6 +21,16 @@ const Globe = shallowRef<ReturnType<typeof defineAsyncComponent> | null>(null);
 
 const event = computed(() => forum.value?.event);
 const dates = computed(() => eventDates());
+
+/**
+ * How many projects are waiting four screens down.
+ *
+ * On the title card the portfolio was a button that said what it would do and
+ * nothing about what was behind it, so there was no reason to press it. The
+ * number is the reason, and it comes from the data rather than from the copy,
+ * so it is right on the day the organiser sends another batch of sheets.
+ */
+const projectCount = computed(() => forum.value?.portfolio.projects.length ?? 0);
 
 onMounted(() => {
   if (!canAnimate() || !hasWebGl()) return;
@@ -95,11 +106,22 @@ useChapterTimeline(
       <p class="prologue__lead prologue__reveal">{{ t('prologue.lead') }}</p>
 
       <div class="prologue__actions prologue__reveal">
-        <button type="button" class="btn btn--solid" @click="scrollToId('portfolio')">
-          {{ t('prologue.cta') }}
+        <button
+          type="button"
+          class="btn btn--solid prologue__go"
+          :aria-label="t('prologue.ctaAria', { count: projectCount })"
+          @click="scrollToId('portfolio')"
+        >
+          <ActionIcon name="portfolio" />
+          <span>{{ t('prologue.cta') }}</span>
+          <!-- The count, and then the arrow that says where pressing it goes.
+               Both are inside the button so the eye lands on one object. -->
+          <span v-if="projectCount" class="prologue__count" aria-hidden="true">{{ projectCount }}</span>
+          <ActionIcon name="down" class="prologue__nudge" />
         </button>
         <button type="button" class="btn" @click="scrollToId('epilogue')">
-          {{ t('prologue.cta2') }}
+          <ActionIcon name="enquiry" />
+          <span>{{ t('prologue.cta2') }}</span>
         </button>
       </div>
 
@@ -206,6 +228,40 @@ useChapterTimeline(
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-block-start: 2.25rem;
+}
+
+/**
+ * The count the portfolio button carries.
+ *
+ * A pill rather than another word: it has to be read as a quantity at a
+ * glance, by somebody who is not reading the button at all. Drawn out of the
+ * button's own ink at low opacity, so it belongs to the gold rather than
+ * sitting on top of it.
+ */
+.prologue__count {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 1.9em;
+  padding-inline: 0.45em;
+  margin-inline-start: 0.1em;
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* The arrow keeps nodding at the page below, the same cue the scroll hint
+   gives, because the button's whole promise is that there is more down
+   there. It stops under `prefers-reduced-motion`, with everything else. */
+.prologue__go .prologue__nudge {
+  animation: nudge 2.4s ease-in-out infinite;
+}
+.prologue__go:hover .prologue__nudge,
+.prologue__go:focus-visible .prologue__nudge {
+  animation-play-state: paused;
+  translate: 0 3px;
+  transition: translate 0.2s;
 }
 
 .prologue__scroll {

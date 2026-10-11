@@ -17,6 +17,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ActionIcon from './ActionIcon.vue';
 import ForumMark from './ForumMark.vue';
 import { lockPageScroll, scrollToId, unlockPageScroll } from '../lib/motion';
 import { setLang, useStore } from '../lib/state';
@@ -59,6 +60,29 @@ const activeId = computed(() => props.chapters[activeIndex.value]?.id);
  */
 const STAGES = new Set(['prologue', 'epilogue']);
 const onStage = computed(() => STAGES.has(activeId.value ?? ''));
+
+/**
+ * The bar's one call to action, which changes with where the reader is.
+ *
+ * It used to say "register your interest" from the first screen to the last,
+ * which is the wrong thing to offer somebody who has not yet seen what there
+ * is to be interested in — and on a phone, where the section links collapse
+ * into the menu, it was the *only* thing on the bar, so the seventy-four
+ * projects had no visible way in at all. A visitor told us they could not
+ * find them.
+ *
+ * So before the portfolio the bar offers the portfolio, and from the
+ * portfolio onwards it offers the enquiry. One button, always the next step.
+ */
+const PORTFOLIO_INDEX = computed(() => props.chapters.findIndex((c) => c.id === 'portfolio'));
+const seenPortfolio = computed(
+  () => PORTFOLIO_INDEX.value !== -1 && activeIndex.value >= PORTFOLIO_INDEX.value,
+);
+const barAction = computed(() =>
+  seenPortfolio.value
+    ? { id: 'epilogue', key: 'nav.cta', short: 'nav.ctaShort', icon: 'enquiry' }
+    : { id: 'portfolio', key: 'nav.ctaProjects', short: 'nav.ctaProjects', icon: 'portfolio' },
+);
 
 /**
  * Scroll handling is split in two so neither part measures layout per event.
@@ -235,8 +259,13 @@ function choose(code: Lang) {
         </ul>
       </div>
 
-      <button type="button" class="bar__cta" @click="go('epilogue')">
-        {{ t('nav.cta') }}
+      <!-- Two labels, one shown at a time: "Qiziqishni bildirish" is 159px
+           wide and the bar runs out of room for it below about 370px, where
+           a short form says the same thing beside the same icon. -->
+      <button type="button" class="bar__cta" :aria-label="t(barAction.key)" @click="go(barAction.id)">
+        <ActionIcon :name="barAction.icon" />
+        <span class="bar__ctaLong" aria-hidden="true">{{ t(barAction.key) }}</span>
+        <span class="bar__ctaShort" aria-hidden="true">{{ t(barAction.short) }}</span>
       </button>
 
       <button type="button" class="menu-toggle" :aria-expanded="menuOpen" @click="menuOpen = true">
@@ -476,6 +505,7 @@ function choose(code: Lang) {
 .bar__cta {
   display: none;
   align-items: center;
+  gap: 0.4rem;
   min-block-size: var(--tap);
   padding: 0.55rem 1.1rem;
   border: 0;
@@ -522,9 +552,52 @@ function choose(code: Lang) {
   display: none;
 }
 
-@media (min-width: 30rem) {
+/**
+ * The call to action is on the bar at every width, including the narrowest.
+ *
+ * It used to appear only above 30rem, which meant the smallest phones — the
+ * ones least likely to scroll four screens on spec — had a bar with nothing
+ * on it but a language code and a menu. Room is made by dropping the menu
+ * button to its icon, the same thing it does on a wide screen once the
+ * section links are visible.
+ */
+.bar__cta {
+  display: inline-flex;
+}
+@media (max-width: 29.99rem) {
+  .menu-toggle {
+    inline-size: var(--tap);
+    padding: 0.55rem;
+  }
+  .menu-toggle__text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .menu-toggle__icon {
+    display: block;
+  }
   .bar__cta {
-    display: inline-flex;
+    padding-inline: 0.75rem;
+  }
+}
+
+/* The long label only where it fits; the accessible name is the long one at
+   every width, so what is announced never shrinks with the screen. */
+.bar__ctaShort {
+  display: none;
+}
+@media (max-width: 25rem) {
+  .bar__ctaLong {
+    display: none;
+  }
+  .bar__ctaShort {
+    display: inline;
   }
 }
 

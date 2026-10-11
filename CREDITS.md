@@ -23,8 +23,9 @@ Madaniyat Hotel concept — see **Project photographs** below.
 | Rotating globe | Site 2, prologue | three.js — a generated lat/long wireframe, a marker over Tashkent and great-circle arcs. No texture, no model |
 | Arc fallback | Site 2, prologue | Inline SVG ellipses, shown when WebGL is unavailable or motion is reduced |
 | Silk Road corridor | Site 2, chapter I | A hand-authored schematic SVG path. Diagrammatic, not a map — it makes no territorial claim |
-| Project beeswarm | Site 2, chapter IV | Inline SVG, one dot per project on a logarithmic investment axis, packed in code from `forum-2026.json` |
+| Region map | Site 2, chapter IV | Inline SVG, fourteen outlines projected at build time by `scripts/build-region-map.mjs` over the boundary data below, shaded and counted from `forum-2026.json` |
 | Thematic direction icons | Site 2, chapter III | Eight glyphs drawn by hand on one 24-unit grid in `ThemeIcon.vue` |
+| Action icons | Site 2, title card and bar | Four glyphs on the same grid and stroke weight, in `ActionIcon.vue` |
 | Film grain | Site 2, the two lit stages | An inline `feTurbulence` SVG data URI at 3.5% opacity |
 | Region choropleth | Site 3, map | d3-geo, over the boundary data below |
 | Locator map | Site 2, contacts | OpenStreetMap's own embed — no key, no account; see below |

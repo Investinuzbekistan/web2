@@ -185,6 +185,7 @@ h2 {
 }
 
 .themes__card {
+  position: relative;
   flex: 0 0 min(80vw, 21rem);
   display: flex;
   flex-direction: column;
@@ -227,13 +228,20 @@ h3 {
   color: var(--ink-soft);
 }
 
+/**
+ * The card's one control — and, through the pseudo-element below, the card.
+ *
+ * Drawn as a link at the foot of the card, but the whole card is the hit
+ * area: on a phone the alternative is asking a thumb to find a line of
+ * 14-pixel type at the bottom of a box that is plainly one thing. The
+ * stretched pseudo-element is why nothing else in the card may be
+ * interactive; there is nothing else, and nothing should be added.
+ */
 .themes__link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   margin-block-start: auto;
-  /* The card's one control, so it is thumb-sized even though it is drawn as
-     a link rather than as a button. */
   min-block-size: var(--tap);
   padding: 0.6rem 0 0;
   border: 0;
@@ -246,10 +254,32 @@ h3 {
   cursor: pointer;
   transition: gap 0.18s, color 0.18s;
 }
+.themes__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
 @media (hover: hover) {
   .themes__link:hover {
     gap: 0.7rem;
     color: var(--ink);
   }
+  /* The card answers the pointer, not just the line of type inside it. */
+  .themes__card:hover {
+    border-color: var(--gold);
+  }
+  .themes__card:hover .themes__link {
+    gap: 0.7rem;
+    color: var(--ink);
+  }
+}
+/* The ring belongs to the card, since the card is what is being pressed. */
+.themes__card:has(.themes__link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.themes__link:focus-visible {
+  outline: none;
 }
 </style>

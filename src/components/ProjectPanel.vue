@@ -27,6 +27,7 @@ import { useI18n } from 'vue-i18n';
 import type { Project } from '../lib/forum-types';
 import { lockPageScroll, unlockPageScroll } from '../lib/motion';
 import { formatMoney } from '../lib/money';
+import { sheetLabel } from '../lib/sheet-labels';
 import { tr, useStore } from '../lib/state';
 
 const props = defineProps<{
@@ -82,6 +83,16 @@ const money = computed(() => {
   if (!p?.investment || !p.currency) return null;
   return formatMoney(p.investment, p.currency, lang.value);
 });
+
+/**
+ * The name of a field in the reader's language.
+ *
+ * The value is never touched — it is what the organiser stated — but the
+ * sheets are written in English and the page is not, so `LAND AREA` over a
+ * number is the page speaking a language the reader did not choose. A label
+ * the dictionary does not know keeps the sheet's own wording.
+ */
+const fieldName = (label: string) => sheetLabel(label, lang.value);
 
 /** The headline chips, minus the investment, which has its own block above. */
 const metrics = computed(() =>
@@ -382,7 +393,7 @@ onBeforeUnmount(() => {
 
           <ul v-if="metrics.length" class="panel__chips">
             <li v-for="m in metrics" :key="m.label">
-              <span>{{ m.label }}</span>
+              <span>{{ fieldName(m.label) }}</span>
               <strong>{{ m.value }}</strong>
             </li>
           </ul>
@@ -396,7 +407,7 @@ onBeforeUnmount(() => {
             <h4 class="panel__heading">{{ t(`portfolio.blocks.${block.key}`) }}</h4>
             <dl class="panel__rows">
               <div v-for="row in block.rows" :key="row.label">
-                <dt>{{ row.label }}</dt>
+                <dt>{{ fieldName(row.label) }}</dt>
                 <dd>{{ row.value }}</dd>
               </div>
             </dl>

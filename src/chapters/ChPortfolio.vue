@@ -646,13 +646,23 @@ h2 {
   margin: clamp(2rem, 5vh, 3rem) 0 0;
   padding: 0;
 }
-/* Seventy-four rows, each with an image, is a lot of layout for a section most
-   visitors scroll past. The browser skips the ones it cannot see; the reserved
-   height keeps the scrollbar honest while it does. */
-.portfolio__list li {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 5.5rem;
-}
+/**
+ * Seventy-four rows, each with an image, is a lot of layout for a section most
+ * visitors scroll past, and `content-visibility: auto` used to skip the ones
+ * off screen. It has been taken out.
+ *
+ * Skipped content is not re-laid-out when the window is resized, and in
+ * Chrome the stale layout escapes the skipped subtree: resize the window
+ * narrower after scrolling past this chapter and `.shell` keeps the width it
+ * had — the whole page then sits at its old size inside a smaller window,
+ * with the map running off the side. It is a browser bug rather than a
+ * mistake in this rule, but the rule is what triggers it, and a page that
+ * does not survive being resized is not worth 120 milliseconds.
+ *
+ * The rows are cheap anyway: their images are lazy and their layout is a
+ * three-column grid. Measured without it, the phone scroll holds the same
+ * 16.7 ms median and Lighthouse does not move.
+ */
 
 /**
  * One project, as a row.

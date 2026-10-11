@@ -94,6 +94,66 @@ export function clearFilters(): void {
   filters.value = { region: 'all', segment: 'all', size: 'all', query: '', sort: filters.value.sort };
 }
 
+/* ------------------------------------------------- the open project */
+
+/**
+ * Which project is open, as page state rather than component state.
+ *
+ * It lives here, and in the URL, because a project is the one thing on this
+ * page a visitor has a reason to send to somebody else. An investor who finds
+ * the Bukhara caravanserai should be able to paste a link that opens on the
+ * caravanserai, not on the top of a page with a note to scroll to chapter IV
+ * and search for it. Deep-linking also makes the browser's back button do what
+ * it looks like it should: close the sheet.
+ *
+ * `?project=` is written with pushState when a project is opened by hand, so
+ * each one is a history entry, and replaced rather than pushed when the opening
+ * came from the URL itself.
+ */
+const PROJECT_PARAM = 'project';
+export const openProjectId = ref<string | null>(
+  new URLSearchParams(window.location.search).get(PROJECT_PARAM),
+);
+
+function writeProjectParam(id: string | null, push: boolean): void {
+  const url = new URL(window.location.href);
+  if (id) url.searchParams.set(PROJECT_PARAM, id);
+  else url.searchParams.delete(PROJECT_PARAM);
+  if (url.href === window.location.href) return;
+  if (push) window.history.pushState({ [PROJECT_PARAM]: id }, '', url);
+  else window.history.replaceState({ [PROJECT_PARAM]: id }, '', url);
+}
+
+export function openProject(id: string | null): void {
+  if (openProjectId.value === id) return;
+  openProjectId.value = id;
+  writeProjectParam(id, true);
+}
+
+/** Moving between projects inside the sheet replaces rather than stacks. */
+export function replaceProject(id: string | null): void {
+  openProjectId.value = id;
+  writeProjectParam(id, false);
+}
+
+window.addEventListener('popstate', () => {
+  openProjectId.value = new URLSearchParams(window.location.search).get(PROJECT_PARAM);
+});
+
+/* ------------------------------------------------- the enquiry subject */
+
+/**
+ * The project an enquiry is about, carried from chapter IV to the epilogue.
+ *
+ * Until now the catalogue and the enquiry form were two things on one page
+ * with nothing between them: a visitor who had just read a project sheet had
+ * to scroll to the bottom and describe it again from memory. This hands the
+ * form what they were looking at.
+ */
+export const enquirySubject = ref<{ id: string; title: string; segment: string | null } | null>(
+  null,
+);
+
 /** The event dates as one string: "25-27 noyabr 2026". */
 export function eventDates(): string {
   const event = forum.value?.event;

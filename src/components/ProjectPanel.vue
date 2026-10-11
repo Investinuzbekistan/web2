@@ -9,6 +9,17 @@
  * made it interesting. Fields a sheet left blank are simply absent, and the
  * investment figure carries the sheet's own wording in its title so a reader
  * can see what was actually written.
+ *
+ * The sheet is a frame rather than one long scroll: a bar at the top that
+ * stays put while the reading moves under it, and a bar at the bottom holding
+ * the two things a reader can do with a project — say they are interested in
+ * it, and send it to somebody. Those were the sheet's missing half. A
+ * catalogue that can only be read is a brochure; the point of putting
+ * seventy-four projects on a page is that one of them starts a conversation.
+ *
+ * It is a side sheet on a wide screen and a bottom sheet on a phone, which is
+ * not a style choice: a drawer that arrives from the right is reached with a
+ * mouse, and one that arrives from the bottom is reached with a thumb.
  */
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -18,12 +29,19 @@ import { lockPageScroll, unlockPageScroll } from '../lib/motion';
 import { formatMoney } from '../lib/money';
 import { tr, useStore } from '../lib/state';
 
-const props = defineProps<{ project: Project | null }>();
-const emit = defineEmits<{ close: [] }>();
+const props = defineProps<{
+  project: Project | null;
+  /** Where this project sits in the list behind the sheet, 1-based. */
+  index: number;
+  total: number;
+}>();
+const emit = defineEmits<{ close: []; step: [delta: number]; enquire: [] }>();
 
 const { t } = useI18n();
 const { forum, lang } = useStore();
 const closeButton = ref<HTMLButtonElement | null>(null);
+const sheet = ref<HTMLElement | null>(null);
+const body = ref<HTMLElement | null>(null);
 let returnFocus: HTMLElement | null = null;
 
 const regionName = computed(() => {
@@ -58,7 +76,6 @@ const story = computed(() => {
 /** The sheet's own renders and photographs. */
 const shots = computed(() => props.project?.photos ?? []);
 const shown = ref(0);
-watch(() => props.project, () => (shown.value = 0));
 
 const money = computed(() => {
   const p = props.project;
@@ -83,7 +100,7 @@ const metrics = computed(() =>
 const blocks = computed(() => {
   const p = props.project;
   if (!p) return [];
-  const shown = new Set((p.metrics ?? []).map((m) => m.value.trim().toLowerCase()));
+  const seen = new Set((p.metrics ?? []).map((m) => m.value.trim().toLowerCase()));
   return [
     { key: 'concept', rows: p.concept },
     { key: 'opportunity', rows: p.opportunity },
@@ -94,30 +111,129 @@ const blocks = computed(() => {
       key: block.key,
       rows: block.rows.filter((row) => {
         const value = row.value.trim().toLowerCase();
-        if (shown.has(value)) return false;
-        shown.add(value);
+        if (seen.has(value)) return false;
+        seen.add(value);
         return true;
       }),
     }))
     .filter((b) => b.rows.length > 0);
 });
 
+/* ------------------------------------------------------------- sharing */
+
+/**
+ * The address bar already carries `?project=`, so sharing is a copy.
+ *
+ * `navigator.clipboard` needs a secure context and a permission some browsers
+ * refuse; rather than fail silently the button then reveals the link in a
+ * field the reader can select, which is what they were going to do anyway.
+ */
+type CopyState = 'idle' | 'copied' | 'manual';
+const copied = ref<CopyState>('idle');
+const linkField = ref<HTMLInputElement | null>(null);
+const shareUrl = ref('');
+let copyTimer = 0;
+
+async function copyLink(): Promise<void> {
+  shareUrl.value = window.location.href;
+  try {
+    await navigator.clipboard.writeText(shareUrl.value);
+    copied.value = 'copied';
+    window.clearTimeout(copyTimer);
+    copyTimer = window.setTimeout(() => (copied.value = 'idle'), 2600);
+  } catch {
+    copied.value = 'manual';
+    await nextTick();
+    linkField.value?.select();
+  }
+}
+
+/* ------------------------------------------------ moving between sheets */
+
+const canPrev = computed(() => props.total > 1 && props.index > 1);
+const canNext = computed(() => props.total > 1 && props.index < props.total);
+
+function step(delta: number): void {
+  if (delta < 0 && !canPrev.value) return;
+  if (delta > 0 && !canNext.value) return;
+  emit('step', delta);
+}
+
+/**
+ * Keep the tab ring inside the sheet.
+ *
+ * `aria-modal` tells assistive technology that the page behind is inert but
+ * does nothing about the tab order — without this, a few tabs out of the sheet
+ * land on the filter controls underneath, which are behind the scrim and
+ * cannot be seen.
+ */
+function trapFocus(event: KeyboardEvent): void {
+  const host = sheet.value;
+  if (!host) return;
+  const focusable = [
+    ...host.querySelectorAll<HTMLElement>(
+      'a[href], button:not(:disabled), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  ].filter((el) => el.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0]!;
+  const last = focusable[focusable.length - 1]!;
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !host.contains(active))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && active === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 function onKey(event: KeyboardEvent) {
-  if (event.key === 'Escape' && props.project) {
+  if (!props.project) return;
+  if (event.key === 'Escape') {
     event.preventDefault();
     emit('close');
+    return;
+  }
+  if (event.key === 'Tab') {
+    trapFocus(event);
+    return;
+  }
+  // Not while the reader is in the link field.
+  if (event.target instanceof HTMLInputElement) return;
+  if (event.key === 'ArrowLeft') {
+    event.preventDefault();
+    step(-1);
+  } else if (event.key === 'ArrowRight') {
+    event.preventDefault();
+    step(1);
   }
 }
 
 watch(
-  () => props.project,
+  () => props.project?.id,
   async (next, previous) => {
-    if (next && !previous) {
+    if (!next) return;
+    // A different project in the same sheet: back to the first photograph and
+    // to the top of the reading, or the next one opens halfway down.
+    shown.value = 0;
+    copied.value = 'idle';
+    if (previous) {
+      await nextTick();
+      body.value?.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  },
+);
+
+watch(
+  () => Boolean(props.project),
+  async (open, wasOpen) => {
+    if (open && !wasOpen) {
       lockPageScroll();
       returnFocus = document.activeElement as HTMLElement | null;
       await nextTick();
       closeButton.value?.focus();
-    } else if (!next && previous) {
+    } else if (!open && wasOpen) {
       unlockPageScroll();
       returnFocus?.focus();
       returnFocus = null;
@@ -128,6 +244,7 @@ watch(
 onMounted(() => document.addEventListener('keydown', onKey));
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKey);
+  window.clearTimeout(copyTimer);
   if (props.project) unlockPageScroll();
 });
 </script>
@@ -137,100 +254,172 @@ onBeforeUnmount(() => {
     <div v-if="project" class="panel">
       <button type="button" class="panel__scrim" :aria-label="t('portfolio.close')" @click="emit('close')" />
 
-      <!-- data-lenis-prevent: this element scrolls itself, so the smooth-scroll
-           driver must leave its wheel and touch events alone. -->
       <div
+        ref="sheet"
         class="panel__sheet"
-        data-lenis-prevent
         role="dialog"
         aria-modal="true"
         :aria-label="project.displayTitle ?? project.title"
       >
-        <button ref="closeButton" type="button" class="panel__close" @click="emit('close')">
-          {{ t('portfolio.close') }}
-        </button>
+        <!-- The grab bar of a bottom sheet. Drawn only on the phone layout,
+             where the sheet comes up from the edge of the screen and has to
+             say that it is a sheet; decoration, so it is not announced. -->
+        <span class="panel__grip" aria-hidden="true" />
 
-        <p class="panel__where">
-          {{ regionName }}
-          <span v-if="themeName" class="panel__theme">{{ regionName ? '· ' : '' }}{{ themeName }}</span>
-        </p>
-        <h3 class="panel__title">{{ heading }}</h3>
-        <p v-if="sub" class="panel__sub">{{ sub }}</p>
-
-        <!-- The sheet's own visuals. One image is the common case, so the
-             thumbnail strip only appears when there is something to switch to. -->
-        <figure v-if="shots.length" class="panel__gallery">
-          <!-- Seen through the arch defined once in App.vue. -->
-          <img
-            :src="`photos/${shots[shown]}-full.webp`"
-            :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"
-            width="1000"
-            height="625"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption v-if="shots.length > 1" :aria-label="t('portfolio.gallery')">
+        <header class="panel__bar">
+          <p class="panel__step">
             <button
-              v-for="(shot, i) in shots"
-              :key="shot"
               type="button"
-              :aria-pressed="i === shown"
-              :aria-label="t('portfolio.photoAlt', { title: heading, n: i + 1, total: shots.length })"
-              @click="shown = i"
+              class="panel__arrow"
+              :disabled="!canPrev"
+              :aria-label="t('portfolio.prev')"
+              @click="step(-1)"
             >
-              <img
-                :src="`photos/${shot}-thumb.webp`"
-                alt=""
-                width="220"
-                height="150"
-                loading="lazy"
-                decoding="async"
-              />
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path
+                  d="M15 5l-7 7 7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
-          </figcaption>
-        </figure>
+            <span class="panel__count">{{ index }} / {{ total }}</span>
+            <button
+              type="button"
+              class="panel__arrow"
+              :disabled="!canNext"
+              :aria-label="t('portfolio.next')"
+              @click="step(1)"
+            >
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path
+                  d="M9 5l7 7-7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </p>
 
-        <p class="panel__money">
-          <span class="eyebrow">{{ t('portfolio.labels.investment') }}</span>
-          <!-- The sheet's own wording, so a reader can check our arithmetic. -->
-          <strong
-            v-if="money"
-            class="figure"
-            :title="t('portfolio.asStated', { raw: project.investmentDisplay ?? '' })"
-          >
-            {{ money }}
-          </strong>
-          <strong v-else class="figure panel__money--none">
-            {{ project.investmentDisplay ?? t('portfolio.noFigure') }}
-          </strong>
-          <small v-if="project.currency === 'UZS'">{{ t('portfolio.uzsNote') }}</small>
-        </p>
+          <button ref="closeButton" type="button" class="panel__close" @click="emit('close')">
+            <span>{{ t('portfolio.close') }}</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </header>
 
-        <ul v-if="metrics.length" class="panel__chips">
-          <li v-for="m in metrics" :key="m.label">
-            <span>{{ m.label }}</span>
-            <strong>{{ m.value }}</strong>
-          </li>
-        </ul>
+        <!-- data-lenis-prevent: this element scrolls itself, so the
+             smooth-scroll driver must leave its wheel and touch events alone. -->
+        <div ref="body" class="panel__body" data-lenis-prevent>
+          <p class="panel__where">
+            {{ regionName }}
+            <span v-if="themeName" class="panel__theme">{{ regionName ? '· ' : '' }}{{ themeName }}</span>
+          </p>
+          <h3 class="panel__title">{{ heading }}</h3>
+          <p v-if="sub" class="panel__sub">{{ sub }}</p>
 
-        <template v-if="story">
-          <h4 class="panel__heading">{{ t('portfolio.labels.overview') }}</h4>
-          <p class="panel__overview">{{ story }}</p>
-        </template>
+          <!-- The sheet's own visuals. One image is the common case, so the
+               thumbnail strip only appears when there is something to switch to. -->
+          <figure v-if="shots.length" class="panel__gallery">
+            <!-- Seen through the arch defined once in App.vue. -->
+            <img
+              :src="`photos/${shots[shown]}-full.webp`"
+              :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"
+              width="1000"
+              height="563"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption v-if="shots.length > 1" :aria-label="t('portfolio.gallery')">
+              <button
+                v-for="(shot, i) in shots"
+                :key="shot"
+                type="button"
+                :aria-pressed="i === shown"
+                :aria-label="t('portfolio.photoAlt', { title: heading, n: i + 1, total: shots.length })"
+                @click="shown = i"
+              >
+                <img
+                  :src="`photos/${shot}-thumb.webp`"
+                  alt=""
+                  width="220"
+                  height="150"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </figcaption>
+          </figure>
 
-        <template v-for="block in blocks" :key="block.key">
-          <h4 class="panel__heading">{{ t(`portfolio.blocks.${block.key}`) }}</h4>
-          <dl class="panel__rows">
-            <div v-for="row in block.rows" :key="row.label">
-              <dt>{{ row.label }}</dt>
-              <dd>{{ row.value }}</dd>
-            </div>
-          </dl>
-        </template>
+          <p class="panel__money">
+            <span class="eyebrow">{{ t('portfolio.labels.investment') }}</span>
+            <!-- The sheet's own wording, so a reader can check our arithmetic. -->
+            <strong
+              v-if="money"
+              class="figure"
+              :title="t('portfolio.asStated', { raw: project.investmentDisplay ?? '' })"
+            >
+              {{ money }}
+            </strong>
+            <strong v-else class="figure panel__money--none">
+              {{ project.investmentDisplay ?? t('portfolio.noFigure') }}
+            </strong>
+            <small v-if="project.currency === 'UZS'">{{ t('portfolio.uzsNote') }}</small>
+          </p>
 
-        <p v-if="project.statusNote" class="panel__status">{{ project.statusNote }}</p>
+          <ul v-if="metrics.length" class="panel__chips">
+            <li v-for="m in metrics" :key="m.label">
+              <span>{{ m.label }}</span>
+              <strong>{{ m.value }}</strong>
+            </li>
+          </ul>
 
-        <p class="panel__note">{{ t('sources.projectLanguage') }}</p>
+          <template v-if="story">
+            <h4 class="panel__heading">{{ t('portfolio.labels.overview') }}</h4>
+            <p class="panel__overview">{{ story }}</p>
+          </template>
+
+          <template v-for="block in blocks" :key="block.key">
+            <h4 class="panel__heading">{{ t(`portfolio.blocks.${block.key}`) }}</h4>
+            <dl class="panel__rows">
+              <div v-for="row in block.rows" :key="row.label">
+                <dt>{{ row.label }}</dt>
+                <dd>{{ row.value }}</dd>
+              </div>
+            </dl>
+          </template>
+
+          <p v-if="project.statusNote" class="panel__status">{{ project.statusNote }}</p>
+
+          <p class="panel__note">{{ t('sources.projectLanguage') }}</p>
+        </div>
+
+        <!-- What a reader can do with the project they have just read. -->
+        <footer class="panel__act">
+          <button type="button" class="btn btn--solid panel__enquire" @click="emit('enquire')">
+            {{ t('portfolio.enquire') }}
+          </button>
+          <button type="button" class="btn panel__share" @click="copyLink">
+            {{ copied === 'copied' ? t('portfolio.copied') : t('portfolio.copyLink') }}
+          </button>
+          <label v-if="copied === 'manual'" class="panel__link">
+            <span class="sr-only">{{ t('portfolio.copyLink') }}</span>
+            <input ref="linkField" type="text" readonly :value="shareUrl" @focus="linkField?.select()" />
+          </label>
+        </footer>
       </div>
     </div>
   </Teleport>
@@ -242,7 +431,9 @@ onBeforeUnmount(() => {
   inset: 0;
   z-index: 95;
   display: grid;
-  justify-items: end;
+  /* The phone layout: the sheet rises from the bottom edge. */
+  align-items: end;
+  justify-items: stretch;
 }
 .panel__scrim {
   position: absolute;
@@ -252,21 +443,37 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(6px);
   cursor: pointer;
 }
+
+/**
+ * The sheet: a fixed bar, a scrolling reading and a fixed footer.
+ *
+ * A grid rather than one scrolling box, so the two bars stay where they are
+ * put. The sheet used to float its close button and let the heading flow
+ * around it, which worked until the heading ran to two lines on a phone and
+ * the button ended up inside the title.
+ */
 .panel__sheet {
   position: relative;
-  width: min(100%, 38rem);
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  /* Not the whole screen: the strip of scrim above the sheet is what says the
+     page is still there behind it, and it is where a thumb goes to dismiss.
+     svh rather than vh, or the footer hides under the browser's own bottom
+     bar on iOS. */
+  height: min(92svh, 100%);
   background: var(--surface-2);
-  border-inline-start: 1px solid var(--hairline);
-  animation: slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  border: 1px solid var(--hairline);
+  border-block-end: 0;
+  border-start-start-radius: 1rem;
+  border-start-end-radius: 1rem;
+  overflow: hidden;
+  animation: sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes slide-in {
+@keyframes sheet-up {
   from {
-    transform: translateX(2rem);
+    transform: translateY(2.5rem);
     opacity: 0;
   }
 }
@@ -276,25 +483,128 @@ onBeforeUnmount(() => {
   }
 }
 
+.panel__grip {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline: 0;
+  margin-inline: auto;
+  inline-size: 2.5rem;
+  block-size: 0.25rem;
+  border-radius: 999px;
+  background: var(--hairline-strong);
+}
+
+/* ------------------------------------------------------------- the bars */
+
+.panel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.1rem clamp(1.1rem, 4vw, 2rem) 0.7rem;
+  border-block-end: 1px solid var(--hairline);
+  background: var(--surface-2);
+}
+
+.panel__step {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.panel__arrow {
+  display: grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border: 1px solid var(--hairline);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+@media (hover: hover) {
+  .panel__arrow:hover:not(:disabled) {
+    border-color: var(--gold);
+  }
+}
+.panel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.panel__count {
+  min-inline-size: 3.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-dim);
+}
+
 .panel__close {
-  position: sticky;
-  inset-block-start: 0;
-  float: inline-end;
-  /* The heading flows around it; without a gutter the eyebrow runs right up
-     to the button on a narrow screen. */
-  margin-inline-start: 1rem;
-  margin-block-end: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-block-size: var(--tap);
   padding: 0.5rem 1rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .panel__close:hover {
+    border-color: var(--gold);
+  }
+}
+
+.panel__act {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.85rem clamp(1.1rem, 4vw, 2rem);
+  /* Clears the home indicator on a gesture-navigation phone. */
+  padding-block-end: max(0.85rem, env(safe-area-inset-bottom));
+  border-block-start: 1px solid var(--hairline);
+  background: var(--surface);
+}
+/* The two take one row wherever the row can hold them, and the call to
+   action is the one that grows. Its basis is small enough that a 412-pixel
+   phone keeps both on the line; below that they stack, which is the right
+   answer there. */
+.panel__enquire {
+  flex: 1 1 9rem;
+  justify-content: center;
+}
+.panel__share {
+  flex: 0 1 auto;
+  justify-content: center;
+}
+.panel__link {
+  flex: 1 1 100%;
+}
+.panel__link input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
   border: 1px solid var(--hairline);
   border-radius: 0.25rem;
   background: var(--surface-2);
   color: var(--ink);
   font: inherit;
   font-size: 0.8rem;
-  cursor: pointer;
 }
-.panel__close:hover {
-  border-color: var(--accent);
+
+/* ---------------------------------------------------------- the reading */
+
+.panel__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Keeps the momentum scroll inside the sheet rather than handing the
+     overscroll to the page behind it. */
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(1.25rem, 4vw, 2rem) clamp(1.1rem, 4vw, 2rem) 2rem;
 }
 
 .panel__where {
@@ -321,12 +631,25 @@ onBeforeUnmount(() => {
 .panel__gallery {
   margin: 1.5rem 0 0;
 }
+/**
+ * Square, and the squareness is the point.
+ *
+ * The arch is clipped in bounding-box units, so the box it is applied to is
+ * what decides whether it comes to a point or flattens into a dome: a wide
+ * box gives a dome. A square is as tall as the widest the sheet can be, which
+ * is the sharpest point available without the photograph taking the whole
+ * screen and pushing the investment figure two flicks down.
+ *
+ * `block-size: auto` is load-bearing. The `height` attribute on the image is a
+ * presentational attribute, which is still a used height, and a used height
+ * beats `aspect-ratio` — so without this the ratio here was quietly doing
+ * nothing and the box was 625 pixels tall whatever its width.
+ */
 .panel__gallery > img {
   display: block;
   inline-size: 100%;
-  /* Taller than the 16:10 the strip below keeps, so the arch has the rise to
-     come to a point: at 16:10 the same curve flattens into a dome. */
-  aspect-ratio: 3 / 2;
+  block-size: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   clip-path: url(#uz-arch);
   background: var(--surface-2);
@@ -337,9 +660,13 @@ onBeforeUnmount(() => {
   margin-block-start: 0.5rem;
   overflow-x: auto;
   scrollbar-width: thin;
+  /* The strip is a swipe on a phone, and a swipe that stops between two
+     thumbnails looks broken. */
+  scroll-snap-type: x proximity;
 }
 .panel__gallery figcaption button {
   flex: 0 0 auto;
+  scroll-snap-align: start;
   padding: 0;
   border: 1px solid transparent;
   border-radius: 0.2rem;
@@ -350,10 +677,15 @@ onBeforeUnmount(() => {
   opacity: 0.6;
   transition: opacity 0.18s, border-color 0.18s;
 }
-.panel__gallery figcaption button:hover,
 .panel__gallery figcaption button[aria-pressed='true'] {
   opacity: 1;
   border-color: var(--gold);
+}
+@media (hover: hover) {
+  .panel__gallery figcaption button:hover {
+    opacity: 1;
+    border-color: var(--gold);
+  }
 }
 .panel__gallery figcaption img {
   inline-size: 4.5rem;
@@ -432,10 +764,11 @@ onBeforeUnmount(() => {
   gap: 0;
   margin: 0.6rem 0 0;
 }
+/* Stacked on a phone: a label column wide enough for "INFRASTRUCTURE AND
+   UTILITIES" leaves the value about four characters a line. */
 .panel__rows > div {
   display: grid;
-  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-  gap: 1rem;
+  gap: 0.15rem;
   padding-block: 0.7rem;
   border-block-end: 1px solid var(--hairline);
 }
@@ -463,5 +796,41 @@ onBeforeUnmount(() => {
   margin-block: 2rem 0;
   font-size: 0.75rem;
   color: var(--ink-dim);
+}
+
+/* --------------------------------------------------- the desktop sheet */
+
+/**
+ * Wide enough for a pointer: the sheet goes back to the right-hand edge and
+ * runs the full height, which is where a reader who is not holding the device
+ * expects a detail view to open.
+ */
+@media (min-width: 48rem) {
+  .panel {
+    align-items: stretch;
+    justify-items: end;
+  }
+  .panel__sheet {
+    width: min(100%, 40rem);
+    height: 100%;
+    border: 0;
+    border-inline-start: 1px solid var(--hairline);
+    border-radius: 0;
+    animation-name: sheet-in;
+  }
+  .panel__grip {
+    display: none;
+  }
+  .panel__rows > div {
+    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateX(2rem);
+    opacity: 0;
+  }
 }
 </style>

@@ -134,6 +134,31 @@ const isLit = (id: string) => hovered.value === id || props.active === id;
 const DISC_RADIUS = 17;
 
 /**
+ * The radius each disc is *pressed* at, which is not the radius it is drawn
+ * at — and which is zero unless the screen is being touched.
+ *
+ * A 1000-unit map on a 390-pixel screen scales by 0.39, so a disc drawn at 22
+ * units is a 17-pixel target, a third of what a thumb needs. The country is
+ * twice as wide as it is tall and has fourteen regions in it, so no honest
+ * drawing of it gives every region a 44-pixel target on a phone; the list
+ * below the map is the control that can, and it is the reason this map is
+ * allowed to stay a map. An invisible circle over each disc closes most of
+ * the rest of the gap.
+ *
+ * It is only there under a thumb. The circle sits above the outlines, so on a
+ * desktop — where the outlines are large and precise and a 34-unit disc is
+ * already an easy target — it would do nothing but swallow clicks meant for
+ * the region underneath it. The radius is set in CSS for that reason; the
+ * value here only has to be large enough for the CSS to reduce.
+ *
+ * At 44 the target comes out around 36 pixels across on a 412-pixel screen —
+ * short of the 44 a platform asks for, which is the geometry and not a choice,
+ * and twice what the drawn disc gives. Callout discs are at least 100 units
+ * apart, so at this radius they still do not take each other's area.
+ */
+const HIT_RADIUS = 44;
+
+/**
  * Where a region's counter goes when it will not fit inside the region.
  *
  * Six of the fourteen are too narrow to hold a disc: the capital, which is a
@@ -232,6 +257,12 @@ function choose(id: string): void {
               @pointerenter="hovered = region.id"
               @pointerleave="hovered = null"
             >
+              <circle
+                class="uzmap__hit"
+                :cx="discAt(region).x"
+                :cy="discAt(region).y"
+                :r="HIT_RADIUS"
+              />
               <circle :cx="discAt(region).x" :cy="discAt(region).y" :r="DISC_RADIUS" />
               <text :x="discAt(region).x" :y="discAt(region).y">{{ countOf.get(region.id) }}</text>
             </g>
@@ -293,8 +324,10 @@ svg {
   cursor: pointer;
   transition: fill 0.2s, stroke 0.2s;
 }
-.uzmap__region:hover {
-  fill: color-mix(in srgb, var(--accent-deep) calc(var(--shade, 0) * 100% + 14%), var(--surface-2));
+@media (hover: hover) {
+  .uzmap__region:hover {
+    fill: color-mix(in srgb, var(--accent-deep) calc(var(--shade, 0) * 100% + 14%), var(--surface-2));
+  }
 }
 .uzmap__region--on {
   fill: url(#uzmap-girih);
@@ -320,7 +353,21 @@ svg {
   stroke-width: 1.2;
 }
 
-.uzmap__disc circle {
+/* Pressed, never seen. Painted rather than left without a fill, because an
+   SVG shape with no fill is not hit-tested at all — and collapsed to nothing
+   where there is a pointer that can aim. */
+.uzmap__hit {
+  r: 0;
+  fill: transparent;
+  stroke: none;
+}
+@media (pointer: coarse) {
+  .uzmap__hit {
+    r: 44;
+  }
+}
+
+.uzmap__disc circle:not(.uzmap__hit) {
   fill: var(--surface);
   stroke: var(--gold-leaf);
   stroke-width: 1.6;
@@ -340,7 +387,7 @@ svg {
 .uzmap__disc {
   cursor: pointer;
 }
-.uzmap__disc--on circle {
+.uzmap__disc--on circle:not(.uzmap__hit) {
   fill: var(--gold-leaf);
   stroke-width: 2.4;
 }
@@ -361,11 +408,24 @@ figcaption {
 /* Below this the valley regions are a few pixels across; the discs are then
    the only thing that can be hit, so they are grown rather than the map. */
 @media (max-width: 40rem) {
-  .uzmap__disc circle {
+  .uzmap__disc circle:not(.uzmap__hit) {
     r: 22;
   }
   .uzmap__disc text {
     font-size: 24px;
+  }
+}
+
+/* A phone cannot spare the gutter. The country is twice as wide as it is
+   tall, so on a narrow screen every pixel of width is a pixel of map — the
+   drawing runs to both edges and only the caption keeps the column the rest
+   of the chapter is set in. */
+@media (max-width: 47.99rem) {
+  .uzmap {
+    margin-inline: calc(var(--gutter) * -1);
+  }
+  .uzmap figcaption {
+    padding-inline: var(--gutter);
   }
 }
 </style>

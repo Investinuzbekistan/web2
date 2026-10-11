@@ -211,6 +211,7 @@ useChapterTimeline(
 .prologue__scroll {
   display: inline-flex;
   align-items: center;
+  min-block-size: var(--tap);
   gap: 0.6rem;
   margin-block-start: 3rem;
   padding: 0.6rem 0;
@@ -224,8 +225,10 @@ useChapterTimeline(
   cursor: pointer;
   transition: color 0.2s;
 }
-.prologue__scroll:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .prologue__scroll:hover {
+    color: var(--ink);
+  }
 }
 .prologue__scroll svg {
   animation: nudge 2.4s ease-in-out infinite;

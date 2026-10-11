@@ -22,6 +22,27 @@ const reduceQuery =
 /** False when the visitor asked for reduced motion. Read at setup time. */
 export const canAnimate = (): boolean => !reduceQuery?.matches;
 
+/**
+ * Where a chapter is allowed to hold still and be scrubbed by the scroll.
+ *
+ * Pinning converts the scroll position into the progress of an animation. It
+ * is a good effect with a wheel, which arrives in discrete ticks the page can
+ * answer one at a time, and a bad one under a thumb: the page stops where the
+ * finger expects it to carry on, the gesture has to be learnt, and the scroll
+ * events a phone sends while the page has momentum arrive in clumps, so the
+ * scrubbed animation is drawn in steps rather than drawn smoothly. Every
+ * pinned chapter therefore asks this first and offers an unpinned version of
+ * itself to everything else.
+ *
+ * `pointer: fine` rather than a width alone, so a tablet held in landscape —
+ * wide, but still a thumb — gets the unpinned version, and a touchscreen
+ * laptop, whose primary pointer is still the mouse, does not.
+ */
+export const SCRUB_QUERY = '(min-width: 64rem) and (pointer: fine)';
+
+/** Its complement, for the other half of a gsap.matchMedia pair. */
+export const NO_SCRUB_QUERY = `not all and ${SCRUB_QUERY}`;
+
 let lenis: Lenis | null = null;
 
 export function startSmoothScroll(): void {

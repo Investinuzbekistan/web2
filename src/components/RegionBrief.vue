@@ -137,8 +137,10 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   font-weight: 600;
   cursor: pointer;
 }
-.brief__back:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .brief__back:hover {
+    color: var(--ink);
+  }
 }
 
 .brief__name {
@@ -195,8 +197,20 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   text-align: start;
   cursor: pointer;
 }
-.brief__top li button:hover {
-  background: var(--raise);
+@media (hover: hover) {
+  .brief__top li button:hover {
+    background: var(--raise);
+  }
+}
+@media (pointer: coarse) {
+  .brief__top li button {
+    min-block-size: var(--tap);
+  }
+  .brief__back {
+    min-block-size: var(--tap);
+    display: inline-flex;
+    align-items: center;
+  }
 }
 .brief__title {
   color: var(--ink);
@@ -232,9 +246,19 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   cursor: pointer;
   transition: background-color 0.16s, color 0.16s;
 }
-.brief__regions li button:hover:not(:disabled) {
-  background: var(--surface-2);
-  color: var(--ink);
+/* Fourteen rows at reading density is right under a mouse and wrong under a
+   thumb, so the rows grow where there is no mouse rather than everywhere. */
+@media (pointer: coarse) {
+  .brief__regions li button {
+    min-block-size: var(--tap);
+    font-size: 0.92rem;
+  }
+}
+@media (hover: hover) {
+  .brief__regions li button:hover:not(:disabled) {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
 }
 .brief__regions li button:disabled {
   opacity: 0.55;
@@ -258,8 +282,10 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   background: var(--accent-deep);
   opacity: 0.6;
 }
-.brief__regions li button:hover .brief__fill {
-  opacity: 1;
+@media (hover: hover) {
+  .brief__regions li button:hover .brief__fill {
+    opacity: 1;
+  }
 }
 
 .brief__hint {

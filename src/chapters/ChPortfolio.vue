@@ -16,7 +16,7 @@
  * said nothing a table would not have said, and the region column in
  * particular asked the reader to know where Surkhandarya is.
  */
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ProjectPanel from '../components/ProjectPanel.vue';
@@ -30,7 +30,11 @@ import { scrollToId, useChapterTimeline } from '../lib/motion';
 import {
   bandOf,
   clearFilters,
+  enquirySubject,
   filters,
+  openProject,
+  openProjectId,
+  replaceProject,
   SIZE_BANDS,
   tr,
   useStore,
@@ -41,7 +45,6 @@ import {
 const { t } = useI18n();
 const { forum, lang } = useStore();
 const root = ref<HTMLElement | null>(null);
-const selected = ref<Project | null>(null);
 
 const projects = computed(() => forum.value?.portfolio.projects ?? []);
 const regionNames = computed(() => forum.value?.portfolio.regionNames ?? {});
@@ -139,6 +142,66 @@ const filtered = computed(
     filters.value.query.trim() !== '',
 );
 
+/* --------------------------------------------------- the open project */
+
+/**
+ * Which project is open is page state, not chapter state: it is in the URL,
+ * so a link opens on the project rather than on the top of the page, and the
+ * back button closes the sheet. See lib/state.ts.
+ */
+const selected = computed(
+  () => projects.value.find((p) => p.id === openProjectId.value) ?? null,
+);
+
+/**
+ * Where the open project sits in the list behind the sheet.
+ *
+ * The arrows walk the list the reader is actually looking at — filtered and
+ * sorted as they left it — rather than all seventy-four in file order. A
+ * project reached by link, or one the filters have since excluded, is not in
+ * that list, and there is then nowhere to step to.
+ */
+const place = computed(() => {
+  const i = shown.value.findIndex((p) => p.id === openProjectId.value);
+  return i === -1 ? { index: 1, total: 1 } : { index: i + 1, total: shown.value.length };
+});
+
+function stepProject(delta: number): void {
+  const i = shown.value.findIndex((p) => p.id === openProjectId.value);
+  const next = i === -1 ? undefined : shown.value[i + delta];
+  if (next) replaceProject(next.id);
+}
+
+/**
+ * From the sheet to the enquiry form, carrying the project.
+ *
+ * Closing and scrolling cannot happen in the same tick: the sheet releases the
+ * page scroll in a watcher, and a scroll asked for before that has run is
+ * swallowed by the lock.
+ */
+async function enquire(): Promise<void> {
+  const project = selected.value;
+  if (!project) return;
+  enquirySubject.value = { id: project.id, title: title(project), segment: project.segment };
+  replaceProject(null);
+  await nextTick();
+  scrollToId('epilogue');
+}
+
+/**
+ * A link naming a project that is not in this portfolio opens nothing, and
+ * should not leave the name in the address bar either. Immediate, because the
+ * chapter only mounts once the data is in — by the time this runs the list is
+ * already there and will not change again.
+ */
+watch(
+  [projects, openProjectId],
+  () => {
+    if (openProjectId.value && projects.value.length && !selected.value) replaceProject(null);
+  },
+  { immediate: true },
+);
+
 /* ------------------------------------------------------------- the map */
 
 /**
@@ -203,9 +266,6 @@ const detail = computed<RegionDetail | null>(() => {
   };
 });
 
-function openProject(id: string): void {
-  selected.value = projects.value.find((p) => p.id === id) ?? null;
-}
 
 /* ------------------------------------------------- the remaining bars */
 
@@ -284,7 +344,7 @@ useChapterTimeline(
           :active="filters.region"
           :detail="detail"
           @pick="(id) => (filters.region = id)"
-          @open="openProject"
+          @open="(id) => openProject(id)"
           @see-all="scrollToId('portfolio-list')"
         />
       </div>
@@ -340,7 +400,12 @@ useChapterTimeline(
 
       <ol v-else id="portfolio-list" class="portfolio__list">
         <li v-for="project in shown" :key="project.id">
-          <button type="button" class="row" :class="{ 'row--featured': project.featured }" @click="selected = project">
+          <button
+            type="button"
+            class="row"
+            :class="{ 'row--featured': project.featured, 'row--open': project.id === openProjectId }"
+            @click="openProject(project.id)"
+          >
             <!-- The sheets carry their own renders and photographs; a project
                  described only in figures reads as a spreadsheet row. -->
             <span class="row__shot" :class="{ 'row__shot--empty': !thumb(project) }">
@@ -370,12 +435,34 @@ useChapterTimeline(
             >
               {{ moneyOf(project) }}
             </span>
+            <!-- A row that opens something should look like it does. The word
+                 is only drawn where there is room for it; the mark always. -->
+            <span class="row__go">
+              <span class="row__goText">{{ t('portfolio.open') }}</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path
+                  d="M9 5l7 7-7 7"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
           </button>
         </li>
       </ol>
     </div>
 
-    <ProjectPanel :project="selected" @close="selected = null" />
+    <ProjectPanel
+      :project="selected"
+      :index="place.index"
+      :total="place.total"
+      @close="openProject(null)"
+      @step="stepProject"
+      @enquire="enquire"
+    />
   </section>
 </template>
 
@@ -494,9 +581,20 @@ h2 {
   font: inherit;
   font-size: 0.9rem;
 }
-.field input:hover,
-.field select:hover {
-  border-color: var(--gold);
+@media (hover: hover) {
+  .field input:hover,
+  .field select:hover {
+    border-color: var(--gold);
+  }
+}
+/* Under 16px, iOS zooms the page in when a field takes focus and does not
+   zoom back out; the reader is then left on a page half a screen wide. */
+@media (max-width: 48rem) {
+  .field input,
+  .field select {
+    min-block-size: var(--tap);
+    font-size: 1rem;
+  }
 }
 
 .portfolio__status {
@@ -518,9 +616,11 @@ h2 {
   font-size: 0.75rem;
   cursor: pointer;
 }
-.portfolio__clear:hover {
-  color: var(--ink);
-  border-color: var(--gold);
+@media (hover: hover) {
+  .portfolio__clear:hover {
+    color: var(--ink);
+    border-color: var(--gold);
+  }
 }
 
 /* Two columns on a wide screen, stacked below. */
@@ -551,14 +651,27 @@ h2 {
    height keeps the scrollbar honest while it does. */
 .portfolio__list li {
   content-visibility: auto;
-  contain-intrinsic-size: auto 4.6rem;
+  contain-intrinsic-size: auto 5.5rem;
 }
+
+/**
+ * One project, as a row.
+ *
+ * Two shapes, named rather than reordered by hand: on a phone the figure drops
+ * under the title and the thumbnail and the chevron run the full height beside
+ * them, because a money column on a 360px screen leaves the title about three
+ * words. On anything wider the four parts sit in a line.
+ */
 .row {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'shot main go'
+    'shot money go';
   align-items: center;
-  gap: 1rem;
+  gap: 0.2rem 0.9rem;
   width: 100%;
+  min-block-size: var(--tap);
   padding: 0.7rem 0.5rem;
   border: 0;
   border-block-end: 1px solid var(--hairline);
@@ -570,15 +683,31 @@ h2 {
   cursor: pointer;
   transition: background-color 0.18s, color 0.18s;
 }
-.row:hover {
-  background: var(--surface-2);
-  color: var(--ink);
+@media (min-width: 40rem) {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: 'shot main money go';
+    gap: 1rem;
+  }
+}
+@media (hover: hover) {
+  .row:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
 }
 .row--featured {
   background: var(--raise);
 }
+/* The row whose sheet is open, so closing it lands the reader back on a row
+   they can see they came from. */
+.row--open {
+  background: var(--surface-2);
+  box-shadow: inset 2px 0 0 var(--gold-leaf);
+}
 
 .row__shot {
+  grid-area: shot;
   display: block;
   inline-size: 4.5rem;
   block-size: 3.2rem;
@@ -610,6 +739,7 @@ h2 {
   color: var(--gold);
 }
 .row__main {
+  grid-area: main;
   display: grid;
   gap: 0.15rem;
   min-width: 0;
@@ -623,9 +753,36 @@ h2 {
   color: var(--ink-dim);
 }
 .row__money {
-  flex: 0 0 auto;
+  grid-area: money;
   font-size: 1rem;
   color: var(--accent);
   white-space: nowrap;
+}
+
+/* The chevron, and the word beside it once there is room to set it. */
+.row__go {
+  grid-area: go;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--ink-dim);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.18s, gap 0.18s;
+}
+@media (hover: hover) {
+  .row:hover .row__go {
+    color: var(--accent);
+    gap: 0.55rem;
+  }
+}
+.row__goText {
+  display: none;
+}
+@media (min-width: 60rem) {
+  .row__goText {
+    display: inline;
+  }
 }
 </style>

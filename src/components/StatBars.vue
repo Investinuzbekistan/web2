@@ -91,9 +91,16 @@ button {
   cursor: pointer;
   transition: background-color 0.16s, color 0.16s;
 }
-button:hover {
-  background: var(--surface-2);
-  color: var(--ink);
+@media (pointer: coarse) {
+  button {
+    min-block-size: var(--tap);
+  }
+}
+@media (hover: hover) {
+  button:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
 }
 button[aria-pressed='true'] {
   background: var(--surface-2);
@@ -121,9 +128,13 @@ button[aria-pressed='true'] {
   opacity: 0.55;
   transition: opacity 0.16s;
 }
-button:hover .bars__fill,
 button[aria-pressed='true'] .bars__fill {
   opacity: 1;
+}
+@media (hover: hover) {
+  button:hover .bars__fill {
+    opacity: 1;
+  }
 }
 
 .bars__count {

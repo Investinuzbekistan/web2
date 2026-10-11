@@ -72,8 +72,18 @@
   --font-display: 'Playfair Display Variable', ui-serif, Georgia, serif;
   --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
 
-  --shell: min(100% - 2.5rem, 78rem);
+  /* The page gutter, and the column set inside it. The gutter grows to clear
+     a notch when a phone is held on its side — without this the first and
+     last characters of every line sit under the camera housing. */
+  --gutter: max(1.25rem, env(safe-area-inset-left), env(safe-area-inset-right));
+  --shell: min(100% - var(--gutter) * 2, 78rem);
   --chapter-pad: clamp(4rem, 10vh, 8rem);
+
+  /* The smallest a control may be where it is pressed with a thumb. WCAG 2.2
+     sets the floor at 24px; every platform's own guidance says 44, and the
+     platforms are describing the thumb rather than the minimum defensible
+     number, so the platforms win. */
+  --tap: 2.75rem;
 
   color-scheme: light;
 }
@@ -131,6 +141,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Safari inflates text in landscape unless it is told the page was designed
+     for the device width. It already was. */
+  -webkit-text-size-adjust: 100%;
   /* Clears the fixed bar. Kept in step with BAR_CLEARANCE in lib/motion.ts,
      which Lenis needs because it never reads this property. */
   scroll-padding-top: 6rem;
@@ -138,6 +151,9 @@ html {
 
 body {
   margin: 0;
+  /* A second tap on a control is a second tap, not a request to zoom. Pinch
+     zoom is untouched — only the double-tap gesture on these elements. */
+  touch-action: manipulation;
   background: var(--surface);
   color: var(--ink-soft);
   font-family: var(--font-body);
@@ -368,6 +384,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  min-block-size: var(--tap);
   padding: 0.8rem 1.6rem;
   border: 1px solid var(--hairline-strong);
   border-radius: 0.2rem;
@@ -390,9 +407,22 @@ body::before {
   opacity: 0.18;
   pointer-events: none;
 }
-.btn:hover {
-  border-color: var(--gold);
-  background: var(--raise);
+/**
+ * Every hover style on this site is behind this query, and that is a rule
+ * rather than a preference here.
+ *
+ * A touch browser has no pointer to take away, so it leaves `:hover` on the
+ * last thing that was tapped until something else is. The gold call to action
+ * turns to ink when it is pressed and then stays dark for the rest of the
+ * visit, which reads as a button that has been used up. Guarding the rule
+ * costs nothing where there is a mouse and removes the whole class of problem
+ * where there is not.
+ */
+@media (hover: hover) {
+  .btn:hover {
+    border-color: var(--gold);
+    background: var(--raise);
+  }
 }
 .btn--solid {
   border-color: transparent;
@@ -402,10 +432,12 @@ body::before {
 .btn--solid::after {
   opacity: 0.3;
 }
-.btn--solid:hover {
-  background: var(--ink);
-  color: var(--surface);
-  border-color: transparent;
+@media (hover: hover) {
+  .btn--solid:hover {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: transparent;
+  }
 }
 .btn:disabled {
   opacity: 0.5;

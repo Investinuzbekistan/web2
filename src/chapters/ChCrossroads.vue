@@ -3,42 +3,71 @@
  * Chapter I — the corridor. A stylised Silk Road route draws itself west to
  * east as the chapter scrubs past. The shape is schematic on purpose: it is a
  * diagram of a trade corridor, not a map, so it makes no territorial claim.
+ *
+ * The scrub is for a wheel. Pinning holds the chapter still and ties the
+ * drawing to the scroll position, which is exact under a mouse and stuttery
+ * under a thumb: the page stops moving where the finger says it should move,
+ * and the scroll events a phone sends during momentum arrive in clumps, so
+ * the line is drawn in steps. Where there is no mouse the same route draws
+ * itself once, on its own clock, when the chapter comes into view — the
+ * chapter then scrolls like a page, which is what it is.
  */
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useChapterTimeline } from '../lib/motion';
+import { gsap as gsapLib, NO_SCRUB_QUERY, SCRUB_QUERY, useChapterTimeline } from '../lib/motion';
 
 const { t } = useI18n();
 const root = ref<HTMLElement | null>(null);
+
+let media: ReturnType<typeof gsapLib.matchMedia> | null = null;
 
 useChapterTimeline(
   () => root.value,
   ({ gsap, root: el }) => {
     const route = el.querySelector<SVGPathElement>('.route__line');
     const stops = el.querySelectorAll('.route__stop');
+    const text = el.querySelectorAll('.route__text > *');
     if (!route) return;
 
     const length = route.getTotalLength();
-    gsap.set(route, { strokeDasharray: length, strokeDashoffset: length });
-    gsap.set(stops, { scale: 0, transformOrigin: 'center' });
 
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: el,
-        start: 'top top',
-        end: '+=120%',
-        pin: true,
-        scrub: 0.8,
-      },
+    /** The drawing itself, which is the same either way. */
+    const draw = (timeline: gsap.core.Timeline) =>
+      timeline
+        .to(route, { strokeDashoffset: 0, ease: 'none', duration: 1 })
+        .to(stops, { scale: 1, stagger: 0.12, ease: 'back.out(2)', duration: 0.3 }, 0.25)
+        .from(text, { y: 24, opacity: 0, stagger: 0.1 }, 0.1);
+
+    media = gsap.matchMedia();
+
+    media.add(SCRUB_QUERY, () => {
+      gsap.set(route, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.set(stops, { scale: 0, transformOrigin: 'center' });
+      draw(
+        gsap.timeline({
+          scrollTrigger: { trigger: el, start: 'top top', end: '+=120%', pin: true, scrub: 0.8 },
+        }),
+      );
     });
 
-    timeline
-      .to(route, { strokeDashoffset: 0, ease: 'none', duration: 1 })
-      .to(stops, { scale: 1, stagger: 0.12, ease: 'back.out(2)', duration: 0.3 }, 0.25)
-      .from(el.querySelectorAll('.route__text > *'), { y: 24, opacity: 0, stagger: 0.1 }, 0.1);
+    media.add(NO_SCRUB_QUERY, () => {
+      gsap.set(route, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.set(stops, { scale: 0, transformOrigin: 'center' });
+      draw(
+        gsap.timeline({
+          defaults: { ease: 'power2.out' },
+          scrollTrigger: { trigger: el, start: 'top 70%', once: true },
+        }),
+      ).timeScale(0.8);
+    });
   },
 );
+
+onBeforeUnmount(() => {
+  media?.revert();
+  media = null;
+});
 </script>
 
 <template>

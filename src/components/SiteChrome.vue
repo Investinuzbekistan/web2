@@ -306,8 +306,11 @@ function choose(code: Lang) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(1rem, 3vw, 2.5rem);
-  padding: 0.9rem clamp(1rem, 3vw, 2.5rem);
+  gap: clamp(0.75rem, 3vw, 2.5rem);
+  padding-block: 0.9rem;
+  /* Clears a notch when the phone is on its side. */
+  padding-inline-start: max(clamp(1rem, 3vw, 2.5rem), env(safe-area-inset-left));
+  padding-inline-end: max(clamp(1rem, 3vw, 2.5rem), env(safe-area-inset-right));
   /* Both states are mixed from --surface, so the bar follows the chapter it is
      over without either colour being written down twice. */
   background: linear-gradient(
@@ -334,7 +337,9 @@ function choose(code: Lang) {
      not by width, or it pushes the bar open on small screens. */
   display: block;
   flex: 0 0 auto;
-  height: clamp(3rem, 6.5vw, 4rem);
+  /* Floored lower than the design size: at 280px the bar carried the lockup,
+     the language button and the menu button past the edge of the screen. */
+  height: clamp(2.5rem, 6.5vw, 4rem);
 }
 
 /* The section links. Hidden below 68rem, where the overlay takes over — the
@@ -365,15 +370,28 @@ function choose(code: Lang) {
   transform-origin: 0 50%;
   transition: transform 0.22s;
 }
-.nav a:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .nav a:hover {
+    color: var(--ink);
+  }
 }
-.nav a:hover::after,
 .nav a[aria-current='true']::after {
   transform: scaleX(1);
 }
+@media (hover: hover) {
+  .nav a:hover::after {
+    transform: scaleX(1);
+  }
+}
 .nav a[aria-current='true'] {
   color: var(--ink);
+}
+/* A tablet held in landscape gets the bar's links and no mouse. The padding
+   grows rather than the box, so the underline stays on the word. */
+@media (pointer: coarse) {
+  .nav a {
+    padding-block: 0.85rem;
+  }
 }
 
 .bar__right {
@@ -388,7 +406,9 @@ function choose(code: Lang) {
 .langs__toggle {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
+  min-block-size: var(--tap);
   padding: 0.45rem 0.75rem;
   border: 1px solid var(--hairline);
   border-radius: 0.25rem;
@@ -402,10 +422,15 @@ function choose(code: Lang) {
   cursor: pointer;
   transition: border-color 0.18s, color 0.18s;
 }
-.langs__toggle:hover,
 .langs__toggle[aria-expanded='true'] {
   border-color: var(--gold);
   color: var(--ink);
+}
+@media (hover: hover) {
+  .langs__toggle:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
 }
 .langs__menu {
   position: absolute;
@@ -422,8 +447,10 @@ function choose(code: Lang) {
   box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.45);
 }
 .langs__menu button {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
+  min-block-size: var(--tap);
   padding: 0.55rem 0.75rem;
   border: 0;
   border-radius: 0.2rem;
@@ -434,9 +461,11 @@ function choose(code: Lang) {
   text-align: start;
   cursor: pointer;
 }
-.langs__menu button:hover {
-  background: var(--surface-2);
-  color: var(--ink);
+@media (hover: hover) {
+  .langs__menu button:hover {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
 }
 .langs__menu button[aria-current='true'] {
   color: var(--accent-soft);
@@ -446,6 +475,8 @@ function choose(code: Lang) {
    narrowest screens, where the title card's buttons are a scroll away. */
 .bar__cta {
   display: none;
+  align-items: center;
+  min-block-size: var(--tap);
   padding: 0.55rem 1.1rem;
   border: 0;
   border-radius: 0.25rem;
@@ -458,15 +489,19 @@ function choose(code: Lang) {
   cursor: pointer;
   transition: background-color 0.18s, color 0.18s;
 }
-.bar__cta:hover {
-  background: var(--ink);
-  color: var(--surface);
+@media (hover: hover) {
+  .bar__cta:hover {
+    background: var(--ink);
+    color: var(--surface);
+  }
 }
 
 .menu-toggle {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+  min-block-size: var(--tap);
   padding: 0.55rem 1.1rem;
   border: 1px solid var(--hairline);
   border-radius: 0.25rem;
@@ -478,8 +513,10 @@ function choose(code: Lang) {
   cursor: pointer;
   transition: border-color 0.18s;
 }
-.menu-toggle:hover {
-  border-color: var(--gold);
+@media (hover: hover) {
+  .menu-toggle:hover {
+    border-color: var(--gold);
+  }
 }
 .menu-toggle__icon {
   display: none;
@@ -498,6 +535,7 @@ function choose(code: Lang) {
   /* With the sections on the bar the overlay becomes the "everything" menu, so
      its button steps back to an icon. */
   .menu-toggle {
+    inline-size: var(--tap);
     padding: 0.55rem;
     border-radius: 0.25rem;
   }
@@ -541,6 +579,7 @@ function choose(code: Lang) {
   position: absolute;
   inset-block-start: 1.5rem;
   inset-inline-end: 0;
+  min-block-size: var(--tap);
   padding: 0.6rem 1.1rem;
   border: 1px solid var(--hairline);
   border-radius: 0.25rem;
@@ -571,9 +610,13 @@ function choose(code: Lang) {
   cursor: pointer;
   transition: color 0.2s;
 }
-.overlay li button:hover,
 .overlay li button[aria-current='true'] {
   color: var(--ink);
+}
+@media (hover: hover) {
+  .overlay li button:hover {
+    color: var(--ink);
+  }
 }
 .overlay__n {
   font-family: var(--font-body);

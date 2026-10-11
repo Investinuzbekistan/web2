@@ -53,9 +53,21 @@ const accessed = computed(() =>
   vertical-align: super;
   transition: color 0.18s, border-color 0.18s;
 }
-.source:hover,
+/* A superscript chip is a 26x22 target. Under a thumb it gets the room it
+   needs from padding that does not disturb the line it sits in. */
+@media (pointer: coarse) {
+  .source {
+    padding: 0.35em 0.6em;
+  }
+}
 .source:focus-visible {
   color: var(--accent);
   border-color: var(--accent);
+}
+@media (hover: hover) {
+  .source:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 </style>

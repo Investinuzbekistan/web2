@@ -50,8 +50,23 @@ onMounted(async () => {
   camera.position.set(0, 0.35, 3.1);
   camera.lookAt(0, 0, 0);
 
+  /**
+   * A phone is drawing this on a battery, behind a CPU several times slower
+   * than a laptop's, at a device pixel ratio of two and a half. Left at the
+   * desktop settings the globe cost a fifty-millisecond task every few frames
+   * — measurably, under throttling — and the title card, which is the first
+   * thing anybody sees, ran at about twenty frames a second because of it.
+   *
+   * Two caps fix it, and neither is visible: the back buffer stops at 1.5
+   * rather than 2 device pixels, which is a little over half the pixels, and
+   * the globe is drawn thirty times a second rather than sixty. A wireframe
+   * turning a fifth of a degree a frame has nothing in it that thirty frames
+   * cannot carry.
+   */
+  const coarse = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+
   const renderer = new THREE.WebGLRenderer({ canvas: el, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
 
   const world = new THREE.Group();
   // Tilt so Central Asia faces the camera at rest.
@@ -119,12 +134,29 @@ onMounted(async () => {
   let running = true;
   const started = performance.now();
 
-  const tick = () => {
+  /** The shortest gap between two drawings. Zero means every frame offered. */
+  const minGap = coarse ? 1000 / 30 : 0;
+  /** Radians a second, rather than radians a frame. */
+  const SPIN = 0.072;
+  let lastDraw = 0;
+
+  const tick = (now: number) => {
     if (!running) return;
-    const elapsed = (performance.now() - started) / 1000;
-    world.rotation.y += 0.0012;
+    frame = requestAnimationFrame(tick);
+
+    // The first call always draws: there is no previous frame to be too close
+    // to, and a globe that waits for one never appears at all.
+    const since = lastDraw ? now - lastDraw : 16.7;
+    if (lastDraw && since < minGap) return;
+    lastDraw = now;
+
+    // Turned by the clock, not by the frame, so capping the rate above slows
+    // the drawing down and not the globe. Clamped, because a tab that was in
+    // the background comes back with a gap of several seconds.
+    world.rotation.y += SPIN * Math.min(since, 100) * 0.001;
 
     // Arcs fade in one after another, then hold.
+    const elapsed = (now - started) / 1000;
     arcs.forEach((arc, i) => {
       const material = arc.material as LineBasicMaterial;
       const local = Math.min(1, Math.max(0, (elapsed - 0.5 - i * 0.28) / 1.1));
@@ -132,7 +164,6 @@ onMounted(async () => {
     });
 
     renderer.render(scene, camera);
-    frame = requestAnimationFrame(tick);
   };
   frame = requestAnimationFrame(tick);
 

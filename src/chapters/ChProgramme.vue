@@ -191,6 +191,7 @@ h2 {
   align-items: center;
   gap: 0.4rem;
   margin-block-start: 0.7rem;
+  min-block-size: var(--tap);
   padding: 0.3rem 0.8rem;
   border: 1px solid var(--hairline);
   border-radius: 0.2rem;
@@ -200,9 +201,11 @@ h2 {
   font-size: 0.75rem;
   cursor: pointer;
 }
-.day__toggle:hover {
-  color: var(--ink);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .day__toggle:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
 }
 .day__chev {
   display: inline-flex;

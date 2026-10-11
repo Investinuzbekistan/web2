@@ -11,12 +11,12 @@
  * organiser's own, and a visitor should be choosing from the same vocabulary
  * the forum uses.
  */
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ForumMark from '../components/ForumMark.vue';
 import SourceTag from '../components/SourceTag.vue';
-import { setLang, tr, useStore } from '../lib/state';
+import { enquirySubject, setLang, tr, useStore } from '../lib/state';
 import { formatDate } from '../lib/shared/content';
 
 const { t } = useI18n();
@@ -26,6 +26,23 @@ const step = ref(0);
 const status = ref<'idle' | 'submitting' | 'sent' | 'failed'>('idle');
 const form = reactive({ role: '', theme: '', name: '', email: '', message: '' });
 const errors = reactive<{ role?: string; name?: string; email?: string }>({});
+
+/**
+ * The project the visitor arrived from, if they arrived from one.
+ *
+ * Chapter IV hands it over rather than writing into the form: the form still
+ * asks its three questions, and the project is shown above them as what the
+ * enquiry is about. Its direction is filled in, because the sheet already
+ * states it and asking again would be asking the reader to repeat the page
+ * back to it.
+ */
+watch(enquirySubject, (next) => {
+  if (next?.segment) form.theme = next.segment;
+});
+
+function clearSubject(): void {
+  enquirySubject.value = null;
+}
 
 const org = computed(() => content.value?.organization);
 const contact = computed(() => forum.value?.contact);
@@ -80,6 +97,7 @@ async function submit() {
   const body = [
     event.value ? `${tr(event.value.name)} — ${event.value.dateStart}/${event.value.dateEnd}` : '',
     '',
+    enquirySubject.value ? `${t('epilogue.subject')}: ${enquirySubject.value.title}` : '',
     `${t('epilogue.q1')} ${role ? tr(role.category) : ''}`,
     `${t('epilogue.q2')} ${theme ? tr(theme.title) : t('epilogue.themeAny')}`,
     `${t('epilogue.name')}: ${form.name}`,
@@ -94,7 +112,7 @@ async function submit() {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...form, lang: lang.value }),
+        body: JSON.stringify({ ...form, project: enquirySubject.value?.id ?? null, lang: lang.value }),
       });
       if (!res.ok) throw new Error(String(res.status));
       status.value = 'sent';
@@ -123,6 +141,29 @@ async function submit() {
 
       <div class="epilogue__grid">
         <div class="wizard">
+          <!-- What the enquiry is about, when chapter IV sent the reader here
+               with a project in hand. -->
+          <p v-if="enquirySubject" class="wizard__subject">
+            <span class="wizard__subjectLabel">{{ t('epilogue.subject') }}</span>
+            <span class="wizard__subjectName">{{ enquirySubject.title }}</span>
+            <button
+              type="button"
+              class="wizard__subjectClear"
+              :aria-label="t('epilogue.clearSubject')"
+              @click="clearSubject"
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </p>
+
           <template v-if="status === 'sent'">
             <h3>{{ t('epilogue.sentTitle') }}</h3>
             <p class="wizard__note">
@@ -365,6 +406,61 @@ h2 {
   border-radius: 1rem;
   background: linear-gradient(160deg, var(--raise), transparent 60%);
 }
+/* The project the enquiry is about: a gold-edged strip above the questions,
+   so it reads as something carried in rather than as another field. */
+.wizard__subject {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-block-end: 1.25rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--hairline);
+  border-inline-start: 3px solid var(--gold-leaf);
+  border-radius: 0.4rem;
+  background: var(--raise);
+}
+.wizard__subjectLabel {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.wizard__subjectName {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+.wizard__subjectClear {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  margin: calc(var(--tap) / -4) -0.4rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .wizard__subjectClear:hover {
+    color: var(--ink);
+  }
+}
+@media (max-width: 30rem) {
+  .wizard__subject {
+    flex-wrap: wrap;
+  }
+  .wizard__subjectName {
+    flex-basis: 100%;
+    order: 3;
+  }
+}
+
 .wizard__progress {
   font-size: 0.75rem;
   letter-spacing: 0.18em;
@@ -397,8 +493,10 @@ h2 {
   cursor: pointer;
   transition: border-color 0.18s, background-color 0.18s;
 }
-.wizard__choices label:hover {
-  border-color: var(--accent);
+@media (hover: hover) {
+  .wizard__choices label:hover {
+    border-color: var(--accent);
+  }
 }
 .wizard__choices input {
   accent-color: var(--accent-soft);
@@ -421,13 +519,16 @@ h2 {
 .wizard__field select,
 .wizard__field textarea {
   width: 100%;
+  min-block-size: var(--tap);
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--hairline);
   border-radius: 0.6rem;
   background: var(--surface-2);
   color: var(--ink);
   font: inherit;
-  font-size: 0.95rem;
+  /* Never under 16px: below that, iOS zooms the page in when the field takes
+     focus and leaves it there. */
+  font-size: max(1rem, 0.95rem);
 }
 .wizard__field textarea {
   resize: vertical;
@@ -526,6 +627,16 @@ h2 {
   text-decoration-color: var(--accent-deep);
   text-underline-offset: 3px;
 }
+/* An address and a telephone number are the two things on this page a reader
+   presses to leave it. A line of text is a 24-pixel target; under a thumb
+   they get the room of a button without being drawn as one. */
+@media (pointer: coarse) {
+  .contacts a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+  }
+}
 
 .outcomes__cols {
   margin-block-start: 1.75rem;
@@ -612,8 +723,33 @@ h2 {
   text-decoration-color: var(--hairline);
   text-underline-offset: 3px;
 }
-.footer a:hover {
-  color: var(--ink);
+/* A column of official links set at reading leading gives each one a 19-pixel
+   target. Under a thumb they are set as rows instead — the gap does the work,
+   so the type and the underline are untouched. */
+@media (pointer: coarse) {
+  .footer ul {
+    gap: 0;
+  }
+  /* The whole row, not the word: "TIIF" is four characters and a 23-pixel
+     target however tall it is made. A list of links is a list of rows on a
+     phone anyway. */
+  .footer ul a {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--tap);
+  }
+  /* A source sits in a line with its date, so it takes the height and not
+     the width. */
+  .footer__sources a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--tap);
+  }
+}
+@media (hover: hover) {
+  .footer a:hover {
+    color: var(--ink);
+  }
 }
 .footer__note {
   margin-block-start: 0.75rem;
@@ -708,8 +844,10 @@ h2 {
   letter-spacing: 0.08em;
   cursor: pointer;
 }
-.footer__langs button:hover {
-  color: var(--ink);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .footer__langs button:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
 }
 </style>

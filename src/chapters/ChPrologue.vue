@@ -110,6 +110,10 @@ useChapterTimeline(
         </svg>
       </button>
     </div>
+
+    <!-- The band that finishes a tiled panel, on the edge where the stage
+         gives way to the page. Decoration, and announced as nothing. -->
+    <div class="frieze frieze--edge frieze--bottom" aria-hidden="true" />
   </section>
 </template>
 
@@ -140,7 +144,10 @@ useChapterTimeline(
 }
 
 .prologue__organiser {
-  color: var(--forum-sand);
+  /* `--forum-sand` and `--forum-mid` were never defined anywhere: the
+     declarations were invalid and the colour simply inherited. The forum's
+     gold is --gold / --gold-leaf. */
+  color: var(--gold);
 }
 
 .prologue__mark {
@@ -160,7 +167,7 @@ useChapterTimeline(
   color: var(--ink);
 }
 .prologue__dot {
-  color: var(--forum-mid);
+  color: var(--gold-leaf);
 }
 
 .prologue__within {
@@ -174,14 +181,14 @@ useChapterTimeline(
   gap: 0.2rem;
   margin-block-start: 2rem;
   padding-inline-start: 1.1rem;
-  border-inline-start: 2px solid var(--forum-mid);
+  border-inline-start: 2px solid var(--gold-leaf);
 }
 .prologue__motto-1 {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--forum-sand);
+  color: var(--gold);
 }
 .prologue__motto-2 {
   font-family: var(--font-display);

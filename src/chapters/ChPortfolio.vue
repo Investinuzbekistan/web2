@@ -2,26 +2,31 @@
 /**
  * Chapter IV — the project portfolio.
  *
- * Seventy-four projects is too many to read and too few to need a search engine,
- * so the chapter is built around a breakdown that is also the navigation: three
- * columns of bars — by region, by direction, by ticket size — where every row
- * filters the list below it.
+ * Seventy-four projects is too many to read and too few to need a search
+ * engine, so the chapter is built around a breakdown that is also the
+ * navigation. The first question an investor asks of a regional portfolio is a
+ * question about places, so the first answer is a map: fourteen regions, each
+ * carrying the number of projects it brought, and choosing one filters
+ * everything below. Direction and ticket size stay as bars underneath — those
+ * are not places and a map cannot hold them.
  *
- * It replaced a beeswarm on a logarithmic axis. That plot was accurate and
- * unreadable: it needed a legend for the dot size, another for the axis, and a
- * third for the lane of projects that state no dollar figure at all. The bars
- * answer the three questions an investor arrives with, and answer them without
- * a legend.
+ * The chapter has been through two earlier versions of this. The first was a
+ * beeswarm on a logarithmic axis: accurate, and unreadable without three
+ * separate legends. The second was three columns of bars: readable, but it
+ * said nothing a table would not have said, and the region column in
+ * particular asked the reader to know where Surkhandarya is.
  */
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ProjectPanel from '../components/ProjectPanel.vue';
 import CountFigure from '../components/CountFigure.vue';
+import RegionBrief, { type RegionDetail } from '../components/RegionBrief.vue';
+import RegionMap, { type MapRegion } from '../components/RegionMap.vue';
 import StatBars, { type BarRow } from '../components/StatBars.vue';
 import type { Project } from '../lib/forum-types';
 import { formatMoney, millionWord } from '../lib/money';
-import { useChapterTimeline } from '../lib/motion';
+import { scrollToId, useChapterTimeline } from '../lib/motion';
 import {
   bandOf,
   clearFilters,
@@ -70,6 +75,10 @@ const title = (p: Project) => (p.titleI18n ? tr(p.titleI18n) : (p.displayTitle ?
 const subtitleOf = (p: Project) => (p.subtitleI18n ? tr(p.subtitleI18n) : p.subtitle);
 const thumb = (p: Project) => (p.photos[0] ? `photos/${p.photos[0]}-thumb.webp` : null);
 
+/** What a project is asking for, in words, or the sheet's silence. */
+const moneyOf = (p: Project) =>
+  p.investment && p.currency ? formatMoney(p.investment, p.currency, lang.value) : t('portfolio.noFigure');
+
 /** The sheet's own one-word description of the project, when it gives one. */
 const activityOf = (p: Project) =>
   p.metrics.find((m) => /^(ACTIVITY|OPERATOR|STATUS)$/i.test(m.label))?.value ?? null;
@@ -100,10 +109,12 @@ function matches(p: Project): boolean {
   return haystack.includes(q);
 }
 
+/** USD asked for, or -1 where the sheet states no dollar figure. */
+const amount = (p: Project) => (p.currency === 'USD' ? (p.investment ?? -1) : -1);
+
 const shown = computed(() => {
   const list = projects.value.filter(matches);
   const by = filters.value.sort;
-  const amount = (p: Project) => (p.currency === 'USD' ? (p.investment ?? -1) : -1);
   return [...list].sort((a, b) => {
     // The hand-transcribed concept leads the list however it is sorted.
     if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
@@ -128,14 +139,12 @@ const filtered = computed(
     filters.value.query.trim() !== '',
 );
 
-/* ------------------------------------------------------------- breakdown */
+/* ------------------------------------------------------------- the map */
 
 /**
- * The three bar columns.
- *
  * Counted over the whole portfolio, not over what is currently shown: these
- * rows are the filter, and a filter that recounts itself as you use it tells
- * you nothing about what else is there.
+ * are the filter, and a filter that recounts itself as you use it tells you
+ * nothing about what else is there.
  */
 const count = (fn: (p: Project) => string | null) => {
   const out = new Map<string, number>();
@@ -146,16 +155,59 @@ const count = (fn: (p: Project) => string | null) => {
   return out;
 };
 
-const regionRows = computed<BarRow[]>(() => {
+/**
+ * All fourteen, including the ones that brought nothing.
+ *
+ * Namangan has no project in this portfolio. It is still drawn and still
+ * listed: a map of the country with a region missing from it would be a
+ * different claim entirely, and "nothing yet" is itself worth seeing.
+ */
+const mapRegions = computed<MapRegion[]>(() => {
   const counts = count((p) => p.region);
-  return [...counts.entries()]
-    .map(([id, n]) => ({
+  return Object.entries(regionNames.value)
+    .map(([id, name]) => ({
       id,
-      label: regionNames.value[id] ? tr(regionNames.value[id]) : id,
-      count: n,
+      name: tr(name),
+      count: counts.get(id) ?? 0,
+      countText: t('portfolio.results', counts.get(id) ?? 0),
     }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 });
+
+const detail = computed<RegionDetail | null>(() => {
+  const id = filters.value.region;
+  const name = regionNames.value[id];
+  if (id === 'all' || !name) return null;
+
+  const here = projects.value.filter((p) => p.region === id);
+  const usd = here.reduce((sum, p) => sum + (p.currency === 'USD' ? (p.investment ?? 0) : 0), 0);
+
+  const byDirection = new Map<string, number>();
+  for (const p of here) {
+    if (p.segment) byDirection.set(p.segment, (byDirection.get(p.segment) ?? 0) + 1);
+  }
+
+  return {
+    id,
+    name: tr(name),
+    countText: t('portfolio.results', here.length),
+    soughtText: usd ? formatMoney(usd, 'USD', lang.value) : t('portfolio.noFigure'),
+    directions: themes.value
+      .filter((theme) => byDirection.has(theme.id))
+      .map((theme) => ({ id: theme.id, label: tr(theme.title), count: byDirection.get(theme.id)! }))
+      .sort((a, b) => b.count - a.count),
+    top: [...here]
+      .sort((a, b) => amount(b) - amount(a))
+      .slice(0, 3)
+      .map((p) => ({ id: p.id, title: title(p), money: moneyOf(p) })),
+  };
+});
+
+function openProject(id: string): void {
+  selected.value = projects.value.find((p) => p.id === id) ?? null;
+}
+
+/* ------------------------------------------------- the remaining bars */
 
 const segmentRows = computed<BarRow[]>(() => {
   const counts = count((p) => p.segment);
@@ -172,7 +224,6 @@ const sizeRows = computed<BarRow[]>(() => {
     count: counts.get(id) ?? 0,
   }));
 });
-
 
 useChapterTimeline(
   () => root.value,
@@ -217,6 +268,28 @@ useChapterTimeline(
         {{ t('portfolio.totalNote', { n: totals.statedUsd, uzs: totals.statedUzs, open: totals.open }) }}
       </p>
 
+      <div class="rule-rosette" aria-hidden="true"><span class="rule-rosette__mark" /></div>
+
+      <!-- The map, which is also the navigation ---------------------------- -->
+      <div class="region">
+        <RegionMap
+          :regions="mapRegions"
+          :active="filters.region"
+          :caption="t('portfolio.map.caption')"
+          :empty-label="t('portfolio.map.none')"
+          @pick="(id) => (filters.region = id)"
+        />
+        <RegionBrief
+          :regions="mapRegions"
+          :active="filters.region"
+          :detail="detail"
+          @pick="(id) => (filters.region = id)"
+          @open="openProject"
+          @see-all="scrollToId('portfolio-list')"
+        />
+      </div>
+      <p class="portfolio__credit">{{ t('portfolio.map.credit') }}</p>
+
       <!-- Controls -------------------------------------------------------- -->
       <div class="portfolio__controls">
         <p class="field field--search">
@@ -239,21 +312,8 @@ useChapterTimeline(
         </p>
       </div>
 
-      <p class="portfolio__status" role="status">
-        {{ t('portfolio.results', shown.length) }}
-        <button v-if="filtered" type="button" class="portfolio__clear" @click="clearFilters">
-          {{ t('portfolio.clear') }}
-        </button>
-      </p>
-
-      <!-- The breakdown, which is also the navigation --------------------- -->
+      <!-- The two breakdowns a map cannot carry --------------------------- -->
       <div class="breakdown">
-        <StatBars
-          :title="t('portfolio.byRegion')"
-          :rows="regionRows"
-          :active="filters.region"
-          @pick="(id) => (filters.region = id)"
-        />
         <StatBars
           :title="t('portfolio.byDirection')"
           :rows="segmentRows"
@@ -268,10 +328,17 @@ useChapterTimeline(
         />
       </div>
 
+      <p class="portfolio__status" role="status">
+        {{ t('portfolio.results', shown.length) }}
+        <button v-if="filtered" type="button" class="portfolio__clear" @click="clearFilters">
+          {{ t('portfolio.clear') }}
+        </button>
+      </p>
+
       <!-- The list -------------------------------------------------------- -->
       <p v-if="!shown.length" class="portfolio__empty">{{ t('portfolio.empty') }}</p>
 
-      <ol v-else class="portfolio__list">
+      <ol v-else id="portfolio-list" class="portfolio__list">
         <li v-for="project in shown" :key="project.id">
           <button type="button" class="row" :class="{ 'row--featured': project.featured }" @click="selected = project">
             <!-- The sheets carry their own renders and photographs; a project
@@ -301,10 +368,7 @@ useChapterTimeline(
               class="row__money figure"
               :title="t('portfolio.asStated', { raw: project.investmentDisplay ?? '' })"
             >
-              <template v-if="project.investment && project.currency">
-                {{ formatMoney(project.investment, project.currency, lang) }}
-              </template>
-              <template v-else>{{ t('portfolio.noFigure') }}</template>
+              {{ moneyOf(project) }}
             </span>
           </button>
         </li>
@@ -376,10 +440,31 @@ h2 {
   color: var(--ink-dim);
 }
 
+/* The map and the panel that answers it. Stacked until there is room for the
+   panel to stand beside the map without squeezing the Fergana valley into a
+   smudge. */
+.region {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+@media (min-width: 64rem) {
+  .region {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+    align-items: start;
+  }
+}
+
+.portfolio__credit {
+  margin-block-start: 1.25rem;
+  max-width: 44rem;
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+}
+
 .portfolio__controls {
   display: grid;
   gap: 0.75rem;
-  margin-block-start: clamp(2rem, 5vh, 3rem);
+  margin-block-start: clamp(2.5rem, 6vh, 3.5rem);
 }
 @media (min-width: 52rem) {
   .portfolio__controls {
@@ -393,6 +478,7 @@ h2 {
 }
 .field label {
   font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -402,7 +488,7 @@ h2 {
   width: 100%;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--hairline);
-  border-radius: 0.6rem;
+  border-radius: 0.25rem;
   background: var(--surface-2);
   color: var(--ink);
   font: inherit;
@@ -410,7 +496,7 @@ h2 {
 }
 .field input:hover,
 .field select:hover {
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
 
 .portfolio__status {
@@ -418,14 +504,14 @@ h2 {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  margin-block-start: 1.25rem;
+  margin-block-start: 1.75rem;
   font-size: 0.85rem;
   color: var(--ink-soft);
 }
 .portfolio__clear {
   padding: 0.3rem 0.8rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.2rem;
   background: transparent;
   color: var(--ink-dim);
   font: inherit;
@@ -434,19 +520,19 @@ h2 {
 }
 .portfolio__clear:hover {
   color: var(--ink);
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
 
-/* Three columns on a wide screen, stacked below. */
+/* Two columns on a wide screen, stacked below. */
 .breakdown {
   margin-block-start: clamp(2rem, 5vh, 3rem);
   display: grid;
   gap: clamp(1.75rem, 4vw, 2.5rem);
 }
-@media (min-width: 58rem) {
+@media (min-width: 52rem) {
   .breakdown {
-    /* The direction labels are the longest of the three sets. */
-    grid-template-columns: 1.05fr 1.45fr 1fr;
+    /* The direction labels are the longer of the two sets. */
+    grid-template-columns: 1.3fr 1fr;
   }
 }
 
@@ -476,7 +562,7 @@ h2 {
   padding: 0.7rem 0.5rem;
   border: 0;
   border-block-end: 1px solid var(--hairline);
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background: transparent;
   color: inherit;
   font: inherit;
@@ -496,7 +582,7 @@ h2 {
   display: block;
   inline-size: 4.5rem;
   block-size: 3.2rem;
-  border-radius: 0.4rem;
+  border-radius: 0.2rem;
   overflow: hidden;
   background: var(--surface-2);
 }
@@ -515,10 +601,10 @@ h2 {
 
 .row__flag {
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-soft);
+  color: var(--gold);
 }
 .row__main {
   display: grid;
@@ -536,7 +622,7 @@ h2 {
 .row__money {
   flex: 0 0 auto;
   font-size: 1rem;
-  color: var(--accent-soft);
+  color: var(--accent);
   white-space: nowrap;
 }
 </style>

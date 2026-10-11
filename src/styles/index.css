@@ -1,38 +1,68 @@
-/* Site 2 is a white page with two lit stages — the title card it opens on and
-   the chapter it closes with. No theme switch, no utility framework: plain CSS
-   with custom properties keeps the chapters readable as one file rather than as
-   a cloud of class names.
-   
-   Everything below is written against a surface/ink pair rather than against a
-   colour, so a section only has to say which of the two sets it is on and every
-   border, field and button inside it follows. The sets are `:root` (paper) and
-   `.stage` (navy). */
+/* Site 2 — the Uzbek national setting.
+ *
+ * Two surfaces, as before, but both are now drawn from the country's own
+ * building materials rather than from a generic white-and-navy pair: ganch,
+ * the carved gypsum plaster of an interior, and the majolica revetment of a
+ * madrasa portal. Ganch is the page; majolica is the stage the page opens and
+ * closes on.
+ *
+ * Everything is written against a surface/ink pair rather than against a
+ * colour, so a section only has to say which of the two sets it is on and
+ * every border, field and button inside it follows. The sets are `:root`
+ * (ganch) and `.stage` (majolica).
+ *
+ * The ornament is generated, not drawn — see scripts/build-ornament.mjs. It is
+ * decoration and carries no meaning: nothing here is a State symbol and
+ * nothing here stands in for one. The State Emblem appears once, in the
+ * organiser's own lockup, and is not restyled.
+ */
 @import './tokens.css';
-@import '@fontsource-variable/fraunces';
-@import '@fontsource-variable/space-grotesk';
+@import './ornament.css';
+@import '@fontsource-variable/playfair-display';
+@import '@fontsource-variable/manrope';
 
-/* Paper: the page everything is read on.
-   The blues are the agency family's own, measured from logo/invest Uzb 1.*:
-   Invest Blue #006FB9 is 5.28:1 on white and Registan Navy #262261 is 14.15:1.
-   The ink tones were derived to clear AA on both paper surfaces. */
+/* Ganch: the plaster the page is read on.
+ *
+ * Warm rather than white, because every surface of the architecture this page
+ * is about is warm — a pure #fff page next to a majolica stage reads as a
+ * browser default. The blues are the agency family's own, measured from
+ * logo/invest Uzb 1.*: Invest Blue #006FB9 and Registan Navy #262261. The
+ * cobalt below is those two mixed a quarter of the way, which is where the
+ * brand navy meets the colour of the tilework; every tone was then derived
+ * against the *darker* of the two paper surfaces, so each clears WCAG AA on
+ * both. Measured values are in the comments. */
 :root {
-  --surface: #ffffff;
-  --surface-2: #f4f7fb;
-  --raise: rgb(38 34 97 / 0.03);
+  --surface: #fbf7ef;
+  --surface-2: #f3ede0;
+  --raise: rgb(29 53 119 / 0.045);
 
-  --ink: #141a2e;
-  --ink-soft: #3f4a66;
-  --ink-dim: #67718b;
-  --hairline: rgb(38 34 97 / 0.14);
+  --ink: #15193a; /* 14.6:1 */
+  --ink-soft: #3c4467; /* 8.1:1 */
+  --ink-dim: #626b8b; /* 4.5:1 */
+  --hairline: rgb(29 53 119 / 0.17);
+  --hairline-strong: rgb(29 53 119 / 0.3);
 
-  --accent-soft: var(--brand-line-to, #006fb9);
-  --accent: #0a5c96;
-  --accent-deep: var(--brand-navy, #262261);
-  --glow: linear-gradient(to top right, #2e8fd4, #262261);
-  --danger: #b3261e;
+  --accent-soft: var(--brand-line-to, #006fb9); /* 4.5:1 */
+  --accent: #0a4f8f; /* 7.1:1 */
+  --accent-deep: #1d3577; /* Registan cobalt */
+  --gold: #995f00; /* 4.5:1 — gold that may carry text */
+  --gold-leaf: var(--brand-forum-to, #c18429); /* ornament only */
+  --turquoise: #007593; /* 4.5:1 */
+  --turquoise-tile: var(--brand-line-mid, #008dab); /* ornament only */
+  /* What goes on top of a gold fill. Gold is a light colour: white on it is
+     3.2:1 and the cobalt is 3.6:1, so the text has to be the darkest ink.
+     5.4:1 on the paper gold and 11.9:1 on the stage's lighter one. */
+  --on-gold: #15193a;
+  --glow: linear-gradient(to top right, #008dab, #1d3577);
+  --danger: #b3261e; /* 5.6:1 */
 
-  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
-  --font-body: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  /* How strongly a surface shows the girih behind it. Ganch is carved relief:
+     you see it in the light, not in the colour. */
+  --ornament-ink: #000;
+  --ornament-opacity: 0.045;
+
+  --font-display: 'Playfair Display Variable', ui-serif, Georgia, serif;
+  --font-body: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
 
   --shell: min(100% - 2.5rem, 78rem);
   --chapter-pad: clamp(4rem, 10vh, 8rem);
@@ -40,33 +70,47 @@
   color-scheme: light;
 }
 
-/* A lit stage. The title card and the closing chapter keep the cinematic
-   ground the page was designed around; the gold mark only reads properly on a
-   dark surface (9.2:1 here, 3.2:1 on white), so this is also where it lives.
-   White on this navy is 15.2:1 and the cyan accent 9.1:1. */
+/* Majolica: the glazed revetment of a portal.
+ *
+ * The title card and the closing chapter. Cobalt ground, white and gold on it;
+ * the forum's gold mark only reads properly on a dark surface (9.2:1 here,
+ * 3.2:1 on ganch), so this is also where it lives. Again derived against the
+ * lighter of the two stage surfaces. */
 .stage,
 .on-stage {
-  --surface: #1b2150;
-  --surface-2: #242b60;
-  --raise: rgb(255 255 255 / 0.05);
+  --surface: #1d3577;
+  --surface-2: #2f4582;
+  --raise: rgb(255 255 255 / 0.06);
 
-  --ink: #ffffff;
-  --ink-soft: #c3cbe6;
-  --ink-dim: #9aa4c8;
-  --hairline: rgb(255 255 255 / 0.18);
+  --ink: #ffffff; /* 9.2:1 */
+  --ink-soft: #c9d4ee; /* 6.2:1 */
+  --ink-dim: #a7b6dd; /* 4.5:1 */
+  --hairline: rgb(255 255 255 / 0.2);
+  --hairline-strong: rgb(223 174 99 / 0.45);
 
-  --accent-soft: #7fd4ec;
-  --accent: #3fb6dc;
+  --accent-soft: #7fd4ec; /* 5.5:1 */
+  --accent: #58c8dc; /* 4.7:1 */
   --accent-deep: #7fd4ec;
-  --glow: linear-gradient(to top right, #7fd4ec, #2e8fd4);
+  --gold: #dfae63; /* 4.5:1 */
+  --gold-leaf: var(--brand-forum-from, #e4bb7d);
+  --turquoise: #58c8dc;
+  --turquoise-tile: #7fd4ec;
+  --glow: linear-gradient(to top right, #7fd4ec, #dfae63);
   --danger: #f0a3a3;
+
+  --ornament-ink: #fff;
+  --ornament-opacity: 0.06;
+
   color-scheme: dark;
 }
 
 /* `.stage` also paints itself; `.on-stage` only borrows the tokens, which is
    what the header needs while it floats over a stage without covering it. */
 .stage {
-  background: linear-gradient(170deg, #1b2150, #101538);
+  background:
+    /* The light falls from the top of a portal, not from everywhere. */
+    radial-gradient(130% 80% at 50% -12%, rgb(63 92 168 / 0.85), transparent 68%),
+    linear-gradient(170deg, #1d3577 0%, #16265a 55%, #101a44 100%);
   color: var(--ink-soft);
 }
 
@@ -94,27 +138,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* A very light film grain keeps the large flat navy from banding on cheap
-   panels. Generated, not an image asset. It belongs to the stages only — on
-   paper it would just be dirt. */
-.stage::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink);
-  line-height: 1.04;
-  letter-spacing: -0.015em;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
   text-wrap: balance;
   margin: 0;
 }
@@ -137,15 +168,17 @@ a {
 .shell {
   width: var(--shell);
   margin-inline: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .eyebrow {
   font-family: var(--font-body);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--gold);
 }
 
 .gradient-text {
@@ -158,8 +191,9 @@ a {
 .figure {
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
   color: var(--ink);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .skip-link {
@@ -191,35 +225,148 @@ a {
   border: 0;
 }
 
+/* ------------------------------------------------------------- ornament */
+
+/**
+ * The girih field.
+ *
+ * A tiled background on a pseudo-element rather than on the box itself, so the
+ * opacity applies to the pattern and not to everything on top of it. It is set
+ * very low on purpose: carved ganch is read as texture, and a pattern you can
+ * actually make out behind body copy is a pattern that has been turned up too
+ * far.
+ */
+.field-girih::before,
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--ornament-opacity);
+  background-image: var(--ornament-girih-field);
+  background-size: var(--ornament-girih-field-size);
+}
+.stage::before,
+.stage.field-girih::before {
+  background-image: var(--ornament-girih-field-light);
+}
+
+/** The running border of a tiled panel. Decoration; never announced. */
+.frieze {
+  block-size: 28px;
+  background-image: var(--ornament-girih-frieze);
+  background-size: auto 28px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+.stage .frieze,
+.on-stage .frieze {
+  background-image: var(--ornament-girih-frieze-light);
+  opacity: 0.4;
+}
+
+/** The frieze run along the edge where a stage meets the paper. */
+.frieze--edge {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.frieze--top {
+  inset-block-start: 0;
+}
+.frieze--bottom {
+  inset-block-end: 0;
+}
+
+/** A section divider: a hairline either side of one rosette. */
+.rule-rosette {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  margin-block: clamp(2.5rem, 7vh, 4.5rem);
+}
+.rule-rosette::before,
+.rule-rosette::after {
+  content: '';
+  block-size: 1px;
+  background: linear-gradient(to right, transparent, var(--hairline), transparent);
+}
+.rule-rosette__mark {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  background-image: var(--ornament-rosette);
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+}
+.stage .rule-rosette__mark,
+.on-stage .rule-rosette__mark {
+  background-image: var(--ornament-rosette-light);
+  opacity: 0.55;
+}
+
+/* A faint film grain keeps the large flat cobalt from banding on cheap
+   panels. Generated, not an image asset. Stages only — on ganch it is dirt. */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------- controls */
+
 /* Buttons. Two weights only: one solid call to action per screen, outlines for
-   everything else. */
+   everything else. The outline carries a second hairline inside it, the way a
+   tile panel is bordered twice. */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 0.2rem;
   background: transparent;
   color: var(--ink);
   font: inherit;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
   transition: border-color 0.18s, background-color 0.18s, color 0.18s;
 }
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid currentColor;
+  border-radius: 0.1rem;
+  opacity: 0.18;
+  pointer-events: none;
+}
 .btn:hover {
-  border-color: var(--accent);
+  border-color: var(--gold);
+  background: var(--raise);
 }
 .btn--solid {
   border-color: transparent;
-  background: var(--accent-soft);
-  color: var(--surface);
-  font-weight: 600;
+  background: var(--gold-leaf);
+  color: var(--on-gold);
+}
+.btn--solid::after {
+  opacity: 0.3;
 }
 .btn--solid:hover {
   background: var(--ink);
+  color: var(--surface);
   border-color: transparent;
 }
 .btn:disabled {
@@ -227,13 +374,26 @@ a {
   cursor: not-allowed;
 }
 
-/* A hairline card. Used by the theme cards, the programme rows and the project
-   panel, so they stay visually one family. */
+/* A tile panel. Used by the theme cards, the programme rows, the region card
+   and the project panel, so they stay visually one family: a square-cornered
+   frame with a gold hairline set inside it. */
 .card {
+  position: relative;
   border: 1px solid var(--hairline);
-  border-radius: 1rem;
+  border-radius: 0.3rem;
   background: var(--raise);
 }
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--gold-leaf);
+  border-radius: 0.15rem;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- chapters */
 
 /* Every chapter is a full-bleed stage; pinning is added by GSAP only when
    motion is allowed. */
@@ -254,6 +414,7 @@ a {
   z-index: 30;
   font-family: var(--font-body);
   font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.2em;
   color: var(--ink-dim);
   writing-mode: vertical-rl;

@@ -1,6 +1,6 @@
 # Tourism Investment Forum 2026 — Toshkent, 25–27 noyabr
 
-Immersiv hikoya: sakkiz bob, toʻq sahna, skroll bilan boshqariladigan grafika. 12 hududdan 51 ta investitsiya loyihasi, sakkizta yoʻnalish va forumning bir kunlik dasturi.
+Oʻzbek milliy uslubidagi immersiv hikoya: sakkiz bob, ganch qogʻozi va majolika sahnasi, girih naqshi. IV bobda — Oʻzbekiston xaritasi: 14 hudud, 13 tasidan 74 ta investitsiya loyihasi.
 
 > **Konsept/demo loyiha.** Bu sayt agentlik tomonidan yuritilmaydi.
 > Rasmiy maʼlumot: <https://invest.gov.uz>

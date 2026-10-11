@@ -112,6 +112,10 @@ async function submit() {
 
 <template>
   <section id="epilogue" class="chapter stage epilogue">
+    <!-- The band that opens a tiled panel, on the edge where the page gives
+         way to the closing stage. Decoration, and announced as nothing. -->
+    <div class="frieze frieze--edge frieze--top" aria-hidden="true" />
+
     <div class="shell">
       <p class="eyebrow">{{ t('chapters.epilogue.n') }}</p>
       <h2>{{ t('epilogue.lead') }}</h2>
@@ -695,7 +699,7 @@ h2 {
 .footer__langs button {
   padding: 0.4rem 0.75rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.2rem;
   background: transparent;
   color: var(--ink-dim);
   font: inherit;

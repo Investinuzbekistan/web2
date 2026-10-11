@@ -193,7 +193,7 @@ h2 {
   margin-block-start: 0.7rem;
   padding: 0.3rem 0.8rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.2rem;
   background: transparent;
   color: var(--ink-dim);
   font: inherit;

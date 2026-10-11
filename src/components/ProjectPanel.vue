@@ -160,6 +160,20 @@ onBeforeUnmount(() => {
         <!-- The sheet's own visuals. One image is the common case, so the
              thumbnail strip only appears when there is something to switch to. -->
         <figure v-if="shots.length" class="panel__gallery">
+          <!-- The arch of a portal, as the shape the picture is seen
+               through. Bounding-box units, so one definition fits whatever
+               size the panel is — which also means the curve is read through
+               the image's own aspect, so the springing and the tangents at
+               the apex are set against the 3:2 below rather than drawn as a
+               true two-centred arch, which comes out a dome once the box
+               stretches it. The image itself is untouched. -->
+          <svg width="0" height="0" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="uz-arch" clipPathUnits="objectBoundingBox">
+                <path d="M0 1V0.34C0 0.20 0.27 0.04 0.5 0C0.73 0.04 1 0.20 1 0.34V1Z" />
+              </clipPath>
+            </defs>
+          </svg>
           <img
             :src="`photos/${shots[shown]}-full.webp`"
             :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"
@@ -285,7 +299,7 @@ onBeforeUnmount(() => {
   margin-block-end: 0.5rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.25rem;
   background: var(--surface-2);
   color: var(--ink);
   font: inherit;
@@ -323,9 +337,11 @@ onBeforeUnmount(() => {
 .panel__gallery > img {
   display: block;
   inline-size: 100%;
-  aspect-ratio: 16 / 10;
+  /* Taller than the 16:10 the strip below keeps, so the arch has the rise to
+     come to a point: at 16:10 the same curve flattens into a dome. */
+  aspect-ratio: 3 / 2;
   object-fit: cover;
-  border-radius: 0.75rem;
+  clip-path: url(#uz-arch);
   background: var(--surface-2);
 }
 .panel__gallery figcaption {
@@ -339,7 +355,7 @@ onBeforeUnmount(() => {
   flex: 0 0 auto;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: 0.45rem;
+  border-radius: 0.2rem;
   background: none;
   cursor: pointer;
   line-height: 0;
@@ -350,7 +366,7 @@ onBeforeUnmount(() => {
 .panel__gallery figcaption button:hover,
 .panel__gallery figcaption button[aria-pressed='true'] {
   opacity: 1;
-  border-color: var(--accent-soft);
+  border-color: var(--gold);
 }
 .panel__gallery figcaption img {
   inline-size: 4.5rem;

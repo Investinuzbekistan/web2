@@ -266,7 +266,8 @@ h2 {
   inset-block-start: 0.55em;
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: 999px;
+  /* The lozenge of the frieze, at bullet size. */
+  rotate: 45deg;
   background: var(--accent-deep);
 }
 .checks--plain li::before {

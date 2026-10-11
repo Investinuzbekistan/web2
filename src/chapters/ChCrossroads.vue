@@ -55,8 +55,8 @@ useChapterTimeline(
         <svg viewBox="0 0 900 340" role="img" :aria-label="t('crossroads.body')">
           <defs>
             <linearGradient id="route-gradient" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#2E8FD4" />
-              <stop offset="1" stop-color="#262261" />
+              <stop offset="0" stop-color="var(--turquoise-tile)" />
+              <stop offset="1" stop-color="var(--accent-deep)" />
             </linearGradient>
           </defs>
 
@@ -72,7 +72,7 @@ useChapterTimeline(
             stroke-linecap="round"
           />
 
-          <g class="route__stops" fill="#006FB9">
+          <g class="route__stops" fill="var(--accent-deep)">
             <circle class="route__stop" cx="30" cy="220" r="6" />
             <circle class="route__stop" cx="360" cy="190" r="6" />
             <circle class="route__stop" cx="470" cy="150" r="9" />
@@ -80,7 +80,10 @@ useChapterTimeline(
             <circle class="route__stop" cx="870" cy="150" r="6" />
           </g>
 
-          <text x="470" y="128" class="route__label" text-anchor="middle">Uzbekistan</text>
+          <!-- The one stop that is the subject of the page is marked in the
+               gold the forum's own identity uses, not in the line colour. -->
+          <circle class="route__stop route__stop--here" cx="470" cy="150" r="15" />
+          <text x="470" y="122" class="route__label" text-anchor="middle">Uzbekistan</text>
         </svg>
       </figure>
     </div>
@@ -136,5 +139,11 @@ h2 {
   font-family: var(--font-display);
   font-size: 22px;
   fill: var(--ink);
+}
+
+.route__stop--here {
+  fill: none;
+  stroke: var(--gold-leaf);
+  stroke-width: 2;
 }
 </style>

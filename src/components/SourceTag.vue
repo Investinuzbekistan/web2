@@ -42,7 +42,7 @@ const accessed = computed(() =>
   margin-inline-start: 0.35em;
   padding: 0.05em 0.4em;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.15rem;
   font-family: var(--font-body);
   /* Sized relative to its host, but never below the readable floor:
      inside the footer small print 0.6em comes out at 9px. */

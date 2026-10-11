@@ -101,7 +101,7 @@ onBeforeUnmount(stopSmoothScroll);
   margin-block-start: 1rem;
   padding: 0.85rem 1.6rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: 0.25rem;
   background: var(--ink);
   color: var(--surface);
   font: inherit;

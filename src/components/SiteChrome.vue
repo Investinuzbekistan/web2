@@ -324,6 +324,9 @@ function choose(code: Lang) {
 .bar--solid {
   background: var(--surface);
   border-block-end: 1px solid var(--hairline);
+  /* The gold hairline a tiled panel is finished with, at the one place on the
+     page where the page is cut across. */
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--gold-leaf) 35%, transparent);
 }
 
 .logo {
@@ -388,7 +391,7 @@ function choose(code: Lang) {
   gap: 0.35rem;
   padding: 0.45rem 0.75rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.25rem;
   background: transparent;
   color: var(--ink-soft);
   font: inherit;
@@ -401,7 +404,7 @@ function choose(code: Lang) {
 }
 .langs__toggle:hover,
 .langs__toggle[aria-expanded='true'] {
-  border-color: var(--accent);
+  border-color: var(--gold);
   color: var(--ink);
 }
 .langs__menu {
@@ -414,7 +417,7 @@ function choose(code: Lang) {
   padding: 0.3rem;
   list-style: none;
   border: 1px solid var(--hairline);
-  border-radius: 0.7rem;
+  border-radius: 0.3rem;
   background: var(--surface-2);
   box-shadow: 0 1rem 2rem rgb(0 0 0 / 0.45);
 }
@@ -423,7 +426,7 @@ function choose(code: Lang) {
   width: 100%;
   padding: 0.55rem 0.75rem;
   border: 0;
-  border-radius: 0.45rem;
+  border-radius: 0.2rem;
   background: transparent;
   color: var(--ink-soft);
   font: inherit;
@@ -445,18 +448,19 @@ function choose(code: Lang) {
   display: none;
   padding: 0.55rem 1.1rem;
   border: 0;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--surface);
+  border-radius: 0.25rem;
+  background: var(--gold-leaf);
+  color: var(--on-gold);
   font: inherit;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.18s;
+  transition: background-color 0.18s, color 0.18s;
 }
 .bar__cta:hover {
   background: var(--ink);
+  color: var(--surface);
 }
 
 .menu-toggle {
@@ -465,17 +469,17 @@ function choose(code: Lang) {
   gap: 0.5rem;
   padding: 0.55rem 1.1rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.25rem;
   background: transparent;
   color: var(--ink);
   font: inherit;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: border-color 0.18s;
 }
 .menu-toggle:hover {
-  border-color: var(--accent);
+  border-color: var(--gold);
 }
 .menu-toggle__icon {
   display: none;
@@ -495,7 +499,7 @@ function choose(code: Lang) {
      its button steps back to an icon. */
   .menu-toggle {
     padding: 0.55rem;
-    border-radius: 0.6rem;
+    border-radius: 0.25rem;
   }
   .menu-toggle__text {
     position: absolute;
@@ -539,7 +543,7 @@ function choose(code: Lang) {
   inset-inline-end: 0;
   padding: 0.6rem 1.1rem;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 0.25rem;
   background: transparent;
   color: var(--ink);
   font: inherit;
@@ -586,9 +590,10 @@ function choose(code: Lang) {
   display: block;
   font-family: var(--font-body);
   font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: var(--gold);
   margin-block-end: 0.2rem;
 }
 </style>

@@ -11,6 +11,10 @@ import { useI18n } from 'vue-i18n';
 import ActionIcon from '../components/ActionIcon.vue';
 import ForumMark from '../components/ForumMark.vue';
 import { canAnimate, hasWebGl, onIdle, openEnquiry, scrollToId, useChapterTimeline } from '../lib/motion';
+// The border, flattened at the attitude the globe is aimed at; built by
+// scripts/build-globe.mjs and inlined here rather than fetched, because a
+// fallback that waits for a request is not a fallback.
+import uzStill from '../assets/uz-still.json';
 import { eventDates, tr, useStore } from '../lib/state';
 
 const { t } = useI18n();
@@ -78,7 +82,11 @@ useChapterTimeline(
           <ellipse cx="400" cy="400" rx="90" ry="250" />
           <ellipse cx="400" cy="400" rx="170" ry="250" />
         </g>
-        <circle cx="452" cy="330" r="5" fill="#E4BB7D" />
+        <!-- Uzbekistan, on the still as on the globe. Somebody who has asked
+             for less motion, or whose browser has no WebGL, should still be
+             shown the country the page is about rather than a halo. -->
+        <path :d="uzStill.d" fill="none" stroke="#E4BB7D" stroke-opacity="0.9" stroke-width="2.5" />
+        <circle :cx="uzStill.mark.x" :cy="uzStill.mark.y" r="4" fill="#E4BB7D" />
       </svg>
     </div>
 

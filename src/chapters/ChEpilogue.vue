@@ -7,7 +7,7 @@
  * otherwise hands the message to the visitor's mail client.
  *
  * Both question lists come from the data file rather than being written here —
- * the six participant categories and the eight thematic directions are the
+ * the six participant categories and the thematic directions are the
  * organiser's own, and a visitor should be choosing from the same vocabulary
  * the forum uses.
  */
@@ -348,6 +348,11 @@ async function submit() {
               {{ t('sources.projectLanguage') }}
               <SourceTag :id="undefined" />
             </p>
+            <!-- The globe's outlines. geoBoundaries is ODbL and requires the
+                 attribution; Natural Earth is public domain and is credited
+                 anyway, because a reader should be able to find out where
+                 every line on the page came from. -->
+            <p class="footer__note">{{ t('sources.globe') }}</p>
           </div>
         </div>
 

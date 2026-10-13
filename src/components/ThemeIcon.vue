@@ -1,8 +1,12 @@
 <script setup lang="ts">
 /**
- * Line icons for the eight thematic directions.
+ * Line icons for the thematic directions.
  *
- * Drawn here rather than pulled from an icon package: eight glyphs is not worth
+ * There are eight glyphs and six directions: two of the concept document's
+ * directions carry no projects and are not shown, and their glyphs are kept
+ * against the day a batch of sheets brings one back.
+ *
+ * Drawn here rather than pulled from an icon package: a handful of glyphs is not worth
  * a dependency, and a hand-drawn set on one 24-unit grid with one stroke weight
  * sits better next to the wordmark than a borrowed set would.
  */

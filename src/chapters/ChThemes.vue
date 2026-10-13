@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Chapter III — the eight thematic directions, as a horizontal run.
+ * Chapter III — the thematic directions, as a horizontal run.
  *
  * Each card carries the number of portfolio projects filed under it and opens
  * the portfolio already filtered to that direction, so the chapter is a way in

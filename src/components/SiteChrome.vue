@@ -19,7 +19,7 @@ import { useI18n } from 'vue-i18n';
 
 import ActionIcon from './ActionIcon.vue';
 import ForumMark from './ForumMark.vue';
-import { lockPageScroll, scrollToId, unlockPageScroll } from '../lib/motion';
+import { lockPageScroll, openEnquiry, scrollToId, unlockPageScroll } from '../lib/motion';
 import { setLang, useStore } from '../lib/state';
 import { LANGS, type Lang } from '../lib/shared/content-types';
 
@@ -185,7 +185,10 @@ const counter = computed(() => {
 
 function go(id: string) {
   menuOpen.value = false;
-  scrollToId(id);
+  // The enquiry is the one destination that is a form rather than a reading,
+  // so arriving there means putting the cursor in it.
+  if (id === 'epilogue') openEnquiry();
+  else scrollToId(id);
 }
 
 function choose(code: Lang) {

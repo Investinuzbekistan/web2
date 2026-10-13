@@ -28,6 +28,7 @@ import type { Project } from '../lib/forum-types';
 import { lockPageScroll, unlockPageScroll } from '../lib/motion';
 import { formatMoney } from '../lib/money';
 import { sheetLabel } from '../lib/sheet-labels';
+import { sheetValue } from '../lib/sheet-values';
 import { tr, useStore } from '../lib/state';
 
 const props = defineProps<{
@@ -76,6 +77,30 @@ const story = computed(() => {
 
 /** The sheet's own renders and photographs. */
 const shots = computed(() => props.project?.photos ?? []);
+
+/**
+ * What the picture is, for a reader who cannot see it.
+ *
+ * It used to say "<title> — 2 of 5", which describes the gallery rather than
+ * the image: somebody listening to the page learned there were five pictures
+ * and nothing about any of them. Every sheet's images are renders of the
+ * project, so the alt says that, and names the project and the region it is
+ * in — which is the information a sighted reader takes from the picture too.
+ * The index is added only when there is more than one to be lost among.
+ */
+function altFor(index: number): string {
+  const title = heading.value;
+  const region = regionName.value;
+  const total = shots.value.length;
+  if (total > 1) {
+    return region
+      ? t('portfolio.photoAltMore', { title, region, n: index + 1, total })
+      : `${t('portfolio.photoAltNoRegion', { title })} — ${index + 1}/${total}`;
+  }
+  return region
+    ? t('portfolio.photoAlt', { title, region })
+    : t('portfolio.photoAltNoRegion', { title });
+}
 const shown = ref(0);
 
 const money = computed(() => {
@@ -93,6 +118,28 @@ const money = computed(() => {
  * the dictionary does not know keeps the sheet's own wording.
  */
 const fieldName = (label: string) => sheetLabel(label, lang.value);
+
+/**
+ * What a row says, in the reader's language and in one format.
+ *
+ * Three cases, in order. A sum of money is printed the way every other sum on
+ * the page is printed — the sheets write the same figure as "USD 250M", "USD
+ * 41.0M", "USD 0,5M" and "USD 680 000", and a reader comparing two projects
+ * should not have to normalise them in their head. A stage word the organiser
+ * reuses across every sheet is translated. Anything else is the sheet's own
+ * statement about its own project and is left exactly as written.
+ *
+ * The original wording is never lost: it rides along on the title attribute,
+ * the same way the headline figure's does.
+ */
+const fieldText = (row: { value: string; amount?: number; currency?: string }) =>
+  row.amount && row.currency
+    ? formatMoney(row.amount, row.currency, lang.value)
+    : sheetValue(row.value, lang.value);
+
+/** The sheet's own wording, for the tooltip, when the page has reworded it. */
+const fieldTitle = (row: { value: string; amount?: number }) =>
+  row.amount ? t('portfolio.asStated', { raw: row.value }) : undefined;
 
 /** The headline chips, minus the investment, which has its own block above. */
 const metrics = computed(() =>
@@ -348,7 +395,7 @@ onBeforeUnmount(() => {
             <!-- Seen through the arch defined once in App.vue. -->
             <img
               :src="`photos/${shots[shown]}-full.webp`"
-              :alt="t('portfolio.photoAlt', { title: heading, n: shown + 1, total: shots.length })"
+              :alt="altFor(shown)"
               width="1000"
               height="563"
               loading="lazy"
@@ -360,7 +407,7 @@ onBeforeUnmount(() => {
                 :key="shot"
                 type="button"
                 :aria-pressed="i === shown"
-                :aria-label="t('portfolio.photoAlt', { title: heading, n: i + 1, total: shots.length })"
+                :aria-label="altFor(i)"
                 @click="shown = i"
               >
                 <img
@@ -394,7 +441,7 @@ onBeforeUnmount(() => {
           <ul v-if="metrics.length" class="panel__chips">
             <li v-for="m in metrics" :key="m.label">
               <span>{{ fieldName(m.label) }}</span>
-              <strong>{{ m.value }}</strong>
+              <strong :title="fieldTitle(m)">{{ fieldText(m) }}</strong>
             </li>
           </ul>
 
@@ -408,7 +455,7 @@ onBeforeUnmount(() => {
             <dl class="panel__rows">
               <div v-for="row in block.rows" :key="row.label">
                 <dt>{{ fieldName(row.label) }}</dt>
-                <dd>{{ row.value }}</dd>
+                <dd :title="fieldTitle(row)">{{ fieldText(row) }}</dd>
               </div>
             </dl>
           </template>

@@ -85,6 +85,8 @@ const en = {
   },
   portfolio: {
     lead: '{count} projects, gathered from {regions} regions.',
+    leadSplit:
+      '{placed} projects from {regions} regions, and {nationwide} more drawn for the country as a whole.',
     body: 'Choose a region on the map to see what it has brought, then open any project to read its sheet.',
     searchLabel: 'Search the portfolio',
     searchPlaceholder: 'Name, place or activity…',
@@ -120,6 +122,8 @@ const en = {
       directions: 'Directions',
       top: 'Largest projects here',
       seeAll: 'All projects in this region',
+      nationwide:
+        'And {count} not filed under any one region: a hotel network drawn for every region and the capital.',
       pickHint: 'Choose a region on the map, or from the list of all fourteen.',
       credit: 'Region outlines: geoBoundaries (ODbL 1.0). A diagram of administrative areas, not a survey.',
     },
@@ -133,7 +137,9 @@ const en = {
       open: 'Not stated in USD',
     },
     featured: 'Featured project',
-    photoAlt: '{title} — {n} of {total}',
+    photoAlt: 'A concept view of the {title} project, {region}',
+    photoAltNoRegion: 'A concept view of the {title} project',
+    photoAltMore: 'A concept view of the {title} project, {region} — image {n} of {total}',
     gallery: 'Project visuals',
     labels: { investment: 'Investment', overview: 'Overview' },
     blocks: {
@@ -225,7 +231,7 @@ const en = {
     contributedBy: 'The portfolio was assembled from proposals by',
     machine: 'The Russian text on this page was translated from English and is not an official text.',
     projectLanguage:
-      'Project titles and descriptions appear in the English the organiser prepared them in.',
+      'Titles, field names and delivery stages are translated. The longer descriptions are left in the English the organiser prepared them in, so that no figure is changed in the retelling.',
   },
   footer: {
     links: 'Official links',
@@ -294,6 +300,8 @@ const uz: Messages = {
   },
   portfolio: {
     lead: '{regions} ta hududdan yigʻilgan {count} ta loyiha.',
+    leadSplit:
+      '{regions} ta hududdan {placed} ta loyiha, va butun mamlakat uchun yana {nationwide} tasi.',
     body: 'Xaritadan hududni tanlang — oʻsha hudud taqdim etgan loyihalar koʻrinadi; har qaysisini ochib, varaqasini oʻqishingiz mumkin.',
     searchLabel: 'Portfeldan qidirish',
     searchPlaceholder: 'Nomi, joyi yoki faoliyati…',
@@ -329,6 +337,8 @@ const uz: Messages = {
       directions: 'Yoʻnalishlar',
       top: 'Shu hududdagi eng yirik loyihalar',
       seeAll: 'Hududning barcha loyihalari',
+      nationwide:
+        'Yana {count} tasi biror hududga biriktirilmagan: har bir viloyat va poytaxt uchun chizilgan mehmonxona tarmogʻi.',
       pickHint: 'Hududni xaritadan yoki oʻn toʻrttasi sanab oʻtilgan roʻyxatdan tanlang.',
       credit: 'Hudud chegaralari: geoBoundaries (ODbL 1.0). Bu — maʼmuriy hududlar sxemasi, oʻlchov xaritasi emas.',
     },
@@ -342,7 +352,9 @@ const uz: Messages = {
       open: 'Dollarda koʻrsatilmagan',
     },
     featured: 'Tanlangan loyiha',
-    photoAlt: '{title} — {total} tadan {n}-rasm',
+    photoAlt: '{title} loyihasining konseptual koʻrinishi, {region}',
+    photoAltNoRegion: '{title} loyihasining konseptual koʻrinishi',
+    photoAltMore: '{title} loyihasining konseptual koʻrinishi, {region} — {total} tadan {n}-rasm',
     gallery: 'Loyiha vizualizatsiyalari',
     labels: { investment: 'Investitsiya', overview: 'Loyiha haqida' },
     blocks: {
@@ -434,7 +446,7 @@ const uz: Messages = {
     contributedBy: 'Portfel quyidagilarning takliflaridan shakllantirilgan',
     machine: 'Sahifadagi ruscha matn ingliz tilidan tarjima qilingan va rasmiy matn emas.',
     projectLanguage:
-      'Loyiha nomlari va tavsiflari tashkilotchi tayyorlagan ingliz tilida keltirilgan.',
+      'Nomlar, maydon nomlari va loyiha bosqichlari tarjima qilingan. Uzun tavsiflar tashkilotchi tayyorlagan ingliz tilida qoldirilgan — qayta hikoya qilishda birorta raqam oʻzgarmasligi uchun.',
   },
   footer: {
     links: 'Rasmiy havolalar',
@@ -501,6 +513,8 @@ const ru: Messages = {
   },
   portfolio: {
     lead: 'Проектов — {count}, собраны из {regions} регионов.',
+    leadSplit:
+      'Проектов: {placed} из {regions} регионов, и ещё {nationwide} для страны в целом.',
     body: 'Выберите регион на карте — и увидите, что он представил; любой проект можно открыть и прочитать целиком.',
     searchLabel: 'Поиск по портфелю',
     searchPlaceholder: 'Название, место или вид деятельности…',
@@ -536,6 +550,8 @@ const ru: Messages = {
       directions: 'Направления',
       top: 'Крупнейшие проекты здесь',
       seeAll: 'Все проекты региона',
+      nationwide:
+        'И ещё {count} вне какого-либо одного региона: сеть гостиниц, рассчитанная на каждую область и столицу.',
       pickHint: 'Выберите регион на карте или в списке всех четырнадцати.',
       credit: 'Контуры регионов: geoBoundaries (ODbL 1.0). Это схема административных границ, а не топографическая карта.',
     },
@@ -549,7 +565,9 @@ const ru: Messages = {
       open: 'не указано в долларах',
     },
     featured: 'Избранный проект',
-    photoAlt: '{title} — {n} из {total}',
+    photoAlt: 'Концептуальный вид проекта «{title}», {region}',
+    photoAltNoRegion: 'Концептуальный вид проекта «{title}»',
+    photoAltMore: 'Концептуальный вид проекта «{title}», {region} — изображение {n} из {total}',
     gallery: 'Визуализации проекта',
     labels: { investment: 'Инвестиции', overview: 'О проекте' },
     blocks: {
@@ -641,7 +659,7 @@ const ru: Messages = {
     contributedBy: 'Портфель сформирован из предложений',
     machine: 'Русский текст на этой странице переведён с английского и не является официальным.',
     projectLanguage:
-      'Названия и описания проектов приведены на английском языке, как их подготовил организатор.',
+      'Названия, наименования полей и стадии проектов переведены. Развёрнутые описания оставлены на английском, как их подготовил организатор, — чтобы при пересказе не изменилась ни одна цифра.',
   },
   footer: {
     links: 'Официальные ссылки',

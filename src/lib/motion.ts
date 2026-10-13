@@ -102,11 +102,36 @@ export function unlockPageScroll(): void {
   lenis?.start();
 }
 
-export function scrollToId(id: string): void {
+export function scrollToId(id: string, onArrival?: () => void): void {
   const target = document.getElementById(id);
   if (!target) return;
-  if (lenis) lenis.scrollTo(target, { offset: -BAR_CLEARANCE });
-  else target.scrollIntoView({ behavior: canAnimate() ? 'smooth' : 'auto' });
+  if (lenis) lenis.scrollTo(target, { offset: -BAR_CLEARANCE, onComplete: onArrival });
+  else {
+    target.scrollIntoView({ behavior: canAnimate() ? 'smooth' : 'auto' });
+    // Native smooth scrolling reports nothing, so the callback waits out a
+    // duration rather than an event. Reduced motion lands immediately.
+    window.setTimeout(() => onArrival?.(), canAnimate() ? 600 : 0);
+  }
+}
+
+/**
+ * Go to the enquiry and put the cursor in it.
+ *
+ * Pressing "register interest" used to move the page and nothing else, and a
+ * reader who presses a call to action and sees only the page slide is right
+ * to wonder whether anything happened. Focusing the form's first question on
+ * arrival makes the button open something, which is what it promises.
+ *
+ * `preventScroll` matters: focusing an element normally scrolls it into view,
+ * which would undo the position the smooth scroll just settled on.
+ */
+export function openEnquiry(): void {
+  scrollToId('epilogue', () => {
+    const first = document.querySelector<HTMLElement>(
+      '.wizard input, .wizard select, .wizard textarea, .wizard button',
+    );
+    first?.focus({ preventScroll: true });
+  });
 }
 
 /**

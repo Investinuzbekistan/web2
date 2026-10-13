@@ -333,15 +333,20 @@ body::before {
  * This used to be a girih lozenge chain, which was the right ornament for a
  * page built on plaster and tile. The page is now built on cloth as well, and
  * a seam is where cloth announces itself — a chapan is bordered at the hem,
- * not down the middle. It is the one place on the page where the pattern is
- * allowed to be at full strength, because nothing is read through it.
+ * not down the middle.
+ *
+ * It was three times this height on the first pass and the client was right
+ * to call it loud: at forty-four pixels a strip of atlas across the full
+ * width is a banner, and a banner is what the page sits under rather than
+ * what finishes it. At fourteen it is trim — you read it as a woven edge,
+ * which is what a hem is.
  *
  * The tile is turned rather than squeezed: `auto 100%` scales it by its own
  * proportion, so the feathered teeth keep their shape at any band height.
  * Stretching them is the one thing that would turn this back into a graphic.
  */
 .frieze {
-  block-size: 2.75rem;
+  block-size: 0.9rem;
   background-image: var(--ikat-adras-border);
   background-size: auto 100%;
   background-repeat: repeat-x;
@@ -363,7 +368,7 @@ body::before {
   inset-block: 0;
   inset-inline-start: 0;
   z-index: 2;
-  inline-size: clamp(0.75rem, 1.6vw, 1.25rem);
+  inline-size: clamp(0.4rem, 0.9vw, 0.65rem);
   background-image: var(--ikat-atlas-selvedge);
   background-size: 100% auto;
   background-repeat: repeat-y;
@@ -509,8 +514,62 @@ body::before {
   letter-spacing: 0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 0.18s, background-color 0.18s, color 0.18s;
+  /* Transform and shadow are on the list so the lift below has something to
+     ease; everything here is compositor work, so it costs no layout. */
+  transition: border-color 0.18s, background-color 0.18s, color 0.18s, transform 0.18s,
+    box-shadow 0.18s;
 }
+
+/**
+ * How a button answers.
+ *
+ * Modest on purpose, and the brief for it was exactly that word. A control on
+ * a government investment page should feel like a well-made physical switch:
+ * it rises a little under the hand, it goes down when pressed, and that is
+ * all. No bounce, no pulse, no colour that was not already in the palette.
+ *
+ * One pixel of lift is enough to be felt and not enough to be noticed, which
+ * is the difference between a page that feels alive and a page that fidgets.
+ * The press is the half that most interfaces forget, and it is the half that
+ * makes a control feel real.
+ */
+@media (hover: hover) {
+  .btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgb(29 53 119 / 0.13);
+  }
+  .stage .btn:hover:not(:disabled),
+  .on-stage .btn:hover:not(:disabled) {
+    box-shadow: 0 2px 12px rgb(0 0 0 / 0.28);
+  }
+}
+.btn:active:not(:disabled) {
+  transform: translateY(0.5px);
+  box-shadow: none;
+  transition-duration: 0.06s;
+}
+
+/* The arrow or envelope a button carries leans the way the button goes. */
+.btn .action-icon {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .btn:hover .action-icon {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn .action-icon {
+    transition: none;
+  }
+  .btn:hover:not(:disabled),
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
+}
+
 .btn::after {
   content: '';
   position: absolute;
@@ -560,22 +619,21 @@ body::before {
 /* A tile panel. Used by the theme cards, the programme rows, the region card
    and the project panel, so they stay visually one family: a square-cornered
    frame with a gold hairline set inside it. */
-/* A panel bound along its head in cloth: the woven strip sits inside the
-   border, under the gold rule, the way a tile panel is finished at its top
-   edge before anything is set into it. */
+/**
+ * A tile panel. No cloth on it.
+ *
+ * It carried a woven braid along its head for a day. With eight direction
+ * cards in a row, a region card, the programme rows and the project sheet all
+ * wearing one, the page had the braid on it two dozen times and read as
+ * fussy — which is the whole failure mode this ornament has to avoid. The
+ * cloth is now only where cloth goes: the seams, the stage edges, the chapter
+ * marks and the dividers. A card is finished in gold, as it was.
+ */
 .card {
   position: relative;
   border: 1px solid var(--hairline);
   border-radius: 0.3rem;
-  background:
-    var(--ikat-adras-jiyak) repeat-x 0 0 / auto 7px,
-    var(--raise);
-}
-.stage .card,
-.on-stage .card {
-  background:
-    var(--ikat-atlas-jiyak) repeat-x 0 0 / auto 7px,
-    var(--raise);
+  background: var(--raise);
 }
 .card::before {
   content: '';

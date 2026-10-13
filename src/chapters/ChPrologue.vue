@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 import ActionIcon from '../components/ActionIcon.vue';
 import ForumMark from '../components/ForumMark.vue';
-import { canAnimate, hasWebGl, onIdle, scrollToId, useChapterTimeline } from '../lib/motion';
+import { canAnimate, hasWebGl, onIdle, openEnquiry, scrollToId, useChapterTimeline } from '../lib/motion';
 import { eventDates, tr, useStore } from '../lib/state';
 
 const { t } = useI18n();
@@ -124,7 +124,7 @@ useChapterTimeline(
           </template>
           <ActionIcon name="down" class="prologue__nudge" />
         </button>
-        <button type="button" class="btn" @click="scrollToId('epilogue')">
+        <button type="button" class="btn" @click="openEnquiry">
           <ActionIcon name="enquiry" />
           <span>{{ t('prologue.cta2') }}</span>
         </button>

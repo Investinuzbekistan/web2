@@ -40,13 +40,25 @@ watch([shown, lang, () => props.value], () => (text.value = render()));
 let trigger: ScrollTrigger | null = null;
 let tween: gsap.core.Tween | null = null;
 
+/**
+ * Count in the figure's own precision, not in the tween's.
+ *
+ * The tween carries a float, and printing it raw made a count of seventy-four
+ * projects pass through "73.8" and a count of thirteen regions sit on "13.0".
+ * A reader who glances at the page mid-animation sees a wrong number, and a
+ * wrong number is worse than no animation. So every frame is rounded to the
+ * number of decimals the final value actually has: none for a count, one for
+ * a sum in millions.
+ */
+const DECIMALS = Number.isInteger(props.value) ? 0 : 1;
+
 function run() {
   const counter = { n: 0 };
   tween = gsap.to(counter, {
     n: props.value,
     duration: props.duration,
     ease: 'power2.out',
-    onUpdate: () => (shown.value = counter.n),
+    onUpdate: () => (shown.value = Number(counter.n.toFixed(DECIMALS))),
     // Land exactly on the value rather than on whatever the last frame gave.
     onComplete: () => (shown.value = props.value),
   });

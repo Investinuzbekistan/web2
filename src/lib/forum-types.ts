@@ -79,6 +79,13 @@ export interface PreparationStage extends MechanismStep {
 export interface Stat {
   label: string;
   value: string;
+  /**
+   * Set only where the value states a sum of money, so the page can print it
+   * in one format instead of the five the sheets use. `value` still holds the
+   * sheet's own wording; see `pairs` in scripts/build-forum-data.mjs.
+   */
+  amount?: number;
+  currency?: string;
 }
 
 /**

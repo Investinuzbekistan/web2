@@ -29,6 +29,12 @@ const props = defineProps<{
   regions: MapRegion[];
   active: string;
   detail: RegionDetail | null;
+  /**
+   * Projects filed under no region at all. The column below adds up to one
+   * less than the portfolio without them, and a column that does not add up
+   * is a column nobody trusts.
+   */
+  nationwide: number;
 }>();
 
 const emit = defineEmits<{ pick: [id: string]; open: [id: string]; seeAll: [] }>();
@@ -97,6 +103,9 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
         </button>
       </li>
     </ul>
+    <p v-if="nationwide" class="brief__aside">
+      {{ t('portfolio.map.nationwide', { count: nationwide }) }}
+    </p>
     <p class="brief__hint">{{ t('portfolio.map.pickHint') }}</p>
   </section>
 </template>
@@ -286,6 +295,15 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   .brief__regions li button:hover .brief__fill {
     opacity: 1;
   }
+}
+
+/* Set apart from the fourteen rows above it, because it is not one of them. */
+.brief__aside {
+  margin-block-start: 0.7rem;
+  padding-block-start: 0.7rem;
+  border-block-start: 1px solid var(--hairline);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
 }
 
 .brief__hint {

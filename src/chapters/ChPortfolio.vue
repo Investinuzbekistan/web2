@@ -26,7 +26,8 @@ import RegionMap, { type MapRegion } from '../components/RegionMap.vue';
 import StatBars, { type BarRow } from '../components/StatBars.vue';
 import type { Project } from '../lib/forum-types';
 import { formatMoney, millionWord } from '../lib/money';
-import { scrollToId, useChapterTimeline } from '../lib/motion';
+import { sheetValue } from '../lib/sheet-values';
+import { openEnquiry, scrollToId, useChapterTimeline } from '../lib/motion';
 import {
   bandOf,
   clearFilters,
@@ -50,10 +51,23 @@ const projects = computed(() => forum.value?.portfolio.projects ?? []);
 const regionNames = computed(() => forum.value?.portfolio.regionNames ?? {});
 const themes = computed(() => forum.value?.themes ?? []);
 
+/**
+ * The totals, including the one that does not add up and why.
+ *
+ * Seventy-four projects, but the regions account for seventy-three: the
+ * Madaniyat Hotel is a network concept for every region at once and is filed
+ * under none of them. A reader who adds the region column and gets a
+ * different number than the headline is right to distrust both, so the page
+ * now states the split instead of leaving it to be discovered.
+ */
 const totals = computed(() => {
   const p = forum.value?.portfolio;
+  const projects = p?.projects.length ?? 0;
+  const placed = (p?.projects ?? []).filter((x) => x.region).length;
   return {
-    projects: p?.projects.length ?? 0,
+    projects,
+    placed,
+    nationwide: projects - placed,
     usd: (p?.totalUsd ?? 0) / 1e6,
     statedUsd: p?.statedUsdCount ?? 0,
     statedUzs: p?.statedUzsCount ?? 0,
@@ -82,9 +96,15 @@ const thumb = (p: Project) => (p.photos[0] ? `photos/${p.photos[0]}-thumb.webp` 
 const moneyOf = (p: Project) =>
   p.investment && p.currency ? formatMoney(p.investment, p.currency, lang.value) : t('portfolio.noFigure');
 
-/** The sheet's own one-word description of the project, when it gives one. */
-const activityOf = (p: Project) =>
-  p.metrics.find((m) => /^(ACTIVITY|OPERATOR|STATUS)$/i.test(m.label))?.value ?? null;
+/**
+ * The sheet's own one-word description of the project, when it gives one —
+ * in the reader's language where it is one of the stage words the organiser
+ * reuses across every sheet, and in the sheet's own words otherwise.
+ */
+const activityOf = (p: Project) => {
+  const raw = p.metrics.find((m) => /^(ACTIVITY|OPERATOR|STATUS)$/i.test(m.label))?.value;
+  return raw ? sheetValue(raw, lang.value) : null;
+};
 
 /** " mln USD" / " млн USD" / " M USD" — the unit word follows the language. */
 const usdSuffix = computed(() => ` ${millionWord(lang.value)} USD`);
@@ -185,7 +205,7 @@ async function enquire(): Promise<void> {
   enquirySubject.value = { id: project.id, title: title(project), segment: project.segment };
   replaceProject(null);
   await nextTick();
-  scrollToId('epilogue');
+  openEnquiry();
 }
 
 /**
@@ -306,7 +326,15 @@ useChapterTimeline(
       <p class="eyebrow chapter-mark">{{ t('chapters.portfolio.n') }}</p>
       <h2>{{ t('chapters.portfolio.title') }}</h2>
       <p class="portfolio__lead">
-        {{ t('portfolio.lead', { count: totals.projects, regions: totals.regions }) }}
+        {{
+          totals.nationwide
+            ? t('portfolio.leadSplit', {
+                placed: totals.placed,
+                regions: totals.regions,
+                nationwide: totals.nationwide,
+              })
+            : t('portfolio.lead', { count: totals.projects, regions: totals.regions })
+        }}
       </p>
       <p class="portfolio__body">{{ t('portfolio.body') }}</p>
 
@@ -343,6 +371,7 @@ useChapterTimeline(
           :regions="mapRegions"
           :active="filters.region"
           :detail="detail"
+          :nationwide="totals.nationwide"
           @pick="(id) => (filters.region = id)"
           @open="(id) => openProject(id)"
           @see-all="scrollToId('portfolio-list')"

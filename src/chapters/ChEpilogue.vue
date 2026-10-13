@@ -130,10 +130,9 @@ async function submit() {
 
 <template>
   <section id="epilogue" class="chapter stage epilogue">
-    <!-- The hem where the page gives way to the closing stage, and the
-         finished edge of the bolt. Decoration, and announced as nothing. -->
+    <!-- The gold seam where the page gives way to the closing stage.
+         Decoration, and announced as nothing. -->
     <div class="frieze frieze--edge frieze--top" aria-hidden="true" />
-    <div class="selvedge" aria-hidden="true" />
 
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.epilogue.n') }}</p>
@@ -325,8 +324,9 @@ async function submit() {
 
             <p class="footer__label">{{ t('sources.documents') }}</p>
             <ol class="footer__sources footer__sources--docs">
-              <li v-for="source in forum.sources" :key="source.id">
-                <span class="footer__sid">{{ source.id }}</span>
+              <li v-for="(source, i) in forum.sources" :key="source.id">
+                <!-- The same marker the badge in the text carries. -->
+                <span class="footer__sid">{{ `D${i + 1}` }}</span>
                 <span class="footer__doc">{{ tr(source.title) }} — {{ tr(source.publisher) }}</span>
                 <em>{{ formatDate(source.asOf, lang) }}</em>
               </li>
@@ -374,7 +374,9 @@ async function submit() {
 <style scoped>
 .epilogue {
   align-content: start;
-  padding-block-start: clamp(5rem, 14vh, 9rem);
+  /* 7rem, not 5: the fixed bar is 93px and a chapter that sets its own top
+     padding has to clear it at every window height, as .chapter now does. */
+  padding-block-start: clamp(7rem, 14vh, 9rem);
 }
 
 h2 {
@@ -781,7 +783,9 @@ h2 {
 /* The document ids are words ("concept", "programme"), not "S2" — they need a
    column of their own or they run under the title. */
 .footer__sources--docs li {
-  grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+  /* Was 6.5rem, for ids that were whole words. The marker is now two
+     characters, like the web sources' own. */
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
 }
 .footer__sid {
   text-transform: uppercase;

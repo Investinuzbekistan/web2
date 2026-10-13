@@ -286,7 +286,27 @@ function choose(code: Lang) {
     </div>
   </header>
 
-  <p class="chapter__number" aria-hidden="true">{{ counter }}</p>
+  <!-- The chapter rail. It carries the stage's tokens over a stage, like the
+       bar, or its stars disappear into the cobalt. -->
+  <nav class="rail" :class="{ 'on-stage': onStage }" :aria-label="t('menu.rail')">
+    <ol>
+      <li v-for="(chapter, i) in chapters" :key="chapter.id">
+        <button
+          type="button"
+          class="rail__node"
+          :class="{ 'rail__node--read': i < activeIndex }"
+          :aria-current="activeIndex === i ? 'true' : undefined"
+          @click="go(chapter.id)"
+        >
+          <span class="rail__star" aria-hidden="true" />
+          <!-- The button's accessible name, and the tooltip. Faded out rather
+               than hidden, so it is still the name when nobody is hovering. -->
+          <span class="rail__label">{{ t(`chapters.${chapter.key}.title`) }}</span>
+        </button>
+      </li>
+    </ol>
+    <p class="rail__count" aria-hidden="true">{{ counter }}</p>
+  </nav>
 
   <Teleport to="body">
     <!-- data-lenis-prevent: the list can outgrow a short screen and has to
@@ -314,6 +334,13 @@ function choose(code: Lang) {
 </template>
 
 <style scoped>
+/* Reading progress.
+ *
+ * It was a run of jiyak for an hour — the braid is the page's own ornament
+ * and weaving it across the top as the page is read is the right idea. At
+ * three pixels it is also unreadable: the braid's two cobalt rules and its
+ * chevrons average out to a grey bar. A thread that cannot be seen to be a
+ * thread is just a dirty line, so this stays the hairline and the gradient. */
 .progress {
   position: fixed;
   inset-block-start: 0;

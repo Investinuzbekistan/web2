@@ -1,9 +1,57 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
+/**
+ * Preload the two self-hosted variable fonts.
+ *
+ * Without this the browser cannot know they exist until it has downloaded and
+ * parsed the stylesheet, so the first paint of the page's own type waits on
+ * two requests that only start once everything else has: the hero's heading
+ * is the largest element on the screen, which puts that wait straight into
+ * Largest Contentful Paint.
+ *
+ * Only the Latin subset of each family. Fontsource ships nine files per
+ * build — Cyrillic, Greek, Latin-ext, Vietnamese — and preloading all of them
+ * would pull about two hundred kilobytes the page does not use and make the
+ * thing it is meant to fix worse. Latin-ext is left out too: it is fetched on
+ * demand if a glyph needs it, and the two files here are the ones the first
+ * screen is set in. The page is served in Uzbek Latin; a reader
+ * who switches to Russian fetches the Cyrillic subset then, which is what the
+ * unicode-range split is for.
+ *
+ * The filenames are hashed at build time, so they are read out of the bundle
+ * rather than written down. `crossorigin` is required even for same-origin
+ * fonts — a preload without it is fetched again by the font loader.
+ */
+function preloadFonts() {
+  return {
+    name: 'preload-fonts',
+    enforce: 'post' as const,
+    transformIndexHtml(html: string, ctx: { bundle?: Record<string, unknown> }) {
+      const fonts = Object.keys(ctx.bundle ?? {}).filter((name) =>
+        /-latin-wght-normal-[^/]*\.woff2$/.test(name),
+      );
+      return {
+        html,
+        tags: fonts.map((file) => ({
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            as: 'font',
+            type: 'font/woff2',
+            href: `./${file}`,
+            crossorigin: '',
+          },
+          injectTo: 'head-prepend' as const,
+        })),
+      };
+    },
+  };
+}
+
 export default defineConfig({
   base: './',
-  plugins: [vue()],
+  plugins: [vue(), preloadFonts()],
   build: {
     target: 'es2022',
     rollupOptions: {

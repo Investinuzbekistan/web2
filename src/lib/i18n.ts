@@ -30,7 +30,17 @@ export const UI_META: Record<Lang, { title: string; description: string }> = {
 
 const en = {
   skip: 'Skip to the chapters',
-  menu: { open: 'Menu', close: 'Close', label: 'Chapters', sections: 'Sections', language: 'Language' },
+  menu: {
+    open: 'Menu',
+    close: 'Close',
+    label: 'Chapters',
+    // The rail in the margin is a second list of the same chapters, so it
+    // needs a name of its own: two navigation landmarks called "Chapters"
+    // are indistinguishable when a screen reader lists them.
+    rail: 'Page chapters',
+    sections: 'Sections',
+    language: 'Language',
+  },
   nav: {
     why: 'Why Uzbekistan',
     themes: 'Directions',
@@ -245,7 +255,14 @@ type Messages = typeof en;
 
 const uz: Messages = {
   skip: 'Boblarga oʻtish',
-  menu: { open: 'Menyu', close: 'Yopish', label: 'Boblar', sections: 'Boʻlimlar', language: 'Til' },
+  menu: {
+    open: 'Menyu',
+    close: 'Yopish',
+    label: 'Boblar',
+    rail: 'Sahifa boblari',
+    sections: 'Boʻlimlar',
+    language: 'Til',
+  },
   nav: {
     why: 'Nega Oʻzbekiston',
     themes: 'Yoʻnalishlar',
@@ -458,7 +475,14 @@ const uz: Messages = {
 
 const ru: Messages = {
   skip: 'Перейти к главам',
-  menu: { open: 'Меню', close: 'Закрыть', label: 'Главы', sections: 'Разделы', language: 'Язык' },
+  menu: {
+    open: 'Меню',
+    close: 'Закрыть',
+    label: 'Главы',
+    rail: 'Главы страницы',
+    sections: 'Разделы',
+    language: 'Язык',
+  },
   nav: {
     why: 'Почему Узбекистан',
     themes: 'Направления',

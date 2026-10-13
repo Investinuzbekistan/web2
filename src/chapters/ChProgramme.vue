@@ -116,7 +116,9 @@ useChapterTimeline(
 <style scoped>
 .programme {
   align-content: start;
-  padding-block-start: clamp(5rem, 14vh, 9rem);
+  /* 7rem, not 5: the fixed bar is 93px and a chapter that sets its own top
+     padding has to clear it at every window height, as .chapter now does. */
+  padding-block-start: clamp(7rem, 14vh, 9rem);
 }
 h2 {
   font-size: clamp(2rem, 4.5vw, 3.5rem);

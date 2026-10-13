@@ -82,6 +82,10 @@ useChapterTimeline(
       </svg>
     </div>
 
+    <!-- The carved screen the globe is seen through. Decoration, announced as
+         nothing; see .aperture in styles/index.css. -->
+    <div class="aperture" aria-hidden="true" />
+
     <div class="shell prologue__content">
       <p class="eyebrow prologue__organiser">{{ t('prologue.organiser') }}</p>
       <!-- The national colours, under the name of the State body running the
@@ -138,9 +142,8 @@ useChapterTimeline(
       </button>
     </div>
 
-    <!-- The finished edge of the bolt, and the hem where the stage gives way
-         to the page. Decoration, and announced as nothing. -->
-    <div class="selvedge" aria-hidden="true" />
+    <!-- The gold seam where the stage gives way to the page. Decoration,
+         and announced as nothing. -->
     <div class="frieze frieze--edge frieze--bottom" aria-hidden="true" />
   </section>
 </template>

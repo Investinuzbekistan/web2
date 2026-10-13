@@ -308,10 +308,22 @@ svg {
   }
 }
 
+/**
+ * The map before its outlines arrive.
+ *
+ * A dashed box is what a developer leaves behind, not what a reader should
+ * meet. This is a panjara — a carved window screen — which is the one thing
+ * on this page that means "an opening that is not open yet". It reserves
+ * exactly the height the map will take, so nothing moves when it arrives, and
+ * for the second it is on screen it is worth looking at.
+ */
 .uzmap__wait {
   aspect-ratio: 1000 / 560;
-  border: 1px dashed var(--hairline);
   border-radius: 0.3rem;
+  background-color: var(--surface-2);
+  background-image: var(--ornament-panjara);
+  background-size: var(--ornament-panjara-size);
+  opacity: 0.5;
 }
 
 /* The fill carries the count; the shade is set per path as a custom property

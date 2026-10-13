@@ -18,7 +18,6 @@
  */
 @import './tokens.css';
 @import './ornament.css';
-@import './ikat.css';
 @import '@fontsource-variable/playfair-display';
 @import '@fontsource-variable/manrope';
 
@@ -272,12 +271,21 @@ a {
 /* ------------------------------------------------------------- ornament */
 
 /**
- * The wall the page is read against.
+ * The wall the page is read against — and only the part of it you do not
+ * read against.
  *
- * Fixed rather than scrolling: plaster does not move, and a texture that
- * slides under the text reads as wallpaper on a conveyor. The stages paint
- * over it with their own ground, which is correct — they are faced in tile,
- * not plastered.
+ * The carving used to run edge to edge under everything, which is how a room
+ * gets wallpapered rather than built. In a real interior the wall is carved
+ * and the panel set into it is plain, because the panel is the thing you are
+ * meant to look at. So the ganch is masked out of the reading column and
+ * lives in the margins either side of it, where it can be turned up to a
+ * strength you can actually see instead of hidden at three per cent to keep
+ * it off the type.
+ *
+ * On a phone there is no margin to carve and the mask closes the whole thing,
+ * which is correct: a narrow screen is all panel.
+ *
+ * Fixed rather than scrolling, because plaster does not move.
  */
 body::before {
   content: '';
@@ -285,10 +293,24 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: var(--ornament-opacity);
+  opacity: 0.075;
   background-image: var(--ornament-girih-field-light), var(--ornament-girih-field);
   background-position: 1px 1px, 0 0;
   background-size: var(--ornament-girih-field-size);
+  /* Half of whatever is left over once the reading column has taken its
+     share. Zero on a narrow screen, about six rem on a wide one. */
+  --margin: max(0px, calc((100% - min(100% - var(--gutter) * 2, 78rem)) / 2));
+  --mask: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(var(--margin) - 2rem),
+    transparent var(--margin),
+    transparent calc(100% - var(--margin)),
+    #000 calc(100% - var(--margin) + 2rem),
+    #000 100%
+  );
+  -webkit-mask-image: var(--mask);
+  mask-image: var(--mask);
 }
 
 /**
@@ -328,75 +350,91 @@ body::before {
 /* ------------------------------------------------------------------ cloth */
 
 /**
- * The hem: a strip of atlas across the seam where a stage meets the paper.
+ * The seam where a stage meets the paper, finished in gold.
  *
- * This used to be a girih lozenge chain, which was the right ornament for a
- * page built on plaster and tile. The page is now built on cloth as well, and
- * a seam is where cloth announces itself — a chapan is bordered at the hem,
- * not down the middle.
+ * This was a strip of atlas, and before that a taller strip of atlas, and it
+ * never worked. A woven cloth is read by its motifs, and a motif needs area:
+ * squeezed into a fourteen-pixel band stretched across fourteen hundred, the
+ * ikat tile resolves to a row of coloured specks — not cloth, not ornament,
+ * just a dirty rainbow line laid across the one place on the page where two
+ * materials meet. The client said it did not belong and they were right.
  *
- * It was three times this height on the first pass and the client was right
- * to call it loud: at forty-four pixels a strip of atlas across the full
- * width is a banner, and a banner is what the page sits under rather than
- * what finishes it. At fourteen it is trim — you read it as a woven edge,
- * which is what a hem is.
- *
- * The tile is turned rather than squeezed: `auto 100%` scales it by its own
- * proportion, so the feathered teeth keep their shape at any band height.
- * Stretching them is the one thing that would turn this back into a graphic.
+ * What is there instead is what the page is actually made of. A tiled panel
+ * is not finished with cloth, it is finished in gold: a bright line with a
+ * softer one under it, which is how a koshin border closes against the next
+ * surface and how every card on this page is already finished. Three pixels,
+ * two tones, no pattern — at this width nothing patterned can be read, so
+ * nothing patterned is drawn.
  */
 .frieze {
-  block-size: 0.9rem;
-  background-image: var(--ikat-adras-border);
-  background-size: auto 100%;
-  background-repeat: repeat-x;
+  block-size: 3px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gold-leaf) 70%, transparent) 0 1px,
+    transparent 1px 2px,
+    color-mix(in srgb, var(--gold-leaf) 28%, transparent) 2px 3px
+  );
 }
+/* Against cobalt the gold has to come up, or the seam disappears into the
+   glaze; against ganch it has to come down, or it reads as a highlighter. */
 .stage .frieze,
 .on-stage .frieze {
-  background-image: var(--ikat-atlas-border);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gold-leaf) 90%, transparent) 0 1px,
+    transparent 1px 2px,
+    color-mix(in srgb, var(--gold-leaf) 35%, transparent) 2px 3px
+  );
 }
 
 /**
- * The selvedge: the finished edge of the bolt, run down the side of a stage.
+ * Every chapter opens with its number over a short rule and one star.
  *
- * Narrow on purpose. A selvedge is the edge of the cloth and not the cloth,
- * and at any width where you could read the motifs it stops being an edge and
- * starts competing with the title.
+ * The rule carried a woven jiyak for a while. At three and a half rem by
+ * eight pixels the braid came out as a red-and-green scribble — the same
+ * failure as the hem, for the same reason, and repeated eight times down the
+ * page.
+ *
+ * The star is the one from the rail in the margin, which is the one the
+ * title card is seen through. So the mark on the page and the mark in the
+ * margin are the same mark: wherever the rail says you are, the chapter
+ * under it opens with the same star.
  */
-.selvedge {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  z-index: 2;
-  inline-size: clamp(0.4rem, 0.9vw, 0.65rem);
-  background-image: var(--ikat-atlas-selvedge);
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  pointer-events: none;
+.chapter-mark {
+  position: relative;
 }
-
-/**
- * Every chapter opens with its number over a short woven thread.
- *
- * This is the one place the cloth is allowed inside the reading column, and
- * it is a thread rather than a band for that reason: a chapter has to be read
- * through, and the two stages are where the pattern gets to be itself. Eight
- * repeats down the page is what carries the cloth into the chapters that are
- * made of paper.
- */
 .chapter-mark::after {
   content: '';
   display: block;
   inline-size: 3.5rem;
-  block-size: 8px;
-  margin-block-start: 0.6rem;
-  background-image: var(--ikat-adras-jiyak);
-  background-size: auto 100%;
-  background-repeat: repeat-x;
+  block-size: 2px;
+  margin-block-start: 0.75rem;
+  margin-inline-start: 0.95rem;
+  background: color-mix(in srgb, var(--gold-leaf) 65%, transparent);
 }
-.stage .chapter-mark::after,
-.on-stage .chapter-mark::after {
-  background-image: var(--ikat-atlas-jiyak);
+.chapter-mark::before {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inline-size: 0.6rem;
+  block-size: 0.6rem;
+  translate: 0 calc(0.3rem - 1px);
+  background: var(--gold-leaf);
+  clip-path: polygon(
+    100% 50%,
+    75% 64.43%,
+    75% 93.3%,
+    50% 78.87%,
+    25% 93.3%,
+    25% 64.43%,
+    0% 50%,
+    25% 35.57%,
+    25% 6.7%,
+    50% 21.13%,
+    75% 6.7%,
+    75% 35.57%
+  );
 }
 
 /**
@@ -447,24 +485,17 @@ body::before {
   gap: 1rem;
   margin-block: clamp(2.5rem, 7vh, 4.5rem);
 }
-/* Woven, not drawn: the rule either side of the rosette is a run of the same
-   cloth, faded out at the ends so it reads as a thread rather than a bar. */
+/* A gold hairline either side of the rosette, faded out at both ends so it
+   reads as a line drawn towards the mark rather than as a bar the mark is
+   sitting on. It was a run of woven jiyak and came out as a scribble, the
+   same as the hem and the chapter marks. */
 .rule-rosette::before,
 .rule-rosette::after {
   content: '';
-  block-size: 8px;
-  background-image: var(--ikat-adras-jiyak);
-  background-size: auto 100%;
-  background-repeat: repeat-x;
-  opacity: 0.75;
+  block-size: 1px;
+  background: color-mix(in srgb, var(--gold-leaf) 55%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 35%, #000 65%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 35%, #000 65%, transparent);
-}
-.stage .rule-rosette::before,
-.stage .rule-rosette::after,
-.on-stage .rule-rosette::before,
-.on-stage .rule-rosette::after {
-  background-image: var(--ikat-atlas-jiyak);
 }
 .rule-rosette__mark {
   inline-size: 2.25rem;
@@ -674,34 +705,27 @@ body::before {
   position: relative;
   min-height: 100svh;
   display: grid;
+  /* minmax(0, 1fr), not the default `auto`.
+   *
+   * A chapter that carries a full-bleed row of cards — the eight directions —
+   * puts a flex track of eight non-shrinkable cards in this column, and an
+   * `auto` column is at least as wide as its contents' minimum. The column
+   * came out about two thousand eight hundred pixels wide, and the heading,
+   * which centres itself inside the column with `margin-inline: auto`, was
+   * centred in *that* rather than in the page: at 1440px it sat eight hundred
+   * pixels in from the left, with the whole left half of the chapter empty.
+   * Flooring the minimum at zero keeps the column the width of the page and
+   * lets the track overflow it, which is what a full-bleed track is for. */
+  grid-template-columns: minmax(0, 1fr);
   align-content: center;
-  padding-block: var(--chapter-pad);
+  /* The top is floored above the fixed bar. The bar is about 93px tall at
+     every width; --chapter-pad is 10vh, which is less than that on any window
+     shorter than about 930px, so on a laptop in a half-height window the
+     chapter's eyebrow and its heading were drawn underneath the bar. */
+  padding-block: max(var(--chapter-pad), 7rem) var(--chapter-pad);
   overflow: clip;
 }
 
-.chapter__number {
-  position: fixed;
-  left: clamp(0.75rem, 2vw, 2rem);
-  top: 50%;
-  translate: 0 -50%;
-  z-index: 30;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--ink-dim);
-  writing-mode: vertical-rl;
-  pointer-events: none;
-}
-
-/* The counter lives in the margin beside the shell, so it may only appear once
-   that margin is actually wider than the counter. The shell caps at 78rem, so
-   below ~1400px it would sit on top of the text. */
-@media (max-width: 1399px) {
-  .chapter__number {
-    display: none;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -718,5 +742,223 @@ body::before {
      becomes an endless run of near-empty screens. */
   .chapter {
     min-height: 0;
+  }
+}
+
+/* ------------------------------------------------------------- aperture */
+
+/**
+ * The carved window the title card is seen through.
+ *
+ * A panjara is the pierced screen set into the opening of a room: you do not
+ * look at it, you look *through* it, and what it does is turn a bare hole in
+ * a wall into a framed view. That is exactly the job a hero image has, so
+ * this is the one place on the page where the ornament is allowed to be
+ * large — because here it is not decorating a surface, it is the opening
+ * itself.
+ *
+ * It sits above the globe and below the type, so the globe is genuinely
+ * behind the lattice, and it is cleared out of the middle: the screen is
+ * dense where a screen is dense, at the jambs and the head of the opening,
+ * and gone where you are meant to be reading. The clearing is an ellipse
+ * rather than an arch outline on purpose — a drawn arch over a left-aligned
+ * title would be a shape fighting the text, where a clearing is just light.
+ *
+ * The lattice is enlarged from its tile size. At 64px the stars are close
+ * enough together to read as wire mesh; at a hundred and ten they read as
+ * carved laths, which is the difference between a screen and a filter.
+ */
+.aperture {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: var(--ornament-panjara-light);
+  background-size: 110px 190.54px;
+  background-position: 50% 50%;
+  --clear: radial-gradient(ellipse 62% 68% at 50% 46%, transparent 0 50%, #000 100%);
+  -webkit-mask-image: var(--clear);
+  mask-image: var(--clear);
+}
+
+/**
+ * Not on a narrow screen.
+ *
+ * A screen needs a wall to be set into. On a phone the title card is the
+ * whole window — the type runs from the bar to below the fold with nothing
+ * either side of it — so there is no wall left, and the lattice ends up
+ * behind the words instead of around them. Measured there: the gold eyebrow
+ * over a lit lath comes out at 3.3:1, under the 4.5 it clears everywhere
+ * else. The same reasoning closes the ganch in the margins at this width.
+ */
+@media (max-width: 63.99rem) {
+  .aperture {
+    display: none;
+  }
+}
+
+/* The stage's own girih field would be a second pattern over the first, which
+   is the fussiness this page keeps having to be saved from. Where there is a
+   screen, the screen is the ornament. */
+.stage:has(> .aperture)::before {
+  display: none;
+}
+
+/* ----------------------------------------------------------- chapter rail */
+
+/**
+ * The eight chapters, as a column of stars in the margin.
+ *
+ * This replaces a counter that said `03 / 08` and nothing else: it was
+ * honest about where you were and silent about everything else — how far
+ * there was to go, what was in it, and that you could get there directly.
+ *
+ * The mark is the six-pointed star of the panjara, the same star the title
+ * card is seen through, because that is what the page's own ornament is. A
+ * chapter you have read is cut through; the one you are in is filled; the
+ * ones ahead are outlines. It is the page's table of contents drawn as the
+ * page's own lattice, and every node is a button.
+ *
+ * Only where there is a margin to put it in. Below 1400px the shell has
+ * taken the whole screen and the rail would be over the type, so the page
+ * goes back to having nothing there — the bar and the overlay are the
+ * navigation at that width, as they were.
+ */
+.rail {
+  position: fixed;
+  inset-inline-start: clamp(1.25rem, 2.6vw, 2.4rem);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  z-index: 30;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+}
+.rail ol {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* The thread the stars are strung on: one hairline running the height of the
+   list, behind them. It stops short at both ends so the first and last stars
+   sit on the end of a thread rather than in the middle of one. */
+.rail ol::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.85rem;
+  inset-inline-start: 50%;
+  inline-size: 1px;
+  background: var(--hairline);
+}
+.rail__node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.rail__star {
+  inline-size: 0.7rem;
+  block-size: 0.7rem;
+  /* A hexagram: six points on the lattice directions, six valleys between
+     them. The same star, and the same orientation, as the screen. */
+  clip-path: polygon(
+    100% 50%,
+    75% 64.43%,
+    75% 93.3%,
+    50% 78.87%,
+    25% 93.3%,
+    25% 64.43%,
+    0% 50%,
+    25% 35.57%,
+    25% 6.7%,
+    50% 21.13%,
+    75% 6.7%,
+    75% 35.57%
+  );
+  background: var(--ink-dim);
+  opacity: 0.4;
+  transition: opacity 0.25s, scale 0.25s, background-color 0.25s;
+}
+/* Behind you. */
+.rail__node--read .rail__star {
+  opacity: 0.75;
+}
+/* Where you are. */
+.rail__node[aria-current='true'] .rail__star {
+  background: var(--gold-leaf);
+  opacity: 1;
+  scale: 1.45;
+}
+@media (hover: hover) {
+  .rail__node:hover .rail__star {
+    opacity: 1;
+    scale: 1.25;
+  }
+}
+.rail__node:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 2px;
+  border-radius: 0.2rem;
+}
+/* Eight identical stars tell you how far there is to go and nothing about
+   what is in it. The name of the chapter arrives on hover, and on focus for
+   anybody walking the rail with a keyboard. It is allowed over the reading
+   column, as a tooltip is — there is no margin wide enough for a title and
+   nothing is under it for the moment it is up. */
+.rail__label {
+  position: absolute;
+  inset-inline-start: calc(100% + 0.2rem);
+  inset-block-start: 50%;
+  z-index: 1;
+  inline-size: max-content;
+  max-inline-size: 13rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--hairline);
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: 0 0.5rem 1.25rem rgb(21 25 58 / 0.14);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: start;
+  translate: -0.35rem -50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s, translate 0.18s;
+}
+@media (hover: hover) {
+  .rail__node:hover .rail__label {
+    opacity: 1;
+    translate: 0 -50%;
+  }
+}
+.rail__node:focus-visible .rail__label {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+.rail__count {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--ink-dim);
+  writing-mode: vertical-rl;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1399px) {
+  .rail {
+    display: none;
   }
 }

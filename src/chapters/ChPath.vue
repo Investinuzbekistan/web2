@@ -121,7 +121,9 @@ useChapterTimeline(
 <style scoped>
 .path {
   align-content: start;
-  padding-block-start: clamp(5rem, 14vh, 9rem);
+  /* 7rem, not 5: the fixed bar is 93px and a chapter that sets its own top
+     padding has to clear it at every window height, as .chapter now does. */
+  padding-block-start: clamp(7rem, 14vh, 9rem);
 }
 h2 {
   font-size: clamp(2rem, 4.5vw, 3.5rem);
@@ -270,7 +272,11 @@ h2 {
   rotate: 45deg;
   background: var(--accent-deep);
 }
+/* A dash, not a lozenge — and it has to put the rotation back, or a 1px-tall
+   rule turned forty-five degrees is drawn as a backslash in front of every
+   line. Which is what it was. */
 .checks--plain li::before {
+  rotate: none;
   border-radius: 0;
   width: 0.65rem;
   height: 1px;

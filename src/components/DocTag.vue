@@ -11,7 +11,7 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { formatDate } from '../lib/shared/content';
-import { tr, useStore } from '../lib/state';
+import { docMarker, tr, useStore } from '../lib/state';
 
 const props = defineProps<{ id: string }>();
 const { t } = useI18n();
@@ -21,13 +21,13 @@ const source = computed(() => forum.value?.sources.find((s) => s.id === props.id
 const asOf = computed(() => (source.value ? formatDate(source.value.asOf, lang.value) : ''));
 const label = computed(() =>
   source.value
-    ? `${t('sources.label')}: ${tr(source.value.title)} — ${tr(source.value.publisher)}. ${t('sources.asOf', { date: asOf.value })}`
+    ? `${docMarker(props.id)} — ${t('sources.label')}: ${tr(source.value.title)} — ${tr(source.value.publisher)}. ${t('sources.asOf', { date: asOf.value })}`
     : '',
 );
 </script>
 
 <template>
-  <abbr v-if="source" class="doc" :title="label" :aria-label="label">{{ source.id }}</abbr>
+  <abbr v-if="source" class="doc" :title="label" :aria-label="label">{{ docMarker(id) }}</abbr>
 </template>
 
 <style scoped>

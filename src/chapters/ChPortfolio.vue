@@ -498,7 +498,9 @@ useChapterTimeline(
 <style scoped>
 .portfolio {
   align-content: start;
-  padding-block-start: clamp(5rem, 14vh, 9rem);
+  /* 7rem, not 5: the fixed bar is 93px and a chapter that sets its own top
+     padding has to clear it at every window height, as .chapter now does. */
+  padding-block-start: clamp(7rem, 14vh, 9rem);
 }
 h2 {
   font-size: clamp(2rem, 4.5vw, 3.5rem);
@@ -761,13 +763,27 @@ h2 {
   display: block;
 }
 /* A project whose sheet carried no usable image keeps the slot, so the list
-   does not jog left and right as it scrolls — as an empty niche rather than a
-   dashed box, which is the same arch the panel shows a photograph through. */
+   does not jog left and right as it scrolls. It is the same arch the panel
+   shows a photograph through, with a lattice behind it: a window onto a view
+   that has not been supplied, which is exactly what it is. */
 .row__shot--empty {
+  position: relative;
   inline-size: 2.6rem;
   block-size: 3.2rem;
   clip-path: url(#uz-arch);
-  background: color-mix(in srgb, var(--accent-deep) 7%, transparent);
+  background-color: color-mix(in srgb, var(--accent-deep) 7%, transparent);
+}
+/* The lattice is drawn on a layer of its own so it can be held back to a
+   quarter: at full strength, and at a tile size where only one star fits in
+   a slot this small, it reads as a black asterisk rather than as a screen. */
+.row__shot--empty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background-image: var(--ornament-panjara);
+  background-size: 19px auto;
+  background-position: center;
 }
 
 .row__flag {

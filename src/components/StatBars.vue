@@ -115,7 +115,11 @@ button[aria-pressed='true'] {
 }
 
 .bars__track {
-  height: 0.4rem;
+  /* Same height and same ink as the region bars beside them: three bar charts
+     on one screen, all counting the same seventy-four projects, drawn two
+     different colours and two different weights read as three unrelated
+     charts. Turquoise is what you can act on, not a data colour. */
+  height: 0.35rem;
   border-radius: 999px;
   background: var(--hairline);
   overflow: hidden;
@@ -124,8 +128,8 @@ button[aria-pressed='true'] {
   display: block;
   block-size: 100%;
   border-radius: 999px;
-  background: var(--accent-soft);
-  opacity: 0.55;
+  background: var(--accent-deep);
+  opacity: 0.6;
   transition: opacity 0.16s;
 }
 button[aria-pressed='true'] .bars__fill {

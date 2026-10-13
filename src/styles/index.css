@@ -18,6 +18,7 @@
  */
 @import './tokens.css';
 @import './ornament.css';
+@import './ikat.css';
 @import '@fontsource-variable/playfair-display';
 @import '@fontsource-variable/manrope';
 
@@ -63,6 +64,24 @@
 
   /* How strongly a surface shows the girih behind it. Ganch is carved relief:
      you see it in the light, not in the colour. */
+  /**
+   * The national colours, for ornament only.
+   *
+   * These are the colours of the flag and of the cloth — the flag's blue is
+   * already the page's turquoise, a few degrees off the agency logo's own, so
+   * only the red and the green are new. They are kept out of the interface
+   * palette on purpose: red in a control means an error in every interface a
+   * visitor has ever used, and a page about public investment is the last
+   * place to teach them otherwise. They appear in the cloth, in the woven
+   * rules and nowhere else.
+   */
+  --flag-blue: #0099b5;
+  --flag-green: #1eb53a;
+  --flag-red: #ce1126;
+  --atlas-red: #b3243b;
+  --atlas-green: #1d7a46;
+  --atlas-saffron: #d7a13f;
+
   --ornament-ink: #000;
   /* Low enough that you notice the surface and not the pattern. Turned up to
      where the stars can be made out behind body copy it stops being plaster
@@ -306,18 +325,99 @@ body::before {
   background-position: 0 0;
 }
 
-/** The running border of a tiled panel. Decoration; never announced. */
+/* ------------------------------------------------------------------ cloth */
+
+/**
+ * The hem: a strip of atlas across the seam where a stage meets the paper.
+ *
+ * This used to be a girih lozenge chain, which was the right ornament for a
+ * page built on plaster and tile. The page is now built on cloth as well, and
+ * a seam is where cloth announces itself — a chapan is bordered at the hem,
+ * not down the middle. It is the one place on the page where the pattern is
+ * allowed to be at full strength, because nothing is read through it.
+ *
+ * The tile is turned rather than squeezed: `auto 100%` scales it by its own
+ * proportion, so the feathered teeth keep their shape at any band height.
+ * Stretching them is the one thing that would turn this back into a graphic.
+ */
 .frieze {
-  block-size: 28px;
-  background-image: var(--ornament-girih-frieze);
-  background-size: auto 28px;
+  block-size: 2.75rem;
+  background-image: var(--ikat-adras-border);
+  background-size: auto 100%;
   background-repeat: repeat-x;
-  opacity: 0.5;
 }
 .stage .frieze,
 .on-stage .frieze {
-  background-image: var(--ornament-girih-frieze-light);
-  opacity: 0.4;
+  background-image: var(--ikat-atlas-border);
+}
+
+/**
+ * The selvedge: the finished edge of the bolt, run down the side of a stage.
+ *
+ * Narrow on purpose. A selvedge is the edge of the cloth and not the cloth,
+ * and at any width where you could read the motifs it stops being an edge and
+ * starts competing with the title.
+ */
+.selvedge {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 2;
+  inline-size: clamp(0.75rem, 1.6vw, 1.25rem);
+  background-image: var(--ikat-atlas-selvedge);
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  pointer-events: none;
+}
+
+/**
+ * Every chapter opens with its number over a short woven thread.
+ *
+ * This is the one place the cloth is allowed inside the reading column, and
+ * it is a thread rather than a band for that reason: a chapter has to be read
+ * through, and the two stages are where the pattern gets to be itself. Eight
+ * repeats down the page is what carries the cloth into the chapters that are
+ * made of paper.
+ */
+.chapter-mark::after {
+  content: '';
+  display: block;
+  inline-size: 3.5rem;
+  block-size: 8px;
+  margin-block-start: 0.6rem;
+  background-image: var(--ikat-adras-jiyak);
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+}
+.stage .chapter-mark::after,
+.on-stage .chapter-mark::after {
+  background-image: var(--ikat-atlas-jiyak);
+}
+
+/**
+ * A rule in the national colours, under the organiser's own line.
+ *
+ * The colours and their order are the flag's; the flag itself is not drawn,
+ * and neither the crescent nor the stars appear. A State symbol is not a
+ * decoration to be stretched across a hero or woven into a pattern, but its
+ * colours, carried as a rule beneath the name of the State body running the
+ * forum, say what they are meant to say and claim nothing more. It is used
+ * twice on the page: there, and at the foot.
+ */
+.flag-rule {
+  block-size: 9px;
+  border-radius: 1px;
+  /* Three bands, not five. The flag's red fimbriations are a tenth of its
+     height; at any size that still reads as a rule rather than as a flag they
+     come out under a pixel and smear the blue into the white. Three bands say
+     the same thing and, by leaving the red out, say plainly that this is the
+     national colours and not a drawing of the flag. */
+  background: linear-gradient(
+    to bottom,
+    var(--flag-blue) 0 33.33%,
+    #ffffff 33.33% 66.66%,
+    var(--flag-green) 66.66% 100%
+  );
 }
 
 /** The frieze run along the edge where a stage meets the paper. */
@@ -342,11 +442,24 @@ body::before {
   gap: 1rem;
   margin-block: clamp(2.5rem, 7vh, 4.5rem);
 }
+/* Woven, not drawn: the rule either side of the rosette is a run of the same
+   cloth, faded out at the ends so it reads as a thread rather than a bar. */
 .rule-rosette::before,
 .rule-rosette::after {
   content: '';
-  block-size: 1px;
-  background: linear-gradient(to right, transparent, var(--hairline), transparent);
+  block-size: 8px;
+  background-image: var(--ikat-adras-jiyak);
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  opacity: 0.75;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 35%, #000 65%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 35%, #000 65%, transparent);
+}
+.stage .rule-rosette::before,
+.stage .rule-rosette::after,
+.on-stage .rule-rosette::before,
+.on-stage .rule-rosette::after {
+  background-image: var(--ikat-atlas-jiyak);
 }
 .rule-rosette__mark {
   inline-size: 2.25rem;
@@ -447,11 +560,22 @@ body::before {
 /* A tile panel. Used by the theme cards, the programme rows, the region card
    and the project panel, so they stay visually one family: a square-cornered
    frame with a gold hairline set inside it. */
+/* A panel bound along its head in cloth: the woven strip sits inside the
+   border, under the gold rule, the way a tile panel is finished at its top
+   edge before anything is set into it. */
 .card {
   position: relative;
   border: 1px solid var(--hairline);
   border-radius: 0.3rem;
-  background: var(--raise);
+  background:
+    var(--ikat-adras-jiyak) repeat-x 0 0 / auto 7px,
+    var(--raise);
+}
+.stage .card,
+.on-stage .card {
+  background:
+    var(--ikat-atlas-jiyak) repeat-x 0 0 / auto 7px,
+    var(--raise);
 }
 .card::before {
   content: '';

@@ -130,12 +130,13 @@ async function submit() {
 
 <template>
   <section id="epilogue" class="chapter stage epilogue">
-    <!-- The band that opens a tiled panel, on the edge where the page gives
-         way to the closing stage. Decoration, and announced as nothing. -->
+    <!-- The hem where the page gives way to the closing stage, and the
+         finished edge of the bolt. Decoration, and announced as nothing. -->
     <div class="frieze frieze--edge frieze--top" aria-hidden="true" />
+    <div class="selvedge" aria-hidden="true" />
 
     <div class="shell">
-      <p class="eyebrow">{{ t('chapters.epilogue.n') }}</p>
+      <p class="eyebrow chapter-mark">{{ t('chapters.epilogue.n') }}</p>
       <h2>{{ t('epilogue.lead') }}</h2>
       <p class="epilogue__body">{{ t('epilogue.body') }}</p>
 

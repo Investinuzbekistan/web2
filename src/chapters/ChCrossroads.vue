@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
   <section id="crossroads" ref="root" class="chapter crossroads">
     <div class="shell crossroads__grid">
       <div class="route__text">
-        <p class="eyebrow">{{ t('chapters.crossroads.n') }}</p>
+        <p class="eyebrow chapter-mark">{{ t('chapters.crossroads.n') }}</p>
         <h2>{{ t('chapters.crossroads.title') }}</h2>
         <p class="crossroads__lead">{{ t('crossroads.lead') }}</p>
         <p class="crossroads__body">{{ t('crossroads.body') }}</p>

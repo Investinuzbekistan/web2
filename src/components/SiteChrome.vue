@@ -242,7 +242,7 @@ function choose(code: Lang) {
           type="button"
           class="langs__toggle"
           :aria-expanded="langOpen"
-          :aria-label="t('menu.language')"
+          :aria-label="`${t('menu.language')}: ${lang}`"
           @click="langOpen = !langOpen"
         >
           <span>{{ lang }}</span>

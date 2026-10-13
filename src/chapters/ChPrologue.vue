@@ -84,6 +84,9 @@ useChapterTimeline(
 
     <div class="shell prologue__content">
       <p class="eyebrow prologue__organiser">{{ t('prologue.organiser') }}</p>
+      <!-- The national colours, under the name of the State body running the
+           forum. Decoration, and announced as nothing. -->
+      <div class="flag-rule prologue__flag" aria-hidden="true" />
 
       <h1 class="prologue__mark">
         <span class="sr-only">{{ event ? tr(event.name) : '' }}</span>
@@ -106,17 +109,19 @@ useChapterTimeline(
       <p class="prologue__lead prologue__reveal">{{ t('prologue.lead') }}</p>
 
       <div class="prologue__actions prologue__reveal">
-        <button
-          type="button"
-          class="btn btn--solid prologue__go"
-          :aria-label="t('prologue.ctaAria', { count: projectCount })"
-          @click="scrollToId('portfolio')"
-        >
+        <!-- No aria-label: an accessible name that does not contain the
+             visible words is a name speech-input users cannot say. The count
+             is visible, so it is part of the name, and only the unit word is
+             hidden. -->
+        <button type="button" class="btn btn--solid prologue__go" @click="scrollToId('portfolio')">
           <ActionIcon name="portfolio" />
           <span>{{ t('prologue.cta') }}</span>
           <!-- The count, and then the arrow that says where pressing it goes.
                Both are inside the button so the eye lands on one object. -->
-          <span v-if="projectCount" class="prologue__count" aria-hidden="true">{{ projectCount }}</span>
+          <template v-if="projectCount">
+            <span class="prologue__count">{{ projectCount }}</span>
+            <span class="sr-only">{{ t('prologue.ctaUnit') }}</span>
+          </template>
           <ActionIcon name="down" class="prologue__nudge" />
         </button>
         <button type="button" class="btn" @click="scrollToId('epilogue')">
@@ -133,8 +138,9 @@ useChapterTimeline(
       </button>
     </div>
 
-    <!-- The band that finishes a tiled panel, on the edge where the stage
-         gives way to the page. Decoration, and announced as nothing. -->
+    <!-- The finished edge of the bolt, and the hem where the stage gives way
+         to the page. Decoration, and announced as nothing. -->
+    <div class="selvedge" aria-hidden="true" />
     <div class="frieze frieze--edge frieze--bottom" aria-hidden="true" />
   </section>
 </template>
@@ -163,6 +169,11 @@ useChapterTimeline(
   position: relative;
   z-index: 2;
   max-width: 46rem;
+}
+
+.prologue__flag {
+  inline-size: 3.25rem;
+  margin-block-start: 0.85rem;
 }
 
 .prologue__organiser {

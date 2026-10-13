@@ -48,7 +48,7 @@ useChapterTimeline(
 <template>
   <section id="momentum" ref="root" class="chapter momentum">
     <div class="shell">
-      <p class="eyebrow">{{ t('chapters.momentum.n') }}</p>
+      <p class="eyebrow chapter-mark">{{ t('chapters.momentum.n') }}</p>
       <h2>{{ t('chapters.momentum.title') }}</h2>
       <p class="momentum__lead">{{ t('momentum.lead') }}</p>
       <p class="momentum__body">{{ t('momentum.body') }}</p>

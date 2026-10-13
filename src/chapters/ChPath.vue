@@ -55,7 +55,7 @@ useChapterTimeline(
 <template>
   <section id="path" ref="root" class="chapter path">
     <div class="shell">
-      <p class="eyebrow">{{ t('chapters.path.n') }}</p>
+      <p class="eyebrow chapter-mark">{{ t('chapters.path.n') }}</p>
       <h2>{{ t('chapters.path.title') }}</h2>
       <p class="path__lead">{{ t('path.lead') }}</p>
       <p class="path__body">

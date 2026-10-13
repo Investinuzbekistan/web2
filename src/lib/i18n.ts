@@ -64,7 +64,7 @@ const en = {
     within: 'Within the Tashkent International Tourism Fair 2026',
     lead: 'Three days of a tourism fair, and one day given entirely to capital.',
     cta: 'The project portfolio',
-    ctaAria: 'The project portfolio — {count} projects',
+    ctaUnit: 'projects',
     cta2: 'Register your interest',
   },
   crossroads: {
@@ -273,7 +273,7 @@ const uz: Messages = {
     within: 'Toshkent xalqaro turizm yarmarkasi — 2026 doirasida',
     lead: 'Turizm yarmarkasining uch kuni, va butunlay kapitalga ajratilgan bir kun.',
     cta: 'Loyihalar portfeli',
-    ctaAria: 'Loyihalar portfeli — {count} ta loyiha',
+    ctaUnit: 'ta loyiha',
     cta2: 'Qiziqish bildirish',
   },
   crossroads: {
@@ -480,7 +480,7 @@ const ru: Messages = {
     within: 'В рамках Ташкентской международной туристической ярмарки — 2026',
     lead: 'Три дня туристической ярмарки — и один день, целиком отданный капиталу.',
     cta: 'Портфель проектов',
-    ctaAria: 'Портфель проектов — всего {count}',
+    ctaUnit: 'проектов',
     cta2: 'Заявить о своём интересе',
   },
   crossroads: {

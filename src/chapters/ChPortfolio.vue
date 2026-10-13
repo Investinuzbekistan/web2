@@ -303,7 +303,7 @@ useChapterTimeline(
 <template>
   <section id="portfolio" ref="root" class="chapter portfolio">
     <div class="shell">
-      <p class="eyebrow">{{ t('chapters.portfolio.n') }}</p>
+      <p class="eyebrow chapter-mark">{{ t('chapters.portfolio.n') }}</p>
       <h2>{{ t('chapters.portfolio.title') }}</h2>
       <p class="portfolio__lead">
         {{ t('portfolio.lead', { count: totals.projects, regions: totals.regions }) }}

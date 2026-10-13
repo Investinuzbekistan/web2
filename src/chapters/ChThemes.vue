@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
 <template>
   <section id="themes" ref="root" class="chapter themes">
     <div class="shell themes__head">
-      <p class="eyebrow">{{ t('chapters.themes.n') }}</p>
+      <p class="eyebrow chapter-mark">{{ t('chapters.themes.n') }}</p>
       <h2>{{ t('chapters.themes.title') }}</h2>
       <p class="themes__lead">{{ t('themes.lead') }}</p>
       <p class="themes__body">{{ t('themes.body') }}</p>

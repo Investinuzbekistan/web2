@@ -561,7 +561,6 @@ useChapterTimeline(
               />
             </span>
             <span class="row__main">
-              <span v-if="project.featured" class="row__flag">{{ t('portfolio.featured') }}</span>
               <span class="row__title">{{ title(project) }}</span>
               <span class="row__meta">
                 {{ project.region && regionNames[project.region] ? tr(regionNames[project.region]) : subtitleOf(project) }}
@@ -804,7 +803,11 @@ h2 {
  */
 .row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  /* The thumbnail column is a fixed width, not `auto`: a row whose project has
+     no photograph shows a narrower mark, and an auto column took its width
+     from each row's own content, so every such row started its title further
+     left than the rest. */
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
   grid-template-areas:
     'shot main go'
     'shot money go';
@@ -825,7 +828,7 @@ h2 {
 }
 @media (min-width: 40rem) {
   .row {
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto auto;
     grid-template-areas: 'shot main money go';
     gap: 1rem;
   }
@@ -861,36 +864,44 @@ h2 {
   object-fit: cover;
   display: block;
 }
-/* A project whose sheet carried no usable image keeps the slot, so the list
-   does not jog left and right as it scrolls. It is the same arch the panel
-   shows a photograph through, with a lattice behind it: a window onto a view
-   that has not been supplied, which is exactly what it is. */
+/**
+ * A project whose sheet carried no usable image.
+ *
+ * It keeps the full width of the slot and draws a narrower arch inside it,
+ * centred — the arch is a portrait shape and a photograph is a landscape one,
+ * and the slot has to stay the same width either way or the titles beside it
+ * do not line up. It used to be the narrow shape itself, which is what made
+ * every row without a photograph start further left than the rest.
+ *
+ * The arch is the one the panel shows a photograph through, with a lattice
+ * behind it: a window onto a view that has not been supplied, which is
+ * exactly what it is.
+ */
 .row__shot--empty {
   position: relative;
-  inline-size: 2.6rem;
-  block-size: 3.2rem;
-  clip-path: url(#uz-arch);
-  background-color: color-mix(in srgb, var(--accent-deep) 7%, transparent);
+  background: transparent;
+  overflow: visible;
 }
-/* The lattice is drawn on a layer of its own so it can be held back to a
-   quarter: at full strength, and at a tile size where only one star fits in
-   a slot this small, it reads as a black asterisk rather than as a screen. */
-.row__shot--empty::before {
+.row__shot--empty::before,
+.row__shot--empty::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset-block: 0;
+  /* Centred in the slot: (4.5rem - 2.6rem) / 2. */
+  inset-inline: 0.95rem;
+  clip-path: url(#uz-arch);
+}
+.row__shot--empty::before {
+  background-color: color-mix(in srgb, var(--accent-deep) 7%, transparent);
+}
+/* The lattice is a layer of its own so it can be held back to a quarter: at
+   full strength, and at a tile size where only one star fits in a mark this
+   small, it reads as a black asterisk rather than as a screen. */
+.row__shot--empty::after {
   opacity: 0.25;
   background-image: var(--ornament-panjara);
   background-size: 19px auto;
   background-position: center;
-}
-
-.row__flag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
 }
 .row__main {
   grid-area: main;

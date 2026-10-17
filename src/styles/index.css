@@ -850,7 +850,7 @@ body::before {
 .rail ol::after {
   content: '';
   position: absolute;
-  inset-block: 0.95rem;
+  inset-block: 1.15rem;
   inset-inline-start: 50%;
   inline-size: 1px;
   background: var(--hairline);
@@ -876,16 +876,18 @@ body::before {
   position: relative;
   display: grid;
   place-items: center;
-  inline-size: 2rem;
-  block-size: 2rem;
+  /* Grown twice at the client's asking. The node is the target, the star
+     inside it is what is seen; both move together so the rhythm holds. */
+  inline-size: 2.3rem;
+  block-size: 2.3rem;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
 }
 .rail__star {
-  inline-size: 0.95rem;
-  block-size: 0.95rem;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
   /* A hexagram: six points on the lattice directions, six valleys between
      them. The same star, and the same orientation, as the screen. */
   clip-path: polygon(
@@ -968,18 +970,59 @@ body::before {
   translate: 0 -50%;
 }
 
-.rail__count {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: var(--ink-dim);
-  writing-mode: vertical-rl;
-  font-variant-numeric: tabular-nums;
-}
 
 @media (max-width: 1399px) {
   .rail {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ print */
+
+/**
+ * What the page leaves out on paper.
+ *
+ * The sheet's own print layout is in ProjectPanel.vue, beside the rules it
+ * has to override — a scoped block is injected after this file, so a global
+ * rule here would lose to the component's screen rules. This is the part that
+ * is not the component's to decide: the page furniture, and the page itself
+ * when a sheet is open over it.
+ */
+@page {
+  size: A4;
+  margin: 16mm 14mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff;
+    color: #15193a;
+  }
+
+  /* Navigation and ornament mean nothing on paper. */
+  .bar,
+  .rail,
+  .overlay,
+  .skip-link,
+  .aperture,
+  .frieze,
+  body::before {
+    display: none !important;
+  }
+
+  /* With a sheet open, the page behind it is not what is being printed. */
+  body:has(.panel) #app {
+    display: none !important;
+  }
+
+  /* Printing the portfolio: every chapter but the one holding the table. */
+  :root[data-print='portfolio'] .chapter:not(#portfolio) {
+    display: none !important;
+  }
+  /* A chapter is spaced for a screen that scrolls, not for a page. */
+  :root[data-print='portfolio'] .chapter {
+    padding-block: 0;
+    min-block-size: 0;
   }
 }

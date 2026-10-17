@@ -108,7 +108,6 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
     <p v-if="nationwide" class="brief__aside">
       {{ t('portfolio.map.nationwide', { count: nationwide }) }}
     </p>
-    <p class="brief__hint">{{ t('portfolio.map.pickHint') }}</p>
   </section>
 </template>
 
@@ -308,9 +307,4 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
   color: var(--ink-soft);
 }
 
-.brief__hint {
-  margin-block-start: 0.9rem;
-  font-size: 0.78rem;
-  color: var(--ink-dim);
-}
 </style>

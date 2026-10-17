@@ -86,7 +86,6 @@ useChapterTimeline(
         </div>
       </dl>
 
-      <p v-if="programme" class="programme__note">{{ tr(programme.note) }}</p>
 
       <!-- The four key sessions --------------------------------------------- -->
       <h3 class="programme__sub">{{ t('programme.sessionsTitle') }}</h3>
@@ -221,11 +220,6 @@ h2 {
   color: var(--ink-soft);
 }
 
-.programme__note {
-  margin-block-start: 1.25rem;
-  font-size: 0.8rem;
-  color: var(--ink-dim);
-}
 
 .programme__sub {
   margin-block-start: clamp(3.5rem, 10vh, 6rem);

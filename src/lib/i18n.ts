@@ -82,13 +82,7 @@ const en = {
     europe: 'Europe',
     asia: 'Asia',
   },
-  momentum: {
-    lead: 'Tourism does not get invested in by itself.',
-    body: 'It is invested in because of the economy around it. Four figures for 2025, each from an official source, each carrying that source and the date it was read.',
-  },
   themes: {
-    lead: 'The directions the portfolio is filed under.',
-    body: 'Scroll sideways, or pick one — every project in the portfolio is filed under one of them.',
     filter: 'Show the projects',
     projectsIn: 'no projects | 1 project | {count} projects',
   },
@@ -96,7 +90,6 @@ const en = {
     lead: '{count} projects, gathered from {regions} regions.',
     leadSplit:
       '{placed} projects from {regions} regions, and {nationwide} more drawn for the country as a whole.',
-    body: 'Choose a region on the map to see what it has brought, then open any project to read its sheet.',
     searchLabel: 'Search the portfolio',
     searchPlaceholder: 'Name, place or activity…',
     allRegions: 'Every region',
@@ -119,8 +112,13 @@ const en = {
     prev: 'Previous project',
     next: 'Next project',
     enquire: 'Register interest',
-    copyLink: 'Copy the link',
-    copied: 'Link copied',
+    pdf: 'PDF',
+    listPdf: 'The list as a PDF',
+    docCols: { project: 'Project', region: 'Region', direction: 'Direction' },
+    /* The address is written {'@'} because a bare @ starts a linked
+       message in vue-i18n's syntax and the sheet then failed to render. */
+    pdfFooter:
+      'First International Tourism Investment Forum 2026, Tashkent. Tourism Committee of the Republic of Uzbekistan — investforum{\'@\'}uzbektourism.uz',
     noFigure: 'Not stated',
     byRegion: 'By region',
     map: {
@@ -132,7 +130,6 @@ const en = {
       seeAll: 'All projects in this region',
       nationwide:
         'And {count} not filed under any one region: a hotel network drawn for every region and the capital.',
-      pickHint: 'Choose a region on the map, or from the list of all fourteen.',
     },
     byDirection: 'By direction',
     bySize: 'By investment sought',
@@ -179,7 +176,6 @@ const en = {
   },
   epilogue: {
     lead: 'Tell us what you are looking for',
-    body: 'Three questions, and the organiser takes it from there.',
     step: 'Step',
     of: 'of',
     next: 'Next',
@@ -291,13 +287,7 @@ const uz: Messages = {
     europe: 'Yevropa',
     asia: 'Osiyo',
   },
-  momentum: {
-    lead: 'Turizmga oʻz-oʻzidan investitsiya kiritilmaydi.',
-    body: 'Unga atrofdagi iqtisodiyot tufayli sarmoya kiritiladi. 2025 yilga oid toʻrtta raqam; har biri rasmiy manbadan olingan, har biri manbasi va oʻqilgan sanasi bilan.',
-  },
   themes: {
-    lead: 'Portfel shu yoʻnalishlar boʻyicha tartiblangan.',
-    body: 'Yon tomonga suring yoki birini tanlang — portfeldagi har bir loyiha shulardan biriga tegishli.',
     filter: 'Loyihalarni koʻrsatish',
     projectsIn: 'loyiha yoʻq | 1 ta loyiha | {count} ta loyiha',
   },
@@ -305,7 +295,6 @@ const uz: Messages = {
     lead: '{regions} ta hududdan yigʻilgan {count} ta loyiha.',
     leadSplit:
       '{regions} ta hududdan {placed} ta loyiha, va butun mamlakat uchun yana {nationwide} tasi.',
-    body: 'Xaritadan hududni tanlang — oʻsha hudud taqdim etgan loyihalar koʻrinadi; har qaysisini ochib, varaqasini oʻqishingiz mumkin.',
     searchLabel: 'Portfeldan qidirish',
     searchPlaceholder: 'Nomi, joyi yoki faoliyati…',
     allRegions: 'Barcha hududlar',
@@ -328,8 +317,11 @@ const uz: Messages = {
     prev: 'Oldingi loyiha',
     next: 'Keyingi loyiha',
     enquire: 'Qiziqish bildirish',
-    copyLink: 'Havolani nusxalash',
-    copied: 'Havola nusxalandi',
+    pdf: 'PDF',
+    listPdf: 'Roʻyxat — PDF',
+    docCols: { project: 'Loyiha', region: 'Hudud', direction: 'Yoʻnalish' },
+    pdfFooter:
+      'Birinchi xalqaro turizm investitsiya forumi 2026, Toshkent. Oʻzbekiston Respublikasi Turizm qoʻmitasi — investforum{\'@\'}uzbektourism.uz',
     noFigure: 'Koʻrsatilmagan',
     byRegion: 'Hududlar boʻyicha',
     map: {
@@ -341,7 +333,6 @@ const uz: Messages = {
       seeAll: 'Hududning barcha loyihalari',
       nationwide:
         'Yana {count} tasi biror hududga biriktirilmagan: har bir viloyat va poytaxt uchun chizilgan mehmonxona tarmogʻi.',
-      pickHint: 'Hududni xaritadan yoki oʻn toʻrttasi sanab oʻtilgan roʻyxatdan tanlang.',
     },
     byDirection: 'Yoʻnalishlar boʻyicha',
     bySize: 'Investitsiya hajmi boʻyicha',
@@ -388,7 +379,6 @@ const uz: Messages = {
   },
   epilogue: {
     lead: 'Nimani qidirayotganingizni ayting',
-    body: 'Uchta savol — qolganini tashkilotchi oʻz zimmasiga oladi.',
     step: 'Qadam',
     of: '/',
     next: 'Keyingi',
@@ -489,13 +479,7 @@ const ru: Messages = {
     europe: 'Европа',
     asia: 'Азия',
   },
-  momentum: {
-    lead: 'Туризм сам по себе инвестиций не привлекает.',
-    body: 'В него инвестируют из-за экономики вокруг. Четыре цифры за 2025 год, каждая из официального источника, каждая — с указанием источника и даты.',
-  },
   themes: {
-    lead: 'Направления, по которым распределён портфель.',
-    body: 'Листайте вбок или выберите одно — каждый проект портфеля отнесён к одному из них.',
     filter: 'Показать проекты',
     projectsIn: 'нет проектов | {count} проект | {count} проекта | {count} проектов',
   },
@@ -503,7 +487,6 @@ const ru: Messages = {
     lead: 'Проектов — {count}, собраны из {regions} регионов.',
     leadSplit:
       'Проектов: {placed} из {regions} регионов, и ещё {nationwide} для страны в целом.',
-    body: 'Выберите регион на карте — и увидите, что он представил; любой проект можно открыть и прочитать целиком.',
     searchLabel: 'Поиск по портфелю',
     searchPlaceholder: 'Название, место или вид деятельности…',
     allRegions: 'Все регионы',
@@ -526,8 +509,11 @@ const ru: Messages = {
     prev: 'Предыдущий проект',
     next: 'Следующий проект',
     enquire: 'Заявить интерес',
-    copyLink: 'Скопировать ссылку',
-    copied: 'Ссылка скопирована',
+    pdf: 'PDF',
+    listPdf: 'Список в PDF',
+    docCols: { project: 'Проект', region: 'Регион', direction: 'Направление' },
+    pdfFooter:
+      'Первый международный инвестиционный форум в сфере туризма 2026, Ташкент. Комитет по туризму Республики Узбекистан — investforum{\'@\'}uzbektourism.uz',
     noFigure: 'Не указано',
     byRegion: 'По регионам',
     map: {
@@ -539,7 +525,6 @@ const ru: Messages = {
       seeAll: 'Все проекты региона',
       nationwide:
         'И ещё {count} вне какого-либо одного региона: сеть гостиниц, рассчитанная на каждую область и столицу.',
-      pickHint: 'Выберите регион на карте или в списке всех четырнадцати.',
     },
     byDirection: 'По направлениям',
     bySize: 'По объёму инвестиций',
@@ -586,7 +571,6 @@ const ru: Messages = {
   },
   epilogue: {
     lead: 'Расскажите, что вы ищете',
-    body: 'Три вопроса — дальше организатор берёт всё на себя.',
     step: 'Шаг',
     of: 'из',
     next: 'Далее',

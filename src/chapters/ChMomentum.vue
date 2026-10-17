@@ -48,8 +48,6 @@ useChapterTimeline(
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.momentum.n') }}</p>
       <h2>{{ t('chapters.momentum.title') }}</h2>
-      <p class="momentum__lead">{{ t('momentum.lead') }}</p>
-      <p class="momentum__body">{{ t('momentum.body') }}</p>
 
       <ol class="momentum__list">
         <li v-for="figure in figures" :key="figure.id" class="momentum__row">
@@ -70,15 +68,6 @@ useChapterTimeline(
 h2 {
   font-size: clamp(2rem, 4.5vw, 3.5rem);
   margin-block-start: 0.75rem;
-}
-.momentum__lead {
-  margin-block-start: 1.5rem;
-  color: var(--ink);
-  font-size: 1.1rem;
-}
-.momentum__body {
-  margin-block-start: 0.6rem;
-  max-width: 34rem;
 }
 
 .momentum__list {

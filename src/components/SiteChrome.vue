@@ -185,11 +185,6 @@ onBeforeUnmount(() => {
  */
 const registerHref = computed(() => `./register.html?lang=${lang.value}`);
 
-const counter = computed(() => {
-  const n = String(activeIndex.value + 1).padStart(2, '0');
-  const total = String(props.chapters.length).padStart(2, '0');
-  return `${n} / ${total}`;
-});
 
 function go(id: string) {
   menuOpen.value = false;
@@ -326,7 +321,6 @@ function choose(code: Lang) {
         </button>
       </li>
     </ol>
-    <p class="rail__count" aria-hidden="true">{{ counter }}</p>
   </nav>
 
   <Teleport to="body">

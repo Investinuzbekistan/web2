@@ -360,10 +360,22 @@ svg {
   stroke: var(--hairline);
   cursor: default;
 }
+/**
+ * No box around a chosen region.
+ *
+ * A focused <path> gets the browser's own ring, and a ring around a path is
+ * drawn around its bounding box — a rectangle over the map, which is what
+ * clicking Karakalpakstan put there. The region already says it is chosen:
+ * it is filled with the lattice and outlined in gold. Keyboard focus keeps a
+ * ring, but one that follows the border rather than a rectangle. */
+.uzmap__region:focus {
+  outline: none;
+}
 .uzmap__region:focus-visible {
   outline: none;
   stroke: var(--gold-leaf);
   stroke-width: 3;
+  paint-order: stroke;
 }
 
 .uzmap__leader {

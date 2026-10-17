@@ -96,8 +96,6 @@ onBeforeUnmount(() => {
     <div class="shell themes__head">
       <p class="eyebrow chapter-mark">{{ t('chapters.themes.n') }}</p>
       <h2>{{ t('chapters.themes.title') }}</h2>
-      <p class="themes__lead">{{ t('themes.lead') }}</p>
-      <p class="themes__body">{{ t('themes.body') }}</p>
     </div>
 
     <ul class="themes__track" :class="{ 'themes__track--free': !pinned }">
@@ -144,15 +142,6 @@ onBeforeUnmount(() => {
 h2 {
   font-size: clamp(2rem, 4.5vw, 3.5rem);
   margin-block-start: 0.75rem;
-}
-.themes__lead {
-  margin-block-start: 1.5rem;
-  color: var(--ink);
-  font-size: 1.1rem;
-}
-.themes__body {
-  margin-block-start: 0.6rem;
-  max-width: 34rem;
 }
 
 .themes__track {

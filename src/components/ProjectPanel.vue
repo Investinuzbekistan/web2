@@ -29,7 +29,8 @@ import { lockPageScroll, unlockPageScroll } from '../lib/motion';
 import { formatMoney } from '../lib/money';
 import { sheetLabel } from '../lib/sheet-labels';
 import { sheetValue } from '../lib/sheet-values';
-import { tr, useStore } from '../lib/state';
+import { eventDates, tr, useStore } from '../lib/state';
+import ForumMark from './ForumMark.vue';
 
 const props = defineProps<{
   project: Project | null;
@@ -41,6 +42,12 @@ const emit = defineEmits<{ close: []; step: [delta: number]; enquire: [] }>();
 
 const { t } = useI18n();
 const { forum, lang } = useStore();
+
+/** The forum's own line, for the printed letterhead. */
+const eventLine = computed(() => {
+  const event = forum.value?.event;
+  return event ? `${eventDates()} · ${tr(event.city)}` : '';
+});
 const closeButton = ref<HTMLButtonElement | null>(null);
 const sheet = ref<HTMLElement | null>(null);
 const body = ref<HTMLElement | null>(null);
@@ -177,33 +184,30 @@ const blocks = computed(() => {
     .filter((b) => b.rows.length > 0);
 });
 
-/* ------------------------------------------------------------- sharing */
+/* ----------------------------------------------------------------- PDF */
 
 /**
- * The address bar already carries `?project=`, so sharing is a copy.
+ * The sheet as a PDF, through the browser's own print-to-PDF.
  *
- * `navigator.clipboard` needs a secure context and a permission some browsers
- * refuse; rather than fail silently the button then reveals the link in a
- * field the reader can select, which is what they were going to do anyway.
+ * It replaced a "copy the link" button, which the client took off: a link is
+ * no use to somebody who wants to put the project in front of a board. The
+ * obvious alternative would be to generate the file with a PDF library, but
+ * that means shipping one, embedding a font that carries `Oʻ` and `gʻ` and
+ * the Cyrillic set, and re-laying out every sheet by hand in its coordinate
+ * space — for a worse result than the engine already in the browser.
+ *
+ * So the page prints itself instead: the print stylesheet below turns the
+ * open sheet into an A4 document with the forum's own letterhead, and the
+ * reader's dialogue offers both a printer and "Save as PDF". The typography,
+ * the hyphenation and the images are the ones they have already seen.
+ *
+ * The photographs are let through `-webkit-print-color-adjust` so the sheet
+ * does not come out as text on white.
  */
-type CopyState = 'idle' | 'copied' | 'manual';
-const copied = ref<CopyState>('idle');
-const linkField = ref<HTMLInputElement | null>(null);
-const shareUrl = ref('');
-let copyTimer = 0;
-
-async function copyLink(): Promise<void> {
-  shareUrl.value = window.location.href;
-  try {
-    await navigator.clipboard.writeText(shareUrl.value);
-    copied.value = 'copied';
-    window.clearTimeout(copyTimer);
-    copyTimer = window.setTimeout(() => (copied.value = 'idle'), 2600);
-  } catch {
-    copied.value = 'manual';
-    await nextTick();
-    linkField.value?.select();
-  }
+function toPdf(): void {
+  // The gallery prints whichever shot is on screen, so the reader chooses it
+  // the same way they were already choosing it.
+  window.print();
 }
 
 /* ------------------------------------------------ moving between sheets */
@@ -257,7 +261,7 @@ function onKey(event: KeyboardEvent) {
     trapFocus(event);
     return;
   }
-  // Not while the reader is in the link field.
+  // Not while the reader is typing into something.
   if (event.target instanceof HTMLInputElement) return;
   if (event.key === 'ArrowLeft') {
     event.preventDefault();
@@ -275,7 +279,6 @@ watch(
     // A different project in the same sheet: back to the first photograph and
     // to the top of the reading, or the next one opens halfway down.
     shown.value = 0;
-    copied.value = 'idle';
     if (previous) {
       await nextTick();
       body.value?.scrollTo({ top: 0, behavior: 'auto' });
@@ -302,7 +305,6 @@ watch(
 onMounted(() => document.addEventListener('keydown', onKey));
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKey);
-  window.clearTimeout(copyTimer);
   if (props.project) unlockPageScroll();
 });
 </script>
@@ -378,6 +380,14 @@ onBeforeUnmount(() => {
             </svg>
           </button>
         </header>
+
+        <!-- Only on paper. A sheet that has been saved as a PDF is going to
+             be forwarded on its own, so it carries the mark it came from, the
+             dates, and somewhere to write back to. -->
+        <div class="panel__letterhead" aria-hidden="true">
+          <ForumMark form="lockup" variant="dark" class="panel__letterheadMark" />
+          <p>{{ eventLine }}</p>
+        </div>
 
         <!-- data-lenis-prevent: this element scrolls itself, so the
              smooth-scroll driver must leave its wheel and touch events alone. -->
@@ -463,6 +473,8 @@ onBeforeUnmount(() => {
           <p v-if="project.statusNote" class="panel__status">{{ project.statusNote }}</p>
 
           <p class="panel__note">{{ t('credits.projectLanguage') }}</p>
+
+          <p class="panel__colophon" aria-hidden="true">{{ t('portfolio.pdfFooter') }}</p>
         </div>
 
         <!-- What a reader can do with the project they have just read. -->
@@ -470,13 +482,19 @@ onBeforeUnmount(() => {
           <button type="button" class="btn btn--solid panel__enquire" @click="emit('enquire')">
             {{ t('portfolio.enquire') }}
           </button>
-          <button type="button" class="btn panel__share" @click="copyLink">
-            {{ copied === 'copied' ? t('portfolio.copied') : t('portfolio.copyLink') }}
+          <button type="button" class="btn panel__pdf" @click="toPdf">
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path
+                d="M12 3v10m0 0l-3.5-3.5M12 13l3.5-3.5M5 16v2.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>{{ t('portfolio.pdf') }}</span>
           </button>
-          <label v-if="copied === 'manual'" class="panel__link">
-            <span class="sr-only">{{ t('portfolio.copyLink') }}</span>
-            <input ref="linkField" type="text" readonly :value="shareUrl" @focus="linkField?.select()" />
-          </label>
         </footer>
       </div>
     </div>
@@ -636,22 +654,10 @@ onBeforeUnmount(() => {
   flex: 1 1 9rem;
   justify-content: center;
 }
-.panel__share {
+.panel__pdf {
   flex: 0 1 auto;
   justify-content: center;
-}
-.panel__link {
-  flex: 1 1 100%;
-}
-.panel__link input {
-  width: 100%;
-  padding: 0.5rem 0.7rem;
-  border: 1px solid var(--hairline);
-  border-radius: 0.25rem;
-  background: var(--surface-2);
-  color: var(--ink);
-  font: inherit;
-  font-size: 0.8rem;
+  gap: 0.45rem;
 }
 
 /* ---------------------------------------------------------- the reading */
@@ -891,4 +897,118 @@ onBeforeUnmount(() => {
     opacity: 0;
   }
 }
+
+/* Both exist only on paper. Declared before the print block so the print
+   rules, which match at the same specificity, come later and win. */
+.panel__letterhead,
+.panel__colophon {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ print */
+
+/**
+ * The open sheet, as an A4 document.
+ *
+ * The PDF button calls `window.print()`; this is what the browser then lays
+ * out. It replaced a "copy the link" button, which the client took off — a
+ * link is no use to somebody who wants to put a project in front of a board.
+ * A PDF library was the obvious alternative and the wrong one: it would mean
+ * shipping the library, embedding a font that carries `Oʻ`, `gʻ` and the
+ * Cyrillic set, and rebuilding every sheet by hand in its coordinate space,
+ * for a worse result than the engine already in the browser. Printed, the
+ * typography, the hyphenation and the photographs are the ones the reader
+ * already has in front of them.
+ *
+ * These rules live beside the screen rules they override rather than in the
+ * global stylesheet, because a scoped block is injected after it and would
+ * otherwise lose the cascade to `.panel__sheet`'s own desktop width.
+ */
+@media print {
+  /* The sheet's furniture: a dialogue's controls, not a document's. */
+  .panel__scrim,
+  .panel__grip,
+  .panel__bar,
+  .panel__act,
+  .panel__gallery figcaption {
+    display: none !important;
+  }
+
+  .panel {
+    position: static;
+    display: block;
+  }
+  .panel__sheet {
+    position: static;
+    display: block;
+    inline-size: auto;
+    block-size: auto;
+    max-block-size: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #fff;
+    animation: none;
+  }
+  .panel__body {
+    overflow: visible;
+    max-block-size: none;
+    padding: 0;
+    font-size: 10pt;
+  }
+
+  /* A sheet saved as a PDF is forwarded on its own, so it carries the mark it
+     came from, the dates, and somewhere to write back to. */
+  .panel__letterhead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 0.6rem;
+    border-block-end: 1px solid #c9ccd8;
+    margin-block-end: 1.4rem;
+  }
+  .panel__letterheadMark {
+    inline-size: 42mm;
+    flex: none;
+  }
+  .panel__letterhead p {
+    margin: 0;
+    font-size: 9pt;
+    color: #4a5070;
+  }
+  .panel__colophon {
+    display: block;
+    margin-block-start: 1.4rem;
+    padding-block-start: 0.6rem;
+    border-block-start: 1px solid #c9ccd8;
+    font-size: 8pt;
+    color: #4a5070;
+  }
+
+  .panel__title {
+    font-size: 20pt;
+    line-height: 1.15;
+  }
+
+  /* A photograph is most of what a project looks like; without this it prints
+     as text on white in every browser's default. */
+  .panel__gallery img {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    max-block-size: 85mm;
+    object-fit: cover;
+  }
+
+  /* A heading keeps its table with it, and nothing breaks mid-row. */
+  .panel__heading {
+    break-after: avoid;
+  }
+  .panel__rows > div,
+  .panel__chips li,
+  .panel__gallery {
+    break-inside: avoid;
+  }
+}
+
 </style>

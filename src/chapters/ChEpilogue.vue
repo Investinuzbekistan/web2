@@ -135,7 +135,6 @@ async function submit() {
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.epilogue.n') }}</p>
       <h2>{{ t('epilogue.lead') }}</h2>
-      <p class="epilogue__body">{{ t('epilogue.body') }}</p>
 
       <div class="epilogue__grid">
         <div class="wizard">
@@ -349,10 +348,6 @@ async function submit() {
 h2 {
   font-size: clamp(2.25rem, 6vw, 4.5rem);
   margin-block-start: 0.75rem;
-}
-.epilogue__body {
-  margin-block-start: 1.25rem;
-  max-width: 34rem;
 }
 .epilogue__sub {
   margin-block-start: clamp(3.5rem, 10vh, 6rem);

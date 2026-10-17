@@ -19,6 +19,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import ForumMark from '../components/ForumMark.vue';
 import ProjectPanel from '../components/ProjectPanel.vue';
 import CountFigure from '../components/CountFigure.vue';
 import RegionBrief, { type RegionDetail } from '../components/RegionBrief.vue';
@@ -31,6 +32,7 @@ import { openEnquiry, scrollToId, useChapterTimeline } from '../lib/motion';
 import {
   bandOf,
   clearFilters,
+  eventDates,
   enquirySubject,
   filters,
   openProject,
@@ -152,6 +154,61 @@ const shown = computed(() => {
     }
     return amount(b) - amount(a);
   });
+});
+
+/** The direction a project is filed under, by name. */
+const segmentName = (id: string | null) => {
+  const theme = id ? forum.value?.themes.find((x) => x.id === id) : null;
+  return theme ? tr(theme.title) : '—';
+};
+
+/** The forum's own line, for the printed letterhead. */
+const eventLine = computed(() => {
+  const event = forum.value?.event;
+  return event ? `${eventDates()} · ${tr(event.city)}` : '';
+});
+
+/* ------------------------------------------------------------------ PDF */
+
+/**
+ * The list as it stands, as a document.
+ *
+ * The sheet of one project already prints; this is the other half of it. An
+ * investor who has narrowed seventy-four projects to the nine in one region
+ * under one direction wants those nine on paper, not a screenshot and not a
+ * link that reproduces the filtering only if the other person clicks the same
+ * things. One press and the filtered list is a table with the forum's own
+ * letterhead, in whichever language they are reading.
+ *
+ * `data-print` tells the stylesheet which of the two documents is wanted, so
+ * printing the chapter and printing an open sheet do not have to guess.
+ */
+function portfolioToPdf(): void {
+  const root = document.documentElement;
+  root.dataset.print = 'portfolio';
+  const clear = () => {
+    delete root.dataset.print;
+    window.removeEventListener('afterprint', clear);
+  };
+  window.addEventListener('afterprint', clear);
+  window.print();
+  // Safari resolves print() before afterprint in some versions; this is the
+  // belt to that braces, and removing an attribute twice costs nothing.
+  window.setTimeout(clear, 1000);
+}
+
+/** What the printed list says it was narrowed by. */
+const printFilters = computed(() => {
+  const parts: string[] = [];
+  const f = filters.value;
+  if (f.region !== 'all' && regionNames.value[f.region]) parts.push(tr(regionNames.value[f.region]));
+  if (f.segment !== 'all') {
+    const theme = forum.value?.themes.find((x) => x.id === f.segment);
+    if (theme) parts.push(tr(theme.title));
+  }
+  if (f.size !== 'all') parts.push(t(`portfolio.bands.${f.size}`));
+  if (f.query.trim()) parts.push(`“${f.query.trim()}”`);
+  return parts.join(' · ');
 });
 
 const filtered = computed(
@@ -345,7 +402,6 @@ useChapterTimeline(
             : t('portfolio.lead', { count: totals.projects, regions: totals.regions })
         }}
       </p>
-      <p class="portfolio__body">{{ t('portfolio.body') }}</p>
 
       <ul class="portfolio__totals">
         <li>
@@ -406,6 +462,19 @@ useChapterTimeline(
             </option>
           </select>
         </p>
+        <button type="button" class="btn portfolio__pdf" @click="portfolioToPdf">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path
+              d="M12 3v10m0 0l-3.5-3.5M12 13l3.5-3.5M5 16v2.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>{{ t('portfolio.listPdf') }}</span>
+        </button>
       </div>
 
       <!-- The two breakdowns a map cannot carry --------------------------- -->
@@ -430,6 +499,40 @@ useChapterTimeline(
           {{ t('portfolio.clear') }}
         </button>
       </p>
+
+      <!-- Only on paper, and only when the PDF button asked for this one.
+           A table rather than the cards: a reader with the list in their hand
+           is comparing rows, and a photograph each would make it four times
+           as long for nothing. -->
+      <div class="portfolio__doc" aria-hidden="true">
+        <div class="portfolio__docHead">
+          <ForumMark form="lockup" variant="dark" class="portfolio__docMark" />
+          <p>{{ eventLine }}</p>
+        </div>
+        <h3>{{ t('chapters.portfolio.title') }}</h3>
+        <p class="portfolio__docMeta">
+          {{ t('portfolio.results', shown.length) }}<template v-if="printFilters"> · {{ printFilters }}</template>
+        </p>
+        <table class="portfolio__docTable">
+          <thead>
+            <tr>
+              <th>{{ t('portfolio.docCols.project') }}</th>
+              <th>{{ t('portfolio.docCols.region') }}</th>
+              <th>{{ t('portfolio.docCols.direction') }}</th>
+              <th class="portfolio__docNum">{{ t('portfolio.labels.investment') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="project in shown" :key="project.id">
+              <td>{{ title(project) }}</td>
+              <td>{{ project.region && regionNames[project.region] ? tr(regionNames[project.region]) : '—' }}</td>
+              <td>{{ segmentName(project.segment) }}</td>
+              <td class="portfolio__docNum">{{ moneyOf(project) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="portfolio__docFoot">{{ t('portfolio.pdfFooter') }}</p>
+      </div>
 
       <!-- The list -------------------------------------------------------- -->
       <p v-if="!shown.length" class="portfolio__empty">{{ t('portfolio.empty') }}</p>
@@ -517,10 +620,6 @@ h2 {
   margin-block-start: 1.5rem;
   color: var(--ink);
   font-size: 1.1rem;
-}
-.portfolio__body {
-  margin-block-start: 0.6rem;
-  max-width: 34rem;
 }
 
 .portfolio__totals {
@@ -838,6 +937,107 @@ h2 {
 @media (min-width: 60rem) {
   .row__goText {
     display: inline;
+  }
+}
+
+/* ------------------------------------------------------------------ print */
+
+/**
+ * The filtered list, as a document.
+ *
+ * `data-print="portfolio"` is set by the PDF button for the length of the
+ * print, so this and the single sheet's print layout never have to guess
+ * which of them was wanted. Everything else on the page goes, including the
+ * chapter the table is inside.
+ */
+.portfolio__doc {
+  display: none;
+}
+
+@media print {
+  :root[data-print='portfolio'] .portfolio__doc {
+    display: block;
+  }
+  /* The chapter's own furniture, and everything the table does not need. */
+  :root[data-print='portfolio'] .portfolio__lead,
+  :root[data-print='portfolio'] .portfolio__totals,
+  :root[data-print='portfolio'] .portfolio__footnote,
+  :root[data-print='portfolio'] .portfolio__controls,
+  :root[data-print='portfolio'] .portfolio__status,
+  :root[data-print='portfolio'] .portfolio__empty,
+  :root[data-print='portfolio'] .portfolio__list,
+  :root[data-print='portfolio'] .breakdown,
+  :root[data-print='portfolio'] .region,
+  :root[data-print='portfolio'] .rule-rosette,
+  :root[data-print='portfolio'] .chapter-mark,
+  :root[data-print='portfolio'] h2 {
+    display: none !important;
+  }
+
+  .portfolio__docHead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 0.6rem;
+    border-block-end: 1px solid #c9ccd8;
+  }
+  .portfolio__docMark {
+    inline-size: 42mm;
+    flex: none;
+  }
+  .portfolio__docHead p {
+    margin: 0;
+    font-size: 9pt;
+    color: #4a5070;
+  }
+  .portfolio__doc h3 {
+    margin-block: 1.2rem 0.2rem;
+    font-size: 17pt;
+  }
+  .portfolio__docMeta {
+    margin: 0;
+    font-size: 9pt;
+    color: #4a5070;
+  }
+  .portfolio__docTable {
+    inline-size: 100%;
+    margin-block-start: 1rem;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+  }
+  .portfolio__docTable th {
+    text-align: start;
+    font-size: 7.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #4a5070;
+    padding-block: 0.35rem;
+    border-block-end: 1px solid #9aa0b8;
+  }
+  .portfolio__docTable td {
+    padding-block: 0.3rem;
+    border-block-end: 1px solid #e2e4ec;
+    vertical-align: top;
+  }
+  .portfolio__docNum {
+    text-align: end;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  /* A row is never split across a page, and the header repeats on each. */
+  .portfolio__docTable tr {
+    break-inside: avoid;
+  }
+  .portfolio__docTable thead {
+    display: table-header-group;
+  }
+  .portfolio__docFoot {
+    margin-block-start: 1.2rem;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid #c9ccd8;
+    font-size: 8pt;
+    color: #4a5070;
   }
 }
 </style>

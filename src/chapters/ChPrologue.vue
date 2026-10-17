@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 import ActionIcon from '../components/ActionIcon.vue';
 import ForumMark from '../components/ForumMark.vue';
-import { canAnimate, hasWebGl, onIdle, openEnquiry, scrollToId, useChapterTimeline } from '../lib/motion';
+import { canAnimate, hasWebGl, onIdle, scrollToId, useChapterTimeline } from '../lib/motion';
 // The border, flattened at the attitude the globe is aimed at; built by
 // scripts/build-globe.mjs and inlined here rather than fetched, because a
 // fallback that waits for a request is not a fallback.
@@ -126,6 +126,9 @@ useChapterTimeline(
         <span>{{ tr(event.city) }}</span>
       </p>
 
+      <!-- One action, not two. The enquiry is reachable from the bar and
+           from the end of the page; on the title card it was a second button
+           competing with the one thing a reader has come to do. -->
       <div class="prologue__actions prologue__reveal">
         <!-- No aria-label: an accessible name that does not contain the
              visible words is a name speech-input users cannot say. The count
@@ -141,10 +144,6 @@ useChapterTimeline(
             <span class="sr-only">{{ t('prologue.ctaUnit') }}</span>
           </template>
           <ActionIcon name="down" class="prologue__nudge" />
-        </button>
-        <button type="button" class="btn" @click="openEnquiry">
-          <ActionIcon name="enquiry" />
-          <span>{{ t('prologue.cta2') }}</span>
         </button>
       </div>
 

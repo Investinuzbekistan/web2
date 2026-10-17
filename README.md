@@ -39,3 +39,18 @@ manbalari alohida monorepo'da turadi va bu yerga koʻchirib chiqarilgan —
 `content.json` oʻzgarsa, uchala repo ham yangilanishi kerak.
 
 Litsenziyalar va atributlar: `CREDITS.md`.
+
+## Roʻyxatdan oʻtish va adminka
+
+`register.html` — alohida sahifa, alohida bundle (GSAP ham, three.js ham
+yoʻq). U `POST /api/register` ga yuboradi; shu endpoint va uni oʻqish uchun
+adminka `server/` ichida — PHP + nginx, Alpine Linux uchun. Oʻrnatish
+yoʻriqnomasi: `server/README.md`.
+
+Sayt GitHub Pages'da, API esa tashkilotchining serverida turganda endpoint
+manzilini repo sozlamalaridan berish kerak: **Settings → Secrets and
+variables → Actions → Variables → `REGISTER_ENDPOINT`**. U berilmaguncha
+forma arizani elektron pochta orqali yuborishni taklif qiladi.
+
+`server/src/config.php` va `server/data/` git'ga tushmaydi: biri parol
+hash'i, ikkinchisi arizalarning oʻzi.

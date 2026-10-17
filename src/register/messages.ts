@@ -1,0 +1,275 @@
+/**
+ * Copy for the registration page.
+ *
+ * Its own message set rather than the site's: the site's covers eight
+ * chapters and a project portfolio, and a form that asks nine questions
+ * should not carry it. The two share the storage key for the chosen
+ * language, so a reader who picked Russian on the site arrives here in
+ * Russian.
+ *
+ * Guests and speakers answer the same questions, at the client's asking, so
+ * there is one form and one set of labels; only the first field differs.
+ */
+
+export type Lang = 'uz' | 'ru' | 'en';
+
+export type Copy = {
+  docTitle: string;
+  docDescription: string;
+  back: string;
+  title: string;
+  lead: string;
+  dates: string;
+  roleLabel: string;
+  roles: { guest: string; speaker: string };
+  roleHint: { guest: string; speaker: string };
+  fields: {
+    full_name: string;
+    organisation: string;
+    position: string;
+    country: string;
+    email: string;
+    phone: string;
+    direction: string;
+    note: string;
+  };
+  directionNone: string;
+  directions: Record<string, string>;
+  optional: string;
+  required: string;
+  submit: string;
+  sending: string;
+  errors: {
+    full_name: string;
+    organisation: string;
+    position: string;
+    country: string;
+    email: string;
+    phone: string;
+    role: string;
+    /** Shown above the form when any field is wrong. */
+    summary: string;
+    network: string;
+    rate: string;
+    server: string;
+  };
+  doneTitle: string;
+  doneBody: string;
+  doneRef: string;
+  again: string;
+  /**
+   * Offered when the request could not reach the API at all, so that a
+   * registration is never simply lost: the same answers, by email.
+   */
+  byEmail: string;
+  mailSubject: string;
+  privacy: string;
+  disclaimer: string;
+};
+
+export const MESSAGES: Record<Lang, Copy> = {
+  uz: {
+    docTitle: 'Roʻyxatdan oʻtish — Tourism Investment Forum 2026',
+    docDescription:
+      'Birinchi xalqaro turizm investitsiya forumi, Toshkent, 25–27 noyabr 2026. Mehmon yoki spiker sifatida roʻyxatdan oʻting.',
+    back: 'Saytga qaytish',
+    title: 'Roʻyxatdan oʻtish',
+    lead: 'Mehmon yoki spiker sifatida. Ikkalasidan ham bir xil maʼlumot soʻraladi.',
+    dates: '25–27 noyabr 2026 · Toshkent',
+    roleLabel: 'Ishtirok turi',
+    roles: { guest: 'Mehmon', speaker: 'Spiker' },
+    roleHint: {
+      guest: 'Forum sessiyalari va B2B uchrashuvlarida qatnashasiz.',
+      speaker: 'Sessiyalardan birida chiqish qilishni taklif qilasiz.',
+    },
+    fields: {
+      full_name: 'Familiya, ism va sharif',
+      organisation: 'Tashkilot',
+      position: 'Lavozim',
+      country: 'Mamlakat',
+      email: 'Elektron pochta',
+      phone: 'Telefon',
+      direction: 'Qiziqish yoʻnalishi',
+      note: 'Qoʻshimcha',
+    },
+    directionNone: 'Tanlanmagan',
+    directions: {
+      infrastructure: 'Mehmonxonalar va turizm infratuzilmasi',
+      heritage: 'Madaniy, tarixiy va meros asosidagi rivojlanish',
+      eco: 'Ekologik, tabiiy va ekstremal turizm',
+      wellness: 'Tibbiy, sanatoriy-kurort va wellness turizmi',
+      leisure: 'Koʻngilochar, oilaviy va tematik infratuzilma',
+      transport: 'Transport va unga bogʻliq infratuzilma',
+    },
+    optional: 'ixtiyoriy',
+    required: 'majburiy',
+    submit: 'Roʻyxatdan oʻtish',
+    sending: 'Yuborilmoqda…',
+    errors: {
+      full_name: 'Toʻliq ismingizni yozing.',
+      organisation: 'Tashkilot nomini yozing.',
+      position: 'Lavozimingizni yozing.',
+      country: 'Mamlakatni yozing.',
+      email: 'Elektron pochta manzili notoʻgʻri.',
+      phone: 'Telefon raqamini yozing.',
+      role: 'Ishtirok turini tanlang.',
+      summary: 'Quyidagi maydonlarni tekshiring.',
+      network: 'Soʻrov yuborilmadi. Internetni tekshirib, qayta urinib koʻring.',
+      rate: 'Juda koʻp soʻrov yuborildi. Bir ozdan keyin urinib koʻring.',
+      server: 'Serverda xatolik. Biroz oʻtib qayta urinib koʻring.',
+    },
+    doneTitle: 'Qabul qilindi',
+    doneBody:
+      'Arizangiz tashkiliy qoʻmitaga yetib bordi. Tafsilotlar elektron pochtangizga yuboriladi.',
+    doneRef: 'Ariza raqami',
+    again: 'Yana bitta ariza',
+    byEmail: 'Yoki arizangizni elektron pochta orqali yuboring:',
+    mailSubject: 'Forumga roʻyxatdan oʻtish',
+    privacy:
+      'Maʼlumotlaringiz faqat forumni tashkil etish uchun ishlatiladi va uchinchi shaxslarga berilmaydi.',
+    disclaimer: 'Ushbu sayt konsept/demo loyiha. Rasmiy maʼlumot uchun: invest.gov.uz',
+  },
+
+  ru: {
+    docTitle: 'Регистрация — Tourism Investment Forum 2026',
+    docDescription:
+      'Первый международный инвестиционный форум в сфере туризма, Ташкент, 25–27 ноября 2026. Регистрация гостей и спикеров.',
+    back: 'Вернуться на сайт',
+    title: 'Регистрация',
+    lead: 'Как гость или как спикер. У обоих спрашивается одно и то же.',
+    dates: '25–27 ноября 2026 · Ташкент',
+    roleLabel: 'Тип участия',
+    roles: { guest: 'Гость', speaker: 'Спикер' },
+    roleHint: {
+      guest: 'Участие в сессиях форума и B2B-встречах.',
+      speaker: 'Вы предлагаете выступление на одной из сессий.',
+    },
+    fields: {
+      full_name: 'Фамилия, имя и отчество',
+      organisation: 'Организация',
+      position: 'Должность',
+      country: 'Страна',
+      email: 'Электронная почта',
+      phone: 'Телефон',
+      direction: 'Интересующее направление',
+      note: 'Дополнительно',
+    },
+    directionNone: 'Не выбрано',
+    directions: {
+      infrastructure: 'Гостиницы и туристическая инфраструктура',
+      heritage: 'Развитие на основе культурного и исторического наследия',
+      eco: 'Экологический, природный и экстремальный туризм',
+      wellness: 'Медицинский, санаторно-курортный и wellness-туризм',
+      leisure: 'Развлекательная, семейная и тематическая инфраструктура',
+      transport: 'Транспорт и связанная инфраструктура',
+    },
+    optional: 'необязательно',
+    required: 'обязательно',
+    submit: 'Зарегистрироваться',
+    sending: 'Отправляем…',
+    errors: {
+      full_name: 'Укажите полное имя.',
+      organisation: 'Укажите организацию.',
+      position: 'Укажите должность.',
+      country: 'Укажите страну.',
+      email: 'Адрес электронной почты указан неверно.',
+      phone: 'Укажите номер телефона.',
+      role: 'Выберите тип участия.',
+      summary: 'Проверьте отмеченные поля.',
+      network: 'Запрос не отправлен. Проверьте соединение и попробуйте ещё раз.',
+      rate: 'Слишком много запросов. Попробуйте немного позже.',
+      server: 'Ошибка на сервере. Попробуйте позже.',
+    },
+    doneTitle: 'Заявка принята',
+    doneBody: 'Заявка получена оргкомитетом. Подробности придут на указанную почту.',
+    doneRef: 'Номер заявки',
+    again: 'Ещё одна заявка',
+    byEmail: 'Либо отправьте заявку по электронной почте:',
+    mailSubject: 'Регистрация на форум',
+    privacy:
+      'Данные используются только для организации форума и не передаются третьим лицам.',
+    disclaimer:
+      'Этот сайт — концепт/демо. Официальная информация: invest.gov.uz',
+  },
+
+  en: {
+    docTitle: 'Registration — Tourism Investment Forum 2026',
+    docDescription:
+      'First International Tourism Investment Forum, Tashkent, 25–27 November 2026. Register as a guest or as a speaker.',
+    back: 'Back to the site',
+    title: 'Registration',
+    lead: 'As a guest or as a speaker. Both are asked the same questions.',
+    dates: '25–27 November 2026 · Tashkent',
+    roleLabel: 'Taking part as',
+    roles: { guest: 'Guest', speaker: 'Speaker' },
+    roleHint: {
+      guest: 'Attending the sessions and the B2B meetings.',
+      speaker: 'Proposing to speak in one of the sessions.',
+    },
+    fields: {
+      full_name: 'Full name',
+      organisation: 'Organisation',
+      position: 'Position',
+      country: 'Country',
+      email: 'Email',
+      phone: 'Telephone',
+      direction: 'Direction of interest',
+      note: 'Anything else',
+    },
+    directionNone: 'Not chosen',
+    directions: {
+      infrastructure: 'Hotels and tourism infrastructure',
+      heritage: 'Culture, history and heritage-led development',
+      eco: 'Eco, nature and adventure tourism',
+      wellness: 'Medical, sanatorium and wellness tourism',
+      leisure: 'Entertainment, family and themed attractions',
+      transport: 'Transport and related infrastructure',
+    },
+    optional: 'optional',
+    required: 'required',
+    submit: 'Register',
+    sending: 'Sending…',
+    errors: {
+      full_name: 'Please give your full name.',
+      organisation: 'Please give your organisation.',
+      position: 'Please give your position.',
+      country: 'Please give your country.',
+      email: 'That email address is not valid.',
+      phone: 'Please give a telephone number.',
+      role: 'Choose how you are taking part.',
+      summary: 'Please check the fields marked below.',
+      network: 'The request did not go through. Check your connection and try again.',
+      rate: 'Too many submissions from here. Please try again shortly.',
+      server: 'The server could not take it. Please try again shortly.',
+    },
+    doneTitle: 'Registered',
+    doneBody:
+      'Your registration has reached the organising committee. Details will follow by email.',
+    doneRef: 'Reference',
+    again: 'Register somebody else',
+    byEmail: 'Or send your registration by email instead:',
+    mailSubject: 'Forum registration',
+    privacy:
+      'What you enter is used only to run the forum and is not passed to anybody else.',
+    disclaimer:
+      'This site is a concept/demo project. For official information: invest.gov.uz',
+  },
+};
+
+/** The organiser's own address, as shared/data/forum-2026.json records it. */
+export const ORGANISER_EMAIL = 'investforum@uzbektourism.uz';
+
+export const LANG_NAMES: Record<Lang, string> = {
+  uz: 'Oʻzbekcha',
+  ru: 'Русский',
+  en: 'English',
+};
+
+export const DIRECTION_IDS = [
+  'infrastructure',
+  'heritage',
+  'eco',
+  'wellness',
+  'leisure',
+  'transport',
+] as const;

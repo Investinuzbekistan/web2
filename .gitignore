@@ -10,3 +10,8 @@ dev-dist/
 Thumbs.db
 *.log
 .vite/
+
+# Deployed secrets and the registrations themselves. Neither belongs in a
+# repository; see server/README.md.
+server/src/config.php
+server/data/

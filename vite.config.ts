@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
@@ -55,6 +57,18 @@ export default defineConfig({
   build: {
     target: 'es2022',
     rollupOptions: {
+      /**
+       * Two pages, not one.
+       *
+       * The registration page shares the stylesheet and the forum mark with
+       * the site and nothing else, so it is a second entry rather than a
+       * route: somebody who came to register is not made to download a
+       * scroll-driven narrative and a WebGL globe first.
+       */
+      input: {
+        index: fileURLToPath(new URL('./index.html', import.meta.url)),
+        register: fileURLToPath(new URL('./register.html', import.meta.url)),
+      },
       output: {
         // three.js is only needed by the hero globe, which is loaded on idle and
         // skipped entirely when WebGL is missing or motion is reduced.

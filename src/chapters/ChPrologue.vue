@@ -208,15 +208,39 @@ useChapterTimeline(
    rather than as a fourth line of the lockup — which is what it would be if
    it matched. Aligned to the lockup's left edge, which the <h1> already
    establishes. */
+/**
+ * Bigger, and set so that it does not pretend to be a line of the lockup.
+ *
+ * The lockup is outlined artwork in a geometric sans; this is Manrope, which
+ * is a grotesque, so at the same size and case the two sit next to each
+ * other and the difference reads as a mistake rather than as a hierarchy.
+ * Letterspaced capitals hide most of a typeface's personality — what is left
+ * is rhythm and colour — so in caps it reads as the line above the mark it
+ * is, and it can be the size the client asked for without fighting it.
+ *
+ * The fill is the lockup's own gradient rather than a flat gold, clipped to
+ * the glyphs, because the mark underneath is a gradient and a flat line over
+ * it is the other thing the eye catches. A flat colour is declared first for
+ * anything that cannot clip a background to text.
+ */
 .prologue__first {
   display: block;
-  margin-block-end: 0.3rem;
+  margin-block-end: 0.55rem;
   font-family: var(--font-body);
-  font-size: clamp(1rem, 2.1vw, 1.45rem);
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  line-height: 1.1;
+  font-size: clamp(0.95rem, 1.75vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.15;
   color: var(--gold-leaf);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .prologue__first {
+    background-image: linear-gradient(to top right, #c18429, #e4bb7d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 .prologue__when {

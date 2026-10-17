@@ -1,0 +1,245 @@
+# Registration backend and admin
+
+Two things live here: the endpoint the registration page posts to, and the
+page the organiser reads the registrations on. Plain PHP, no composer, no
+framework, no build step — deploying it is copying this directory.
+
+It is written for the server the client described: **Alpine Linux, nginx,
+PHP-FPM running as `php-dev`, an older site already in place.** Nothing here
+touches that site; everything is under one prefix you choose.
+
+> The rest of this repository is a frontend-only project and `CLAUDE.md` says
+> so. This directory is the exception, added at the client's request on
+> 17 October 2026 — the site now needs somewhere for a registration to go.
+
+---
+
+## What it is
+
+```
+server/
+  public/            ← the only directory nginx is allowed to reach
+    api.php          ← POST a registration; GET it for a health check
+    index.php        ← the admin: login, list, search, status, CSV
+    admin.css
+  src/
+    config.example.php ← copy to config.php and edit
+    app.php            ← validation and the record's shape
+    storage.php        ← SQLite, or a flat file when SQLite is missing
+  data/              ← the registrations. NOT under public/. Must be writable.
+```
+
+`src/` and `data/` are outside the web root on purpose: if nginx is ever
+pointed at the wrong directory, the password hash and the registrations are
+still not downloadable.
+
+## Storage
+
+**SQLite when `pdo_sqlite` is installed, an append-only JSON-lines file when
+it is not.** Alpine ships PHP's extensions as separate apk packages and
+`php84-pdo_sqlite` is frequently not among the ones installed, so a backend
+that assumes it is a backend that 500s on arrival. Both stores are safe to
+write from several PHP-FPM workers at once. `GET /api/health` says which one
+you got.
+
+Set `'storage' => 'jsonl'` in the config if you would rather be able to read
+the registrations with `cat` and count them with `wc -l` than install an
+extension. On a forum's guest list that is a reasonable preference.
+
+---
+
+## Install
+
+### 1. Packages
+
+```sh
+apk add nginx php84 php84-fpm php84-session php84-json php84-mbstring php84-opcache
+# Optional but recommended — without it the flat file is used instead:
+apk add php84-pdo php84-pdo_sqlite
+```
+
+### 2. Files
+
+```sh
+install -d -o php-dev -g www-data /var/www/forum
+cp -r server /var/www/forum/server          # this directory
+cp -r site-2-silkroad/dist/. /var/www/forum/public   # the built site
+
+install -d -o php-dev -g php-dev -m 750 /var/www/forum/server/data
+```
+
+`/var/www/forum/public` holds `index.html`, `register.html` and `assets/` —
+the output of `npm run build:2`.
+
+### 3. Configure
+
+```sh
+cd /var/www/forum/server/src
+cp config.example.php config.php
+php -r 'echo password_hash("the password you chose", PASSWORD_DEFAULT), "\n";'
+```
+
+Paste the hash into `admin_password_hash` in `config.php`. Leave
+`allowed_origins` empty if nginx serves the site and the API from the same
+host, which is what the nginx block below does.
+
+```sh
+chown php-dev:php-dev config.php && chmod 640 config.php
+```
+
+### 4. nginx
+
+```nginx
+server {
+    listen 80;
+    server_name forum.example.uz;
+
+    root /var/www/forum/public;
+    index index.html;
+
+    # The built site. Everything is a real file; there is no SPA router to
+    # fall back for, so a miss is a miss.
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # The hashed assets never change under their own name.
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # The one public endpoint.
+    location = /api/register {
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php-fpm84/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME /var/www/forum/server/public/api.php;
+    }
+
+    location = /api/health {
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php-fpm84/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME /var/www/forum/server/public/api.php;
+        fastcgi_param REQUEST_METHOD GET;
+    }
+
+    # The admin. Add `allow`/`deny` here if it should only open from the
+    # office; the password is the lock, this would be the second one.
+    location /admin/ {
+        alias /var/www/forum/server/public/;
+        index index.php;
+
+        location ~ ^/admin/(.+\.php)$ {
+            include fastcgi_params;
+            fastcgi_pass unix:/run/php-fpm84/php-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME /var/www/forum/server/public/$1;
+        }
+    }
+
+    # src/ and data/ are not under root, so there is nothing to deny here —
+    # but if the layout is ever changed, deny them before anything else.
+}
+```
+
+```sh
+rc-update add php-fpm84 && rc-service php-fpm84 start
+rc-update add nginx && rc-service nginx restart
+```
+
+### 5. Check it
+
+```sh
+curl -s https://forum.example.uz/api/health
+# {"ok":true,"store":"SQLite (pdo_sqlite)","detail":"ok"}
+```
+
+Then open `https://forum.example.uz/admin/` and log in.
+
+---
+
+## While the site is still on GitHub Pages
+
+The published site is served from `*.github.io` and this API is on the
+organiser's server, so the browser treats the POST as cross-origin. Two
+changes:
+
+1. In `config.php`:
+   ```php
+   'allowed_origins' => ['https://fastsoftware-uz.github.io'],
+   ```
+   A request from any other origin is refused, so that list is the whole of
+   the guest list.
+
+2. Build the site with the absolute endpoint:
+   ```sh
+   VITE_REGISTER_ENDPOINT=https://forum.example.uz/api/register npm run build:2
+   ```
+
+   The Pages repository builds itself, so set it there instead of rebuilding
+   by hand: **Settings → Secrets and variables → Actions → Variables → New
+   variable**, named `REGISTER_ENDPOINT`, with that same URL as its value.
+   The deploy workflow passes it to the build, and the next push picks it up.
+
+Until that variable is set the POST goes nowhere, and the page says so and
+offers the organiser's address with the answers already filled into the
+message — a registration is not lost in the meantime, it just arrives by
+email.
+
+When the site moves onto this server, empty the list and drop the variable:
+same-origin needs neither.
+
+---
+
+## The API
+
+### `POST /api/register`
+
+```json
+{ "role": "guest|speaker", "full_name": "", "organisation": "", "position": "",
+  "country": "", "email": "", "phone": "", "direction": "", "note": "", "lang": "uz" }
+```
+
+`role`, `full_name`, `organisation`, `position`, `country`, `email` and
+`phone` are required. `direction` must be one of the six the site shows or it
+is dropped. A form POST is accepted as well as JSON.
+
+| Status | Body | Means |
+|---|---|---|
+| 200 | `{"ok":true,"id":12}` | Stored. `id` is the reference the visitor is shown. |
+| 422 | `{"ok":false,"fields":["email"]}` | Named fields are wrong. No prose: the page knows the reader's language and this does not. |
+| 429 | `{"ok":false,"error":"rate"}` | More than `rate_limit_per_hour` from one address. |
+| 403 | `{"ok":false,"error":"origin"}` | Cross-origin, and the origin is not in the list. |
+| 500 | `{"ok":false,"error":"store"}` | Could not write. The reason is in the PHP error log, not in the response. |
+
+### `GET /api/health`
+
+`{"ok":true,"store":"…","detail":"ok"}` — the quickest way to tell from a
+browser that nginx, PHP and the data directory are all talking to each other.
+
+---
+
+## What is guarded, and what is not
+
+**Guarded.** The admin is behind `password_hash`/`password_verify` with a
+fixed delay on a wrong answer and a fresh session id on a right one. Status
+changes carry a CSRF token. The session cookie is `HttpOnly`, `SameSite=Strict`,
+and `Secure` whenever the request arrived over HTTPS. Every value that reaches
+the page goes through `htmlspecialchars`, and SQLite is only ever given bound
+parameters. The form carries a honeypot field, and a bot that fills it is
+answered `200` and stored nowhere — told it had failed, it would come back
+having learned something. One address may send `rate_limit_per_hour`
+registrations an hour.
+
+**Not guarded, deliberately.** There is no email confirmation: a registration
+is a lead for the organising committee to call, not an account. There is no
+rate limit on admin logins beyond the delay — put the admin behind an nginx
+`allow`/`deny` if it needs more. There is no backup; `data/` is one directory
+and belongs in whatever already backs that server up.
+
+**Please also:**
+
+- Serve this over HTTPS. The admin password crosses the wire on every login.
+- Set `display_errors = Off` in production. A PHP notice printed into a
+  response lands inside the CSV and corrupts it — that is not a theory, it
+  happened while this was being written, and the fix is in the code as well.
+- Back `data/` up. It is the only copy of who is coming.

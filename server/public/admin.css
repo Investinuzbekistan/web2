@@ -1,0 +1,201 @@
+/* The admin's own stylesheet. The same two inks as the site, because it is
+   the same forum; nothing else is shared, and nothing is fetched from a CDN
+   — this has to open on a server with no outbound network. */
+
+:root {
+  --paper: #fbf7ef;
+  --panel: #fff;
+  --ink: #15193a;
+  --ink-soft: #3c4467;
+  --ink-dim: #626b8b;
+  --line: rgb(29 53 119 / 0.16);
+  --cobalt: #1d3577;
+  --gold: #995f00;
+  --green: #1d7a46;
+  --red: #b3243b;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+a { color: var(--cobalt); }
+.muted { color: var(--ink-dim); }
+.nowrap { white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums; color: var(--ink-dim); }
+
+/* ------------------------------------------------------------------ gate */
+
+.gate {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+.card {
+  width: min(100%, 22rem);
+  padding: 1.75rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  box-shadow: 0 1rem 2.5rem rgb(21 25 58 / 0.07);
+}
+.card h1 { margin: 0; font-size: 1.3rem; color: var(--ink); }
+.card p { margin: 0.25rem 0 1.25rem; font-size: 0.9rem; }
+.card label { display: block; margin-bottom: 0.35rem; font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+
+input, select, button, .btn {
+  font: inherit;
+}
+input[type="password"], input[type="search"], select {
+  width: 100%;
+  min-height: 2.6rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: #fff;
+  color: var(--ink);
+}
+input:focus-visible, select:focus-visible, button:focus-visible, .btn:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.6rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  background: var(--cobalt);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.card button { width: 100%; justify-content: center; margin-top: 1rem; }
+.btn--quiet { background: transparent; border-color: var(--line); color: var(--ink); }
+
+.err { margin-top: 0.75rem; color: var(--red); font-size: 0.85rem; }
+.err code { background: rgb(179 36 59 / 0.08); padding: 0.1em 0.3em; border-radius: 0.2rem; }
+.err.big { padding: 1rem; border: 1px solid var(--red); border-radius: 0.4rem; }
+
+/* ------------------------------------------------------------------- app */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem clamp(0.75rem, 2vw, 1.5rem);
+  background: var(--cobalt);
+  color: #fff;
+}
+.bar strong { font-size: 1rem; }
+.bar .muted { color: rgb(255 255 255 / 0.65); }
+.bar__right { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.bar .btn { background: rgb(255 255 255 / 0.14); border-color: rgb(255 255 255 / 0.3); color: #fff; }
+.bar .store { font-size: 0.78rem; }
+
+main { padding: clamp(0.75rem, 2vw, 1.5rem); }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.tile {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+.tile b { font-size: 1.5rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tile span { font-size: 0.8rem; }
+.tile--on { border-color: var(--cobalt); box-shadow: inset 0 0 0 1px var(--cobalt); }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.filters input[type="search"] { flex: 1 1 16rem; }
+.filters select { flex: 0 1 11rem; }
+
+.count { margin: 0 0 0.6rem; font-size: 0.85rem; }
+.empty {
+  padding: 2.5rem;
+  text-align: center;
+  background: var(--panel);
+  border: 1px dashed var(--line);
+  border-radius: 0.4rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+th, td {
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+th {
+  background: #f3ede0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: 0; }
+td b { color: var(--ink); font-weight: 600; }
+
+.row--confirmed { background: rgb(29 122 70 / 0.05); }
+.row--declined { background: rgb(179 36 59 / 0.05); }
+.row--declined td b { text-decoration: line-through; }
+
+.note td { padding-top: 0; font-size: 0.85rem; color: var(--ink-dim); border-bottom: 1px solid var(--line); }
+
+.pill {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pill--guest { background: rgb(29 53 119 / 0.1); color: var(--cobalt); }
+.pill--speaker { background: rgb(153 95 0 / 0.12); color: var(--gold); }
+
+.status select { min-width: 9rem; }
+
+/* The table is wide; below a tablet it scrolls rather than squeezing the
+   columns into unreadable slivers. */
+@media (max-width: 60rem) {
+  main { padding-inline: 0.5rem; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  .note td { white-space: normal; }
+}

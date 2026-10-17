@@ -177,6 +177,14 @@ onBeforeUnmount(() => {
   if (menuOpen.value) unlockPageScroll();
 });
 
+/**
+ * The registration page, carrying the language the reader is using.
+ *
+ * Relative, so it keeps working under whatever base path the site is served
+ * from — /web2/ on Pages today, / on the organiser's own server tomorrow.
+ */
+const registerHref = computed(() => `./register.html?lang=${lang.value}`);
+
 const counter = computed(() => {
   const n = String(activeIndex.value + 1).padStart(2, '0');
   const total = String(props.chapters.length).padStart(2, '0');
@@ -262,6 +270,14 @@ function choose(code: Lang) {
         </ul>
       </div>
 
+      <!-- Registration. A link rather than a button because it goes to
+           another page, which means it opens in a new tab on a middle click
+           like every other link, and still works if the script never ran.
+           Hidden below 48rem, where the bar is already carrying the language,
+           the contextual call to action and the menu — it is the first item
+           in the menu at that width. -->
+      <a class="reg-link" :href="registerHref">{{ t('nav.register') }}</a>
+
       <!-- Two labels, one shown at a time: "Qiziqishni bildirish" is 159px
            wide and the bar runs out of room for it below about 370px, where
            a short form says the same thing beside the same icon. -->
@@ -288,7 +304,12 @@ function choose(code: Lang) {
 
   <!-- The chapter rail. It carries the stage's tokens over a stage, like the
        bar, or its stars disappear into the cobalt. -->
-  <nav class="rail" :class="{ 'on-stage': onStage }" :aria-label="t('menu.rail')">
+  <nav
+    class="rail"
+    :class="{ 'on-stage': onStage }"
+    :style="{ '--read': progress }"
+    :aria-label="t('menu.rail')"
+  >
     <ol>
       <li v-for="(chapter, i) in chapters" :key="chapter.id">
         <button
@@ -317,6 +338,9 @@ function choose(code: Lang) {
         <button type="button" class="overlay__close" @click="menuOpen = false">
           {{ t('menu.close') }}
         </button>
+        <p class="overlay__register">
+          <a class="btn btn--solid" :href="registerHref">{{ t('nav.register') }}</a>
+        </p>
         <ol>
           <li v-for="(chapter, i) in chapters" :key="chapter.id">
             <button type="button" :aria-current="activeIndex === i ? 'true' : undefined" @click="go(chapter.id)">
@@ -412,8 +436,13 @@ function choose(code: Lang) {
 .nav a {
   position: relative;
   padding-block: 0.4rem;
-  font-size: 0.82rem;
-  color: var(--ink-soft);
+  /* Bigger and gold, at the client's asking. --gold is the one gold in each
+     token set that may carry text: #995f00 on ganch and #dfae63 on the
+     stage, both 4.5:1, so the bar reads the same on the title card and over
+     the paper chapters without either failing. */
+  font-size: 0.95rem;
+  letter-spacing: 0.005em;
+  color: var(--gold);
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.18s;
@@ -424,14 +453,14 @@ function choose(code: Lang) {
   inset-block-end: 0;
   inset-inline: 0;
   height: 1px;
-  background: var(--accent-soft);
+  background: var(--gold-leaf);
   transform: scaleX(0);
   transform-origin: 0 50%;
   transition: transform 0.22s;
 }
 @media (hover: hover) {
   .nav a:hover {
-    color: var(--ink);
+    color: var(--gold-leaf);
   }
 }
 .nav a[aria-current='true']::after {
@@ -443,7 +472,7 @@ function choose(code: Lang) {
   }
 }
 .nav a[aria-current='true'] {
-  color: var(--ink);
+  color: var(--gold-leaf);
 }
 /* A tablet held in landscape gets the bar's links and no mouse. The padding
    grows rather than the box, so the underline stays on the word. */
@@ -457,6 +486,38 @@ function choose(code: Lang) {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+}
+
+/* Outlined, not gold: the bar already has one gold button, and two of them
+   side by side is two primary actions, which is none. */
+.reg-link {
+  display: none;
+  align-items: center;
+  min-block-size: var(--tap);
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 0.25rem;
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.18s, color 0.18s;
+}
+@media (hover: hover) {
+  .reg-link:hover {
+    border-color: var(--gold-leaf);
+    color: var(--gold-leaf);
+  }
+}
+@media (min-width: 48rem) {
+  .reg-link {
+    display: inline-flex;
+  }
+}
+
+.overlay__register {
+  margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
 }
 
 .langs {

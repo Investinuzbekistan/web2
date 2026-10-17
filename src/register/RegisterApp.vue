@@ -432,7 +432,6 @@ const mailHref = computed(() => {
         </form>
       </template>
 
-      <p class="reg__disclaimer">{{ t.disclaimer }}</p>
     </main>
   </div>
 </template>
@@ -712,9 +711,4 @@ const mailHref = computed(() => {
   margin-block-start: 1.75rem;
 }
 
-.reg__disclaimer {
-  margin-block-start: 3rem;
-  font-size: 0.78rem;
-  color: var(--ink-dim);
-}
 </style>

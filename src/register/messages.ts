@@ -64,7 +64,6 @@ export type Copy = {
   byEmail: string;
   mailSubject: string;
   privacy: string;
-  disclaimer: string;
 };
 
 export const MESSAGES: Record<Lang, Copy> = {
@@ -127,7 +126,6 @@ export const MESSAGES: Record<Lang, Copy> = {
     mailSubject: 'Forumga roʻyxatdan oʻtish',
     privacy:
       'Maʼlumotlaringiz faqat forumni tashkil etish uchun ishlatiladi va uchinchi shaxslarga berilmaydi.',
-    disclaimer: 'Ushbu sayt konsept/demo loyiha. Rasmiy maʼlumot uchun: invest.gov.uz',
   },
 
   ru: {
@@ -188,8 +186,6 @@ export const MESSAGES: Record<Lang, Copy> = {
     mailSubject: 'Регистрация на форум',
     privacy:
       'Данные используются только для организации форума и не передаются третьим лицам.',
-    disclaimer:
-      'Этот сайт — концепт/демо. Официальная информация: invest.gov.uz',
   },
 
   en: {
@@ -251,8 +247,6 @@ export const MESSAGES: Record<Lang, Copy> = {
     mailSubject: 'Forum registration',
     privacy:
       'What you enter is used only to run the forum and is not passed to anybody else.',
-    disclaimer:
-      'This site is a concept/demo project. For official information: invest.gov.uz',
   },
 };
 

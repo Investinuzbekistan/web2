@@ -161,22 +161,6 @@ export function eventDates(): string {
   return formatDateRange(`${event.dateStart}/${event.dateEnd}`, lang.value);
 }
 
-/**
- * The short marker a document source is cited by: D1, D2, D3.
- *
- * The forum's own documents have slugs for ids — `concept`, `programme`,
- * `portfolio` — because that is what they are called, and the badge used to
- * print the slug: a footnote on a sentence came out as the word CONCEPT set
- * in a box, which reads as part of the sentence rather than as a reference to
- * a file. A citation marker has to be short enough to be skipped over. The
- * number is the document's position in the list the footer prints, so the two
- * always agree.
- */
-export function docMarker(id: string): string {
-  const index = (forum.value?.sources ?? []).findIndex((source) => source.id === id);
-  return index === -1 ? id : `D${index + 1}`;
-}
-
 export function setLang(next: Lang): void {
   lang.value = next;
 }

@@ -462,7 +462,7 @@ onBeforeUnmount(() => {
 
           <p v-if="project.statusNote" class="panel__status">{{ project.statusNote }}</p>
 
-          <p class="panel__note">{{ t('sources.projectLanguage') }}</p>
+          <p class="panel__note">{{ t('credits.projectLanguage') }}</p>
         </div>
 
         <!-- What a reader can do with the project they have just read. -->

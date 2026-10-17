@@ -15,9 +15,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ForumMark from '../components/ForumMark.vue';
-import SourceTag from '../components/SourceTag.vue';
 import { enquirySubject, setLang, tr, useStore } from '../lib/state';
-import { formatDate } from '../lib/shared/content';
 
 const { t } = useI18n();
 const { content, forum, lang } = useStore();
@@ -309,61 +307,21 @@ async function submit() {
       </dl>
 
       <footer v-if="content && forum" class="footer">
-        <div class="footer__cols">
-          <div>
-            <h3>{{ t('footer.links') }}</h3>
-            <ul>
-              <li v-for="link in content.useful_links" :key="link.url">
-                <a :href="link.url" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3>{{ t('sources.title') }}</h3>
-            <p class="footer__note">{{ t('sources.body') }}</p>
+        <!-- The footer used to carry official links, a numbered source list
+             and a concept/demo notice. The client took all three off on
+             17 October 2026: this is the organiser's own site now, not a
+             rendering of one, and a site does not cite the documents it is
+             made of.
 
-            <p class="footer__label">{{ t('sources.documents') }}</p>
-            <ol class="footer__sources footer__sources--docs">
-              <li v-for="(source, i) in forum.sources" :key="source.id">
-                <!-- The same marker the badge in the text carries. -->
-                <span class="footer__sid">{{ `D${i + 1}` }}</span>
-                <span class="footer__doc">{{ tr(source.title) }} — {{ tr(source.publisher) }}</span>
-                <em>{{ formatDate(source.asOf, lang) }}</em>
-              </li>
-            </ol>
-
-            <p class="footer__label">{{ t('sources.contributedBy') }}</p>
-            <ul class="footer__contrib">
-              <li v-for="(who, i) in forum.portfolio.contributedBy" :key="i">{{ tr(who) }}</li>
-            </ul>
-
-            <ol class="footer__sources">
-              <li v-for="source in content.sources" :key="source.id">
-                <span>{{ source.id }}</span>
-                <a :href="source.url" target="_blank" rel="noopener noreferrer">{{ source.title }}</a>
-                <em>{{ formatDate(source.accessed, lang) }}</em>
-              </li>
-            </ol>
-            <p class="footer__note">
-              {{ t('sources.projectLanguage') }}
-              <SourceTag :id="undefined" />
-            </p>
-            <!-- Where every outline on the page comes from: chapter IV's
-                 region map and the title card's globe. geoBoundaries is ODbL
-                 and requires the attribution — it used to be printed under
-                 the map as well, and when that line came off the page this
-                 one became the only place it is said, so it names the map
-                 too. Natural Earth is public domain and is credited anyway. -->
-            <p class="footer__note">{{ t('sources.globe') }}</p>
-          </div>
-        </div>
-
-        <p v-if="content.meta.disclaimer_enabled" class="footer__disclaimer">
-          <strong>{{ t('footer.disclaimerTitle') }}.</strong> {{ t('footer.disclaimer') }}
-        </p>
-        <p v-if="lang === 'ru' && content.meta.ru_machine" class="footer__note">
-          {{ t('sources.machine') }}
-        </p>
+             What is left is the one line that is not ours to drop. The region
+             outlines and the globe's border are geoBoundaries data under
+             ODbL 1.0, whose terms require the attribution to travel with the
+             work. It is a plain credit, not a link. Replacing that data with
+             a public-domain source would remove even this. -->
+        <p class="footer__label">{{ t('credits.contributedBy') }}</p>
+        <ul class="footer__contrib">
+          <li v-for="(who, i) in forum.portfolio.contributedBy" :key="i">{{ tr(who) }}</li>
+        </ul>
 
         <div class="footer__end">
           <ForumMark form="lockup" variant="white" class="footer__mark" />
@@ -373,6 +331,8 @@ async function submit() {
             </button>
           </div>
         </div>
+
+        <p class="footer__fine">{{ t('credits.mapData') }}</p>
       </footer>
     </div>
   </section>
@@ -702,16 +662,6 @@ h2 {
   padding-block-start: clamp(2rem, 5vh, 3rem);
   border-block-start: 1px solid var(--hairline);
 }
-.footer__cols {
-  display: grid;
-  gap: 2.5rem;
-}
-@media (min-width: 56rem) {
-  .footer__cols {
-    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
-    gap: 4rem;
-  }
-}
 .footer h3 {
   font-family: var(--font-body);
   font-size: 0.75rem;
@@ -740,21 +690,6 @@ h2 {
   .footer ul {
     gap: 0;
   }
-  /* The whole row, not the word: "TIIF" is four characters and a 23-pixel
-     target however tall it is made. A list of links is a list of rows on a
-     phone anyway. */
-  .footer ul a {
-    display: flex;
-    align-items: center;
-    min-block-size: var(--tap);
-  }
-  /* A source sits in a line with its date, so it takes the height and not
-     the width. */
-  .footer__sources a {
-    display: inline-flex;
-    align-items: center;
-    min-block-size: var(--tap);
-  }
 }
 @media (hover: hover) {
   .footer a:hover {
@@ -773,59 +708,32 @@ h2 {
   text-transform: uppercase;
   color: var(--ink-dim);
 }
-.footer__sources {
-  list-style: none;
-  margin: 0.75rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-  font-size: 0.82rem;
-}
-.footer__sources li {
-  display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
-  gap: 0.75rem;
-  align-items: baseline;
-}
-/* The document ids are words ("concept", "programme"), not "S2" — they need a
-   column of their own or they run under the title. */
-.footer__sources--docs li {
-  /* Was 6.5rem, for ids that were whole words. The marker is now two
-     characters, like the web sources' own. */
-  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
-}
-.footer__sid {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.72rem;
-}
-.footer__sources span:first-child {
-  color: var(--ink-dim);
-  font-variant-numeric: tabular-nums;
-}
-.footer__doc {
-  color: var(--ink-soft);
-}
-.footer__sources em {
-  font-style: normal;
-  color: var(--ink-dim);
-  white-space: nowrap;
-}
+/* One line of names rather than a column of them: with the source list and
+   the links gone this is the only thing left up here, and a narrow column of
+   it left four fifths of the footer empty. */
 .footer__contrib {
-  margin-block-start: 0.75rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  /* Columns rather than one line or one stack: these are long names, and with
+     the source list and the links gone they are the only thing up here — a
+     single column left four fifths of the footer empty, and running them on
+     stranded a separator at the start of every wrapped line. */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.5rem 2.5rem;
+  max-inline-size: 64rem;
   font-size: 0.82rem;
   color: var(--ink-dim);
 }
 
-.footer__disclaimer {
-  margin-block-start: clamp(2rem, 5vh, 3rem);
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--hairline);
-  border-radius: 0.75rem;
-  font-size: 0.85rem;
-}
-.footer__disclaimer strong {
-  color: var(--ink);
+/* The map data's licence condition, set as the small print it is. */
+.footer__fine {
+  margin-block-start: 1.5rem;
+  max-inline-size: 60rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--ink-dim);
 }
 
 .footer__end {

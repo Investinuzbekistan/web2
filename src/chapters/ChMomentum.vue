@@ -11,7 +11,6 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import CountFigure from '../components/CountFigure.vue';
-import SourceTag from '../components/SourceTag.vue';
 import { useChapterTimeline } from '../lib/motion';
 import { tr, useStore } from '../lib/state';
 
@@ -28,7 +27,6 @@ const figures = computed(() => {
   return ORDER.map((id) => economy.kpis.find((k) => k.id === id)).filter((k) => k !== undefined);
 });
 
-const source = computed(() => content.value?.economy_2025.source);
 
 useChapterTimeline(
   () => root.value,
@@ -61,10 +59,7 @@ useChapterTimeline(
             :prefix="figure.prefix"
             :suffix="figure.suffix"
           />
-          <span class="momentum__label">
-            {{ tr(figure.label) }}
-            <SourceTag :id="source" />
-          </span>
+          <span class="momentum__label">{{ tr(figure.label) }}</span>
         </li>
       </ol>
     </div>

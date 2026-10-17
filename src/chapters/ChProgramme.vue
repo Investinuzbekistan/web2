@@ -12,7 +12,6 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import DocTag from '../components/DocTag.vue';
 import type { ProgrammeItem } from '../lib/forum-types';
 import { useChapterTimeline } from '../lib/motion';
 import { tr, useStore } from '../lib/state';
@@ -87,10 +86,7 @@ useChapterTimeline(
         </div>
       </dl>
 
-      <p v-if="programme" class="programme__note">
-        {{ tr(programme.note) }}
-        <DocTag id="programme" />
-      </p>
+      <p v-if="programme" class="programme__note">{{ tr(programme.note) }}</p>
 
       <!-- The four key sessions --------------------------------------------- -->
       <h3 class="programme__sub">{{ t('programme.sessionsTitle') }}</h3>

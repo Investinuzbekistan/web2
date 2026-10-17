@@ -221,23 +221,20 @@ const en = {
     organiser: 'Organising committee',
     agency: 'Investment Promotion Agency',
   },
-  sources: {
-    label: 'Source',
-    asOf: 'as of {date}',
-    title: 'Sources',
-    body: 'Every figure on this page, and the document it was taken from.',
-    documents: 'Documents supplied by the organiser',
+  /**
+   * What is left of what used to be a Sources block.
+   *
+   * The client took the source list, the official links and the concept/demo
+   * notice off on 17 October 2026 — this is the organiser's own site, not a
+   * rendering of one. These three are not citations: who supplied the
+   * projects, which language the long descriptions are in, and the map data's
+   * licence condition, which is not ours to drop.
+   */
+  credits: {
     contributedBy: 'The portfolio was assembled from proposals by',
-    machine: 'The Russian text on this page was translated from English and is not an official text.',
     projectLanguage:
       'Titles, field names and delivery stages are translated. The longer descriptions are left in the English the organiser prepared them in, so that no figure is changed in the retelling.',
-    globe: 'Region outlines and the title card globe: geoBoundaries (ODbL 1.0) and Natural Earth (public domain). A diagram of administrative areas, not a survey.',
-  },
-  footer: {
-    links: 'Official links',
-    disclaimerTitle: 'Concept project',
-    disclaimer:
-      'This site is a concept/demo project and is not operated by the Tourism Committee or the Agency. For official information see invest.gov.uz.',
+    mapData: 'Region outlines and the title card globe: geoBoundaries (ODbL 1.0) and Natural Earth (public domain). A diagram of administrative areas, not a survey.',
   },
 };
 
@@ -433,23 +430,11 @@ const uz: Messages = {
     organiser: 'Tashkiliy qoʻmita',
     agency: 'Investitsiyalarni jalb qilish agentligi',
   },
-  sources: {
-    label: 'Manba',
-    asOf: '{date} holatiga',
-    title: 'Manbalar',
-    body: 'Sahifadagi har bir raqam va u olingan hujjat.',
-    documents: 'Tashkilotchi taqdim etgan hujjatlar',
+  credits: {
     contributedBy: 'Portfel quyidagilarning takliflaridan shakllantirilgan',
-    machine: 'Sahifadagi ruscha matn ingliz tilidan tarjima qilingan va rasmiy matn emas.',
     projectLanguage:
       'Nomlar, maydon nomlari va loyiha bosqichlari tarjima qilingan. Uzun tavsiflar tashkilotchi tayyorlagan ingliz tilida qoldirilgan — qayta hikoya qilishda birorta raqam oʻzgarmasligi uchun.',
-    globe: 'Hudud konturlari va sarlavha kartasidagi globus: geoBoundaries (ODbL 1.0) va Natural Earth (umumiy mulk). Bu — maʼmuriy hududlar sxemasi, oʻlchov xaritasi emas.',
-  },
-  footer: {
-    links: 'Rasmiy havolalar',
-    disclaimerTitle: 'Konsept loyiha',
-    disclaimer:
-      'Ushbu sayt konsept/demo loyiha boʻlib, Turizm qoʻmitasi yoki agentlik tomonidan yuritilmaydi. Rasmiy maʼlumot uchun: invest.gov.uz.',
+    mapData: 'Hudud konturlari va sarlavha kartasidagi globus: geoBoundaries (ODbL 1.0) va Natural Earth (umumiy mulk). Bu — maʼmuriy hududlar sxemasi, oʻlchov xaritasi emas.',
   },
 };
 
@@ -643,23 +628,11 @@ const ru: Messages = {
     organiser: 'Организационный комитет',
     agency: 'Агентство по привлечению инвестиций',
   },
-  sources: {
-    label: 'Источник',
-    asOf: 'на {date}',
-    title: 'Источники',
-    body: 'Каждая цифра на этой странице и документ, из которого она взята.',
-    documents: 'Документы, предоставленные организатором',
+  credits: {
     contributedBy: 'Портфель сформирован из предложений',
-    machine: 'Русский текст на этой странице переведён с английского и не является официальным.',
     projectLanguage:
       'Названия, наименования полей и стадии проектов переведены. Развёрнутые описания оставлены на английском, как их подготовил организатор, — чтобы при пересказе не изменилась ни одна цифра.',
-    globe: 'Контуры регионов и глобус на титульной карточке: geoBoundaries (ODbL 1.0) и Natural Earth (общественное достояние). Это схема административных границ, а не топографическая карта.',
-  },
-  footer: {
-    links: 'Официальные ссылки',
-    disclaimerTitle: 'Концептуальный проект',
-    disclaimer:
-      'Этот сайт — концепт/демо, он не ведётся Комитетом по туризму или Агентством. За официальной информацией обращайтесь на invest.gov.uz.',
+    mapData: 'Контуры регионов и глобус на титульной карточке: geoBoundaries (ODbL 1.0) и Natural Earth (общественное достояние). Это схема административных границ, а не топографическая карта.',
   },
 };
 

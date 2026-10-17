@@ -54,7 +54,9 @@ const busiest = () => Math.max(1, ...props.regions.map((r) => r.count));
     <h3 class="brief__name">{{ detail.name }}</h3>
     <p class="brief__count">{{ detail.countText }}</p>
 
-    <p class="brief__label">{{ t('portfolio.map.sought') }}</p>
+    <!-- The figure stood under a two-line label saying what it was. Every
+         other number in this panel is read off its own shape, and the client
+         asked for the label to go; the sum is in dollars and says so. -->
     <p class="brief__sought figure">{{ detail.soughtText }}</p>
 
     <template v-if="detail.directions.length">

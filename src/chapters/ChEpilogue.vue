@@ -348,10 +348,12 @@ async function submit() {
               {{ t('sources.projectLanguage') }}
               <SourceTag :id="undefined" />
             </p>
-            <!-- The globe's outlines. geoBoundaries is ODbL and requires the
-                 attribution; Natural Earth is public domain and is credited
-                 anyway, because a reader should be able to find out where
-                 every line on the page came from. -->
+            <!-- Where every outline on the page comes from: chapter IV's
+                 region map and the title card's globe. geoBoundaries is ODbL
+                 and requires the attribution — it used to be printed under
+                 the map as well, and when that line came off the page this
+                 one became the only place it is said, so it names the map
+                 too. Natural Earth is public domain and is credited anyway. -->
             <p class="footer__note">{{ t('sources.globe') }}</p>
           </div>
         </div>

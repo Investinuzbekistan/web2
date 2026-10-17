@@ -275,8 +275,15 @@ function choose(id: string): void {
          jump a screen downwards mid-scroll. -->
     <div v-else class="uzmap__wait" aria-hidden="true" />
 
+    <!-- The caption used to be printed here under the map and the client
+         took it off: fourteen numbered markers on a map of Uzbekistan do not
+         need a sentence explaining that the numbers are counts. It is still
+         the map's accessible name on the <svg> above, where it is the only
+         thing a screen reader has to go on, and the line still appears on
+         hover, naming the region under the pointer. The row keeps its height
+         either way so the page does not jump when you point at something. -->
     <figcaption>
-      <span class="uzmap__hint">{{ hovered ? describe(hovered) : caption }}</span>
+      <span v-if="hovered" class="uzmap__hint">{{ describe(hovered) }}</span>
     </figcaption>
   </figure>
 </template>

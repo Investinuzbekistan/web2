@@ -14,7 +14,6 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import DocTag from '../components/DocTag.vue';
 import { useChapterTimeline } from '../lib/motion';
 import { tr, useStore } from '../lib/state';
 
@@ -23,7 +22,6 @@ const { forum } = useStore();
 const root = ref<HTMLElement | null>(null);
 
 const mechanism = computed(() => forum.value?.mechanism ?? []);
-const standard = computed(() => forum.value?.standard ?? []);
 const criteria = computed(() => forum.value?.criteria);
 const stages = computed(() => forum.value?.stages ?? []);
 const goals = computed(() => forum.value?.goals ?? []);
@@ -57,11 +55,6 @@ useChapterTimeline(
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.path.n') }}</p>
       <h2>{{ t('chapters.path.title') }}</h2>
-      <p class="path__lead">{{ t('path.lead') }}</p>
-      <p class="path__body">
-        {{ t('path.body') }}
-        <DocTag id="concept" />
-      </p>
 
       <!-- The six-step mechanism ------------------------------------------- -->
       <ol class="steps">
@@ -75,17 +68,11 @@ useChapterTimeline(
         </li>
       </ol>
 
-      <!-- The ten-block project standard ------------------------------------ -->
-      <h3 class="path__sub">{{ t('path.standardTitle') }}</h3>
-      <p class="path__body">{{ t('path.standardBody') }}</p>
-
-      <ol class="blocks">
-        <li v-for="block in standard" :key="block.n" class="blocks__item">
-          <span class="blocks__n">{{ String(block.n).padStart(2, '0') }}</span>
-          <h4>{{ tr(block.block) }}</h4>
-          <p>{{ tr(block.body) }}</p>
-        </li>
-      </ol>
+      <!-- The ten-block project standard was here: a grid listing what every
+           project sheet has to state. The client took it off — it describes
+           the organiser's paperwork rather than the opportunity, and chapter
+           IV already shows the filled-in version of it on every project. The
+           data is untouched in forum-2026.json. -->
 
       <!-- Selection criteria ------------------------------------------------ -->
       <div class="path__split">

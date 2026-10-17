@@ -296,9 +296,18 @@ const segmentRows = computed<BarRow[]>(() => {
     .sort((a, b) => b.count - a.count);
 });
 
+/**
+ * The four size bands, and not the fifth.
+ *
+ * `bandOf` files a project with no dollar figure under `open`, and that row
+ * used to be drawn with the rest: a bar labelled "not stated in dollars" in
+ * a chart about how large the projects are, which is not a size. The twelve
+ * projects behind it are all still in the list; they simply have nothing to
+ * be measured against, so the chart no longer pretends they do.
+ */
 const sizeRows = computed<BarRow[]>(() => {
   const counts = count((p) => bandOf(p));
-  return [...SIZE_BANDS.map((b) => b.id), 'open'].map((id) => ({
+  return SIZE_BANDS.map((b) => b.id).map((id) => ({
     id,
     label: t(`portfolio.bands.${id}`),
     count: counts.get(id) ?? 0,
@@ -377,8 +386,6 @@ useChapterTimeline(
           @see-all="scrollToId('portfolio-list')"
         />
       </div>
-      <p class="portfolio__credit">{{ t('portfolio.map.credit') }}</p>
-
       <!-- Controls -------------------------------------------------------- -->
       <div class="portfolio__controls">
         <p class="field field--search">
@@ -570,13 +577,6 @@ h2 {
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
     align-items: start;
   }
-}
-
-.portfolio__credit {
-  margin-block-start: 1.25rem;
-  max-width: 44rem;
-  font-size: 0.75rem;
-  color: var(--ink-dim);
 }
 
 .portfolio__controls {

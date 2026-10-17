@@ -57,8 +57,6 @@ useChapterTimeline(
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.programme.n') }}</p>
       <h2>{{ t('chapters.programme.title') }}</h2>
-      <p class="programme__lead">{{ t('programme.lead') }}</p>
-      <p class="programme__body">{{ t('programme.body') }}</p>
 
       <dl v-if="programme" class="day">
         <div v-for="item in programme.items" :key="keyOf(item)" class="day__row" :class="`day__row--${item.kind}`">
@@ -96,15 +94,16 @@ useChapterTimeline(
 
       <!-- The four key sessions --------------------------------------------- -->
       <h3 class="programme__sub">{{ t('programme.sessionsTitle') }}</h3>
-      <p class="programme__body">{{ t('programme.sessionsBody') }}</p>
 
       <ol class="sessions">
         <li v-for="session in sessions" :key="session.id" class="sessions__item card">
           <span class="sessions__n">{{ String(session.number).padStart(2, '0') }}</span>
           <h4>{{ tr(session.title) }}</h4>
           <p class="sessions__topics">{{ tr(session.topics) }}</p>
+          <!-- The English title the organiser gave the session, under the
+               rule. It used to be introduced by a "working title" eyebrow;
+               the label said less than the line under it. -->
           <p class="sessions__working">
-            <span class="eyebrow">{{ t('programme.workingTitle') }}</span>
             <em>{{ session.workingTitle }}</em>
           </p>
         </li>

@@ -102,23 +102,28 @@ useChapterTimeline(
 
       <h1 class="prologue__mark">
         <span class="sr-only">{{ event ? tr(event.name) : '' }}</span>
+        <!-- The forum's name is "First International Tourism Investment
+             Forum"; the lockup carries the last four words of it, so the card
+             was announcing a forum that has been held before. The two missing
+             words go above the mark rather than into it — the lockup is a
+             supplied asset and is not redrawn — and they stay in English on
+             every language, because what is under them is a logotype. The
+             accessible name is the whole thing, in the reader's language. -->
+        <span class="prologue__first" aria-hidden="true">First International</span>
         <ForumMark form="lockup" animate drift aria-hidden="true" />
       </h1>
 
+      <!-- The title card carries the name, the date and the two things you
+           can do. The line about the trade fair, the motto and the lead
+           paragraph came off at the client's request: on the one screen
+           everybody sees, four blocks of prose between the date and the
+           buttons is three blocks too many. The motto is the organiser's own
+           and is still in the data; nothing was deleted from the record. -->
       <p v-if="event" class="prologue__when prologue__reveal">
         <span class="prologue__dates">{{ dates }}</span>
         <span class="prologue__dot" aria-hidden="true">·</span>
         <span>{{ tr(event.city) }}</span>
       </p>
-
-      <p class="prologue__within prologue__reveal">{{ t('prologue.within') }}</p>
-
-      <p v-if="event" class="prologue__motto prologue__reveal">
-        <span class="prologue__motto-1">{{ tr(event.motto.line1) }}</span>
-        <span class="prologue__motto-2">{{ tr(event.motto.line2) }}</span>
-      </p>
-
-      <p class="prologue__lead prologue__reveal">{{ t('prologue.lead') }}</p>
 
       <div class="prologue__actions prologue__reveal">
         <!-- No aria-label: an accessible name that does not contain the
@@ -199,6 +204,20 @@ useChapterTimeline(
   /* The wordmark is 1.91:1; this keeps it off the right edge on wide screens. */
   width: min(82%, 23rem);
 }
+/* Set above the mark and in its own gold, at a size that reads as a prefix
+   rather than as a fourth line of the lockup — which is what it would be if
+   it matched. Aligned to the lockup's left edge, which the <h1> already
+   establishes. */
+.prologue__first {
+  display: block;
+  margin-block-end: 0.3rem;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.1vw, 1.45rem);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  color: var(--gold-leaf);
+}
 
 .prologue__when {
   display: flex;
@@ -214,42 +233,14 @@ useChapterTimeline(
   color: var(--gold-leaf);
 }
 
-.prologue__within {
-  margin-block-start: 0.5rem;
-  font-size: 0.95rem;
-  color: var(--ink-dim);
-}
-
-.prologue__motto {
-  display: grid;
-  gap: 0.2rem;
-  margin-block-start: 2rem;
-  padding-inline-start: 1.1rem;
-  border-inline-start: 2px solid var(--gold-leaf);
-}
-.prologue__motto-1 {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.prologue__motto-2 {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 1.8vw, 1.25rem);
-  color: var(--ink);
-}
-
-.prologue__lead {
-  margin-block-start: 1.75rem;
-  max-width: 34rem;
-}
-
+/* The buttons follow the date directly now, so the gap under it is the one
+   that used to sit under the lead paragraph: the card still breathes, it
+   just has nothing in between to say. */
 .prologue__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-block-start: 2.25rem;
+  margin-block-start: 2.75rem;
 }
 
 /**

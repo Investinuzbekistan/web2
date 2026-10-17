@@ -8,9 +8,15 @@
  * images: the parts arrive one after another, and the gold gradient keeps
  * drifting under them afterwards so the mark never looks like a flat sticker.
  *
- * `form` picks between the full lockup, emblem and all, and the wordmark on its
- * own. The wordmark exists for slots too small or too wide for the emblem to
- * survive; the client has confirmed the lockup is the mark to lead with.
+ * `form` picks between the full lockup, emblem and all, the compact lockup,
+ * and the wordmark on its own. The wordmark exists for slots too wide for the
+ * emblem to survive; the client has confirmed the lockup is the mark to lead
+ * with.
+ *
+ * `compact` is the lockup without "First International" — the artwork exactly
+ * as the organiser issued it. The full name belongs wherever the mark is read,
+ * but the bar gives it about ninety pixels of height, at which a fourth line
+ * is unreadable and costs the three below it a fifth of their size.
  *
  * `variant` is gold on a lit stage, white where the stage is busy behind it,
  * and mono-dark on paper — the gold is 9.2:1 on the stage navy but only 3.2:1
@@ -21,13 +27,16 @@ import { computed, onBeforeUnmount, onMounted, ref, useId } from 'vue';
 import lockupGold from '../assets/forum-lockup.svg?raw';
 import lockupWhite from '../assets/forum-lockup-white.svg?raw';
 import lockupDark from '../assets/forum-lockup-mono-dark.svg?raw';
+import compactGold from '../assets/forum-lockup-compact.svg?raw';
+import compactWhite from '../assets/forum-lockup-compact-white.svg?raw';
+import compactDark from '../assets/forum-lockup-compact-dark.svg?raw';
 import wordmarkGold from '../assets/forum-wordmark.svg?raw';
 import wordmarkWhite from '../assets/forum-wordmark-white.svg?raw';
 import { canAnimate, gsap } from '../lib/motion';
 
 const props = withDefaults(
   defineProps<{
-    form?: 'lockup' | 'wordmark';
+    form?: 'lockup' | 'compact' | 'wordmark';
     variant?: 'gold' | 'white' | 'dark';
     /** Animate on mount. Off for the small mark in the header. */
     animate?: boolean;
@@ -41,6 +50,9 @@ const SOURCES = {
   'lockup-gold': lockupGold,
   'lockup-white': lockupWhite,
   'lockup-dark': lockupDark,
+  'compact-gold': compactGold,
+  'compact-white': compactWhite,
+  'compact-dark': compactDark,
   'wordmark-gold': wordmarkGold,
   'wordmark-white': wordmarkWhite,
 };
@@ -63,7 +75,15 @@ let tween: gsap.core.Timeline | null = null;
 
 onMounted(() => {
   if (!props.animate || !canAnimate() || !root.value) return;
-  const parts = root.value.querySelectorAll('svg > g > g');
+  /**
+   * Every direct child of the paint group is one part.
+   *
+   * Not `> g`: svgo folds a group holding a single path into the path and
+   * moves the id onto it, which is what happens to the title line. Selecting
+   * elements rather than groups keeps the part that is one path in the
+   * sequence instead of letting it appear ahead of the rest.
+   */
+  const parts = root.value.querySelectorAll('svg > g > *');
   const gradient = root.value.querySelector('linearGradient');
   if (!parts.length) return;
 
@@ -72,7 +92,7 @@ onMounted(() => {
   // On the lockup the first group is the emblem: it settles rather than rises,
   // so the three lines of type read as arriving underneath something already
   // standing.
-  if (props.form === 'lockup' && parts.length > 1) {
+  if (props.form !== 'wordmark' && parts.length > 1) {
     tween
       .from(parts[0] as SVGGElement, {
         opacity: 0,

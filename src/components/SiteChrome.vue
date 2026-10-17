@@ -226,7 +226,7 @@ function choose(code: Lang) {
     >
       <!-- The link carries the name; the mark inside it must not repeat it. -->
       <ForumMark
-        form="lockup"
+        form="compact"
         :variant="onStage ? 'white' : 'dark'"
         class="mark--by-height"
         aria-hidden="true"

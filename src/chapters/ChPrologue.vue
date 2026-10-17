@@ -103,13 +103,14 @@ useChapterTimeline(
       <h1 class="prologue__mark">
         <span class="sr-only">{{ event ? tr(event.name) : '' }}</span>
         <!-- The forum's name is "First International Tourism Investment
-             Forum"; the lockup carries the last four words of it, so the card
-             was announcing a forum that has been held before. The two missing
-             words go above the mark rather than into it — the lockup is a
-             supplied asset and is not redrawn — and they stay in English on
-             every language, because what is under them is a logotype. The
-             accessible name is the whole thing, in the reader's language. -->
-        <span class="prologue__first" aria-hidden="true">First International</span>
+             Forum"; the supplied artwork carries only the last four words, so
+             the card was announcing a forum that has been held before. The two
+             missing words are now part of the lockup itself, set in the
+             typeface the artwork is set in and fitted to its measure, so the
+             name reads as one inscription — see scripts/lib/forum-title.mjs.
+             They stay in English in every language, because what they are part
+             of is a logotype. The accessible name is the whole thing, in the
+             reader's language. -->
         <ForumMark form="lockup" animate drift aria-hidden="true" />
       </h1>
 
@@ -201,48 +202,10 @@ useChapterTimeline(
 
 .prologue__mark {
   margin-block: 1.5rem 0;
-  /* The wordmark is 1.91:1; this keeps it off the right edge on wide screens. */
+  /* The lockup is 1.10:1 now that it carries the forum's full name; this keeps
+     it off the right edge on wide screens. */
   width: min(82%, 23rem);
 }
-/* Set above the mark and in its own gold, at a size that reads as a prefix
-   rather than as a fourth line of the lockup — which is what it would be if
-   it matched. Aligned to the lockup's left edge, which the <h1> already
-   establishes. */
-/**
- * Bigger, and set so that it does not pretend to be a line of the lockup.
- *
- * The lockup is outlined artwork in a geometric sans; this is Manrope, which
- * is a grotesque, so at the same size and case the two sit next to each
- * other and the difference reads as a mistake rather than as a hierarchy.
- * Letterspaced capitals hide most of a typeface's personality — what is left
- * is rhythm and colour — so in caps it reads as the line above the mark it
- * is, and it can be the size the client asked for without fighting it.
- *
- * The fill is the lockup's own gradient rather than a flat gold, clipped to
- * the glyphs, because the mark underneath is a gradient and a flat line over
- * it is the other thing the eye catches. A flat colour is declared first for
- * anything that cannot clip a background to text.
- */
-.prologue__first {
-  display: block;
-  margin-block-end: 0.55rem;
-  font-family: var(--font-body);
-  font-size: clamp(0.95rem, 1.75vw, 1.5rem);
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  line-height: 1.15;
-  color: var(--gold-leaf);
-}
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .prologue__first {
-    background-image: linear-gradient(to top right, #c18429, #e4bb7d);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
-
 .prologue__when {
   display: flex;
   flex-wrap: wrap;

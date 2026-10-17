@@ -21,8 +21,12 @@ import { computed, onMounted, reactive, ref } from 'vue';
  * which put a hundred and twelve kilobytes of scroll-animation library into
  * a page whose whole job is a form. Here the mark is a static image, which
  * is all a page header needs it to be.
+ *
+ * The compact lockup, for the same reason the site's bar uses it: in a header
+ * this size "First International" sets at about six pixels, and it takes a
+ * fifth off the three lines that can still be read.
  */
-import lockupWhite from '../assets/forum-lockup-white.svg?raw';
+import lockupWhite from '../assets/forum-lockup-compact-white.svg?raw';
 import {
   DIRECTION_IDS,
   LANG_NAMES,

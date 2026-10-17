@@ -1,46 +1,28 @@
 <script setup lang="ts">
 /**
- * Epilogue — a three-step enquiry wizard, what the forum expects to come of
- * it, who will be in the room, the contacts, the sources and the disclaimer.
+ * Epilogue — registration, what the forum expects to come of it, who will be
+ * in the room, and the contacts.
  *
- * No backend: the wizard POSTs to VITE_FORM_ENDPOINT when one is configured and
- * otherwise hands the message to the visitor's mail client.
- *
- * Both question lists come from the data file rather than being written here —
- * the six participant categories and the thematic directions are the
- * organiser's own, and a visitor should be choosing from the same vocabulary
- * the forum uses.
+ * The form here used to be a three-step enquiry wizard of its own, asking who
+ * you are, which direction interests you and how to reach you. It is now the
+ * registration form, the same component the registration page uses: the forum
+ * wants the same nine answers from everybody, and one form asked in two
+ * places is a better answer than two forms asking overlapping things. A
+ * reader who arrives from a project brings it with them — see RegisterForm.
  */
-import { computed, reactive, ref, watch } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import ForumMark from '../components/ForumMark.vue';
+import RegisterForm from '../components/RegisterForm.vue';
+import { MESSAGES, type Lang } from '../lib/register-copy';
 import { enquirySubject, setLang, tr, useStore } from '../lib/state';
 
 const { t } = useI18n();
 const { content, forum, lang } = useStore();
 
-const step = ref(0);
-const status = ref<'idle' | 'submitting' | 'sent' | 'failed'>('idle');
-const form = reactive({ role: '', theme: '', name: '', email: '', message: '' });
-const errors = reactive<{ role?: string; name?: string; email?: string }>({});
-
-/**
- * The project the visitor arrived from, if they arrived from one.
- *
- * Chapter IV hands it over rather than writing into the form: the form still
- * asks its three questions, and the project is shown above them as what the
- * enquiry is about. Its direction is filled in, because the sheet already
- * states it and asking again would be asking the reader to repeat the page
- * back to it.
- */
-watch(enquirySubject, (next) => {
-  if (next?.segment) form.theme = next.segment;
-});
-
-function clearSubject(): void {
-  enquirySubject.value = null;
-}
+/** The form's own copy follows the language the site is being read in. */
+const reg = computed(() => MESSAGES[lang.value as Lang]);
 
 const org = computed(() => content.value?.organization);
 const contact = computed(() => forum.value?.contact);
@@ -57,73 +39,8 @@ const mapSrc = computed(() => {
   const box = [c.lon - d, c.lat - d / 2, c.lon + d, c.lat + d / 2].map((n) => n.toFixed(5)).join('%2C');
   return `https://www.openstreetmap.org/export/embed.html?bbox=${box}&layer=mapnik&marker=${c.lat}%2C${c.lon}`;
 });
-const event = computed(() => forum.value?.event);
 const roles = computed(() => forum.value?.participants ?? []);
-const themes = computed(() => forum.value?.themes ?? []);
 const outcomes = computed(() => forum.value?.outcomes);
-
-// Vue templates are parsed as expressions, where `import.meta` is not valid —
-// so the flag is resolved here.
-const hasEndpoint = Boolean(import.meta.env.VITE_FORM_ENDPOINT);
-
-function next() {
-  if (step.value === 0) {
-    errors.role = form.role ? undefined : t('epilogue.errors.role');
-    if (errors.role) return;
-  }
-  step.value = Math.min(2, step.value + 1);
-}
-
-function back() {
-  step.value = Math.max(0, step.value - 1);
-}
-
-function validateFinal(): boolean {
-  errors.name = form.name.trim() ? undefined : t('epilogue.errors.name');
-  errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim())
-    ? undefined
-    : t('epilogue.errors.email');
-  return !errors.name && !errors.email;
-}
-
-async function submit() {
-  if (!validateFinal()) return;
-  status.value = 'submitting';
-
-  const role = roles.value.find((r) => r.id === form.role);
-  const theme = themes.value.find((x) => x.id === form.theme);
-  const body = [
-    event.value ? `${tr(event.value.name)} — ${event.value.dateStart}/${event.value.dateEnd}` : '',
-    '',
-    enquirySubject.value ? `${t('epilogue.subject')}: ${enquirySubject.value.title}` : '',
-    `${t('epilogue.q1')} ${role ? tr(role.category) : ''}`,
-    `${t('epilogue.q2')} ${theme ? tr(theme.title) : t('epilogue.themeAny')}`,
-    `${t('epilogue.name')}: ${form.name}`,
-    `${t('epilogue.email')}: ${form.email}`,
-    '',
-    form.message,
-  ].join('\n');
-
-  const endpoint = import.meta.env.VITE_FORM_ENDPOINT;
-  if (endpoint) {
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...form, project: enquirySubject.value?.id ?? null, lang: lang.value }),
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      status.value = 'sent';
-    } catch {
-      status.value = 'failed';
-    }
-    return;
-  }
-
-  const to = contact.value?.email ?? org.value?.contacts.emails[0] ?? 'uzipa@invest.gov.uz';
-  window.location.href = `mailto:${to}?subject=${encodeURIComponent(t('epilogue.submit'))}&body=${encodeURIComponent(body)}`;
-  status.value = 'sent';
-}
 </script>
 
 <template>
@@ -134,107 +51,23 @@ async function submit() {
 
     <div class="shell">
       <p class="eyebrow chapter-mark">{{ t('chapters.epilogue.n') }}</p>
-      <h2>{{ t('epilogue.lead') }}</h2>
+      <h2>{{ reg.title }}</h2>
 
       <div class="epilogue__grid">
-        <div class="wizard">
-          <!-- What the enquiry is about, when chapter IV sent the reader here
-               with a project in hand. -->
-          <p v-if="enquirySubject" class="wizard__subject">
-            <span class="wizard__subjectLabel">{{ t('epilogue.subject') }}</span>
-            <span class="wizard__subjectName">{{ enquirySubject.title }}</span>
-            <button
-              type="button"
-              class="wizard__subjectClear"
-              :aria-label="t('epilogue.clearSubject')"
-              @click="clearSubject"
-            >
-              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                <path
-                  d="M6 6l12 12M18 6L6 18"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
-          </p>
-
-          <template v-if="status === 'sent'">
-            <h3>{{ t('epilogue.sentTitle') }}</h3>
-            <p class="wizard__note">
-              {{ hasEndpoint ? t('epilogue.sentPosted') : t('epilogue.sentMailto') }}
-            </p>
+        <!-- The registration page's form, in the chapter a reader reaches by
+             reading rather than by arriving. Same component, same endpoint;
+             only the heading level and what sits above it differ. -->
+        <RegisterForm
+          class="epilogue__register"
+          :lang="(lang as Lang)"
+          :subject="enquirySubject"
+          heading-tag="h3"
+        >
+          <template #intro>
+            <p class="epilogue__regDates">{{ reg.dates }}</p>
+            <p class="epilogue__regLead">{{ reg.lead }}</p>
           </template>
-
-          <template v-else>
-            <p class="wizard__progress">
-              {{ t('epilogue.step') }} {{ step + 1 }} {{ t('epilogue.of') }} 3
-            </p>
-
-            <fieldset v-show="step === 0">
-              <legend>{{ t('epilogue.q1') }}</legend>
-              <div class="wizard__choices">
-                <label v-for="role in roles" :key="role.id">
-                  <input v-model="form.role" type="radio" name="role" :value="role.id" />
-                  <span>{{ tr(role.category) }}</span>
-                </label>
-              </div>
-              <p v-if="errors.role" class="wizard__error" role="alert">{{ errors.role }}</p>
-            </fieldset>
-
-            <fieldset v-show="step === 1">
-              <legend>{{ t('epilogue.q2') }}</legend>
-              <label class="wizard__field">
-                <select v-model="form.theme">
-                  <option value="">{{ t('epilogue.themeAny') }}</option>
-                  <option v-for="theme in themes" :key="theme.id" :value="theme.id">
-                    {{ tr(theme.title) }}
-                  </option>
-                </select>
-              </label>
-            </fieldset>
-
-            <fieldset v-show="step === 2">
-              <legend>{{ t('epilogue.q3') }}</legend>
-              <label class="wizard__field">
-                <span>{{ t('epilogue.name') }}</span>
-                <input v-model="form.name" type="text" autocomplete="name" :aria-invalid="!!errors.name" />
-                <small v-if="errors.name" class="wizard__error" role="alert">{{ errors.name }}</small>
-              </label>
-              <label class="wizard__field">
-                <span>{{ t('epilogue.email') }}</span>
-                <input v-model="form.email" type="email" autocomplete="email" :aria-invalid="!!errors.email" />
-                <small v-if="errors.email" class="wizard__error" role="alert">{{ errors.email }}</small>
-              </label>
-              <label class="wizard__field">
-                <span>{{ t('epilogue.message') }}</span>
-                <textarea v-model="form.message" rows="3" />
-              </label>
-            </fieldset>
-
-            <div class="wizard__actions">
-              <button v-if="step > 0" type="button" class="btn" @click="back">
-                {{ t('epilogue.back') }}
-              </button>
-              <button v-if="step < 2" type="button" class="btn btn--solid" @click="next">
-                {{ t('epilogue.next') }}
-              </button>
-              <button
-                v-else
-                type="button"
-                class="btn btn--solid"
-                :disabled="status === 'submitting'"
-                @click="submit"
-              >
-                {{ status === 'submitting' ? t('epilogue.submitting') : t('epilogue.submit') }}
-              </button>
-            </div>
-
-            <p v-if="status === 'failed'" class="wizard__error" role="alert">{{ t('epilogue.failed') }}</p>
-          </template>
-        </div>
+        </RegisterForm>
 
         <address v-if="contact" class="contacts">
           <p class="contacts__org">
@@ -357,6 +190,10 @@ h2 {
 .epilogue__grid {
   margin-block-start: clamp(2.5rem, 7vh, 4rem);
   display: grid;
+  /* minmax(0, …), not the implicit `auto`: an auto column sizes to its widest
+     content, and the form inside it has field labels and role cards that do
+     not have to fit a phone. Without this the card ran off the right edge. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
 }
 @media (min-width: 60rem) {
@@ -365,154 +202,22 @@ h2 {
   }
 }
 
-.wizard {
+/* The chapter's own frame for the shared form: a card on the stage, the way
+   the wizard it replaced sat. The form brings its own insides. */
+.epilogue__register {
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--hairline);
   border-radius: 1rem;
   background: linear-gradient(160deg, var(--raise), transparent 60%);
 }
-/* The project the enquiry is about: a gold-edged strip above the questions,
-   so it reads as something carried in rather than as another field. */
-.wizard__subject {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-block-end: 1.25rem;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--hairline);
-  border-inline-start: 3px solid var(--gold-leaf);
-  border-radius: 0.4rem;
-  background: var(--raise);
+.epilogue__regDates {
+  color: var(--gold);
+  font-size: 0.95rem;
 }
-.wizard__subjectLabel {
-  flex: 0 0 auto;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.wizard__subjectName {
-  flex: 1 1 auto;
-  min-width: 0;
-  color: var(--ink);
-  font-size: 0.9rem;
-}
-.wizard__subjectClear {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  inline-size: var(--tap);
-  block-size: var(--tap);
-  margin: calc(var(--tap) / -4) -0.4rem;
-  border: 0;
-  border-radius: 0.25rem;
-  background: transparent;
-  color: var(--ink-dim);
-  cursor: pointer;
-}
-@media (hover: hover) {
-  .wizard__subjectClear:hover {
-    color: var(--ink);
-  }
-}
-@media (max-width: 30rem) {
-  .wizard__subject {
-    flex-wrap: wrap;
-  }
-  .wizard__subjectName {
-    flex-basis: 100%;
-    order: 3;
-  }
-}
-
-.wizard__progress {
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.wizard fieldset {
-  margin: 1.5rem 0 0;
-  padding: 0;
-  border: 0;
-}
-.wizard legend {
-  padding: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  color: var(--ink);
-}
-.wizard__choices {
-  margin-block-start: 1.25rem;
-  display: grid;
-  gap: 0.5rem;
-}
-.wizard__choices label {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem 1.1rem;
-  border: 1px solid var(--hairline);
-  border-radius: 0.6rem;
-  cursor: pointer;
-  transition: border-color 0.18s, background-color 0.18s;
-}
-@media (hover: hover) {
-  .wizard__choices label:hover {
-    border-color: var(--accent);
-  }
-}
-.wizard__choices input {
-  accent-color: var(--accent-soft);
-}
-.wizard__choices label:has(input:checked) {
-  border-color: var(--accent-soft);
-  background: var(--surface-2);
-}
-
-.wizard__field {
-  display: grid;
-  gap: 0.35rem;
-  margin-block-start: 1.25rem;
-}
-.wizard__field > span {
-  font-size: 0.8rem;
-  color: var(--ink-dim);
-}
-.wizard__field input,
-.wizard__field select,
-.wizard__field textarea {
-  width: 100%;
-  min-block-size: var(--tap);
-  padding: 0.75rem 0.9rem;
-  border: 1px solid var(--hairline);
-  border-radius: 0.6rem;
-  background: var(--surface-2);
-  color: var(--ink);
-  font: inherit;
-  /* Never under 16px: below that, iOS zooms the page in when the field takes
-     focus and leaves it there. */
-  font-size: max(1rem, 0.95rem);
-}
-.wizard__field textarea {
-  resize: vertical;
-}
-
-.wizard__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-block-start: 1.75rem;
-}
-
-.wizard__error {
-  margin-block-start: 0.6rem;
-  color: var(--danger);
-  font-size: 0.85rem;
-}
-.wizard__note {
-  margin-block-start: 0.75rem;
+.epilogue__regLead {
+  margin-block-start: 0.5rem;
+  color: var(--ink-soft);
+  max-inline-size: 34rem;
 }
 
 .contacts {
@@ -715,7 +420,9 @@ h2 {
      single column left four fifths of the footer empty, and running them on
      stranded a separator at the start of every wrapped line. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  /* min(…, 100%) so the track cannot be wider than the page: 18rem is 288px
+     and a 280px phone is a real one. */
+  grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
   gap: 0.5rem 2.5rem;
   max-inline-size: 64rem;
   font-size: 0.82rem;

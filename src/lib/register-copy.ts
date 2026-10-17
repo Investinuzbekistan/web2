@@ -1,11 +1,11 @@
 /**
- * Copy for the registration page.
+ * Copy for the registration form.
  *
  * Its own message set rather than the site's: the site's covers eight
  * chapters and a project portfolio, and a form that asks nine questions
- * should not carry it. The two share the storage key for the chosen
- * language, so a reader who picked Russian on the site arrives here in
- * Russian.
+ * should not carry it. It lives in lib/ rather than beside the registration
+ * page because the form is now in two places — that page, and the last
+ * chapter of the site.
  *
  * Guests and speakers answer the same questions, at the client's asking, so
  * there is one form and one set of labels; only the first field differs.
@@ -35,6 +35,8 @@ export type Copy = {
   };
   directionNone: string;
   directions: Record<string, string>;
+  /** How the note names the project a reader arrived from. */
+  aboutProject: string;
   optional: string;
   required: string;
   submit: string;
@@ -100,6 +102,7 @@ export const MESSAGES: Record<Lang, Copy> = {
       leisure: 'Koʻngilochar, oilaviy va tematik infratuzilma',
       transport: 'Transport va unga bogʻliq infratuzilma',
     },
+    aboutProject: 'Loyiha',
     optional: 'ixtiyoriy',
     required: 'majburiy',
     submit: 'Roʻyxatdan oʻtish',
@@ -161,6 +164,7 @@ export const MESSAGES: Record<Lang, Copy> = {
       leisure: 'Развлекательная, семейная и тематическая инфраструктура',
       transport: 'Транспорт и связанная инфраструктура',
     },
+    aboutProject: 'Проект',
     optional: 'необязательно',
     required: 'обязательно',
     submit: 'Зарегистрироваться',
@@ -221,6 +225,7 @@ export const MESSAGES: Record<Lang, Copy> = {
       leisure: 'Entertainment, family and themed attractions',
       transport: 'Transport and related infrastructure',
     },
+    aboutProject: 'Project',
     optional: 'optional',
     required: 'required',
     submit: 'Register',

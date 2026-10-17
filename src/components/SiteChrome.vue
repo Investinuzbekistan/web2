@@ -72,7 +72,12 @@ const onStage = computed(() => STAGES.has(activeId.value ?? ''));
  * find them.
  *
  * So before the portfolio the bar offers the portfolio, and from the
- * portfolio onwards it offers the enquiry. One button, always the next step.
+ * portfolio onwards it offers registration. One button, always the next step.
+ *
+ * It scrolls to the last chapter rather than opening the registration page:
+ * the reader is already most of the way down the page, and the chapter now
+ * carries the same form. The page is a click away in the bar for anybody who
+ * arrived to register and nothing else.
  */
 const PORTFOLIO_INDEX = computed(() => props.chapters.findIndex((c) => c.id === 'portfolio'));
 const seenPortfolio = computed(
@@ -80,7 +85,7 @@ const seenPortfolio = computed(
 );
 const barAction = computed(() =>
   seenPortfolio.value
-    ? { id: 'epilogue', key: 'nav.cta', short: 'nav.ctaShort', icon: 'enquiry' }
+    ? { id: 'epilogue', key: 'nav.register', short: 'nav.register', icon: 'enquiry' }
     : { id: 'portfolio', key: 'nav.ctaProjects', short: 'nav.ctaProjects', icon: 'portfolio' },
 );
 
@@ -270,8 +275,14 @@ function choose(code: Lang) {
            like every other link, and still works if the script never ran.
            Hidden below 48rem, where the bar is already carrying the language,
            the contextual call to action and the menu — it is the first item
-           in the menu at that width. -->
-      <a class="reg-link" :href="registerHref">{{ t('nav.register') }}</a>
+           in the menu at that width.
+
+           And hidden once the call to action beside it has itself become
+           registration: the last chapter now carries the same form, so from
+           the portfolio onwards these two were the same offer twice. Before
+           that point this is the quick way in for somebody who came to
+           register and not to read. -->
+      <a v-if="!seenPortfolio" class="reg-link" :href="registerHref">{{ t('nav.register') }}</a>
 
       <!-- Two labels, one shown at a time: "Qiziqishni bildirish" is 159px
            wide and the bar runs out of room for it below about 370px, where

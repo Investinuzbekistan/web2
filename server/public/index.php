@@ -116,7 +116,7 @@ if ($authed && $action === 'csv') {
 /** Search, role and status, applied in one place so the CSV matches the table. */
 function admin_filter(array $rows, array $q): array
 {
-    $needle = mb_strtolower(trim((string) ($q['q'] ?? '')));
+    $needle = app_lower(trim((string) ($q['q'] ?? '')));
     $role = (string) ($q['role'] ?? '');
     $status = (string) ($q['status'] ?? '');
 
@@ -130,7 +130,7 @@ function admin_filter(array $rows, array $q): array
         if ($needle === '') {
             return true;
         }
-        $hay = mb_strtolower(implode(' ', [
+        $hay = app_lower(implode(' ', [
             $row['full_name'] ?? '', $row['organisation'] ?? '', $row['position'] ?? '',
             $row['country'] ?? '', $row['email'] ?? '', $row['phone'] ?? '', $row['note'] ?? '',
         ]));

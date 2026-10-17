@@ -42,6 +42,50 @@ const FIELDS = [
     'country', 'email', 'phone', 'direction', 'note', 'lang', 'status',
 ];
 
+/**
+ * mbstring, or the same thing without it.
+ *
+ * On Alpine mbstring is its own apk package, exactly like pdo_sqlite, and a
+ * backend that assumes it is there is a backend that fatals on the first
+ * registration. That is not a theory: run against a PHP built without it,
+ * every submission came back as a 500 with `Call to undefined function
+ * mb_substr()` in the body.
+ *
+ * The fallbacks go through PCRE's UTF-8 mode, which this file already relies
+ * on for every pattern it runs, so nothing new has to be installed for them
+ * to be right.
+ */
+function app_cut(string $value, int $max): string
+{
+    if (function_exists('mb_substr')) {
+        return app_cut($value, $max);
+    }
+    if (preg_match('/^.{0,' . $max . '}/us', $value, $m) === 1) {
+        return $m[0];
+    }
+    // A string PCRE will not read as UTF-8 is not one to store whole.
+    return substr($value, 0, $max);
+}
+
+function app_len(string $value): int
+{
+    if (function_exists('mb_strlen')) {
+        return mb_strlen($value);
+    }
+    $n = preg_match_all('/./us', $value);
+    return $n === false ? strlen($value) : $n;
+}
+
+function app_lower(string $value): string
+{
+    if (function_exists('mb_strtolower')) {
+        return mb_strtolower($value);
+    }
+    // Latin only, which is what a case-insensitive search over names and
+    // organisations mostly needs; anything else compares as it was typed.
+    return strtolower($value);
+}
+
 function app_str(array $src, string $key, int $max): string
 {
     $value = $src[$key] ?? '';
@@ -52,7 +96,7 @@ function app_str(array $src, string $key, int $max): string
     // legitimate newline in a name, and a stray one breaks the flat file.
     $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/u', '', $value) ?? '';
     $value = trim(preg_replace('/\s+/u', ' ', $value) ?? '');
-    return mb_substr($value, 0, $max);
+    return app_cut($value, $max);
 }
 
 /**
@@ -88,7 +132,7 @@ function app_validate(array $input, string $ip): array
         $bad[] = 'role';
     }
     foreach (['full_name', 'organisation', 'position', 'country', 'phone'] as $field) {
-        if (mb_strlen($row[$field]) < 2) {
+        if (app_len($row[$field]) < 2) {
             $bad[] = $field;
         }
     }
